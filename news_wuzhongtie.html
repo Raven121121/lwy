@@ -196,6 +196,38 @@ document.addEventListener("DOMContentLoaded",function(){
 });
 
 function openLetter(){
+  // 在点击手势内创建音频并播放（Safari 更兼容）
+  try{
+    var audio = document.getElementById("jiangnanAudio");
+    if(!audio){
+      audio = new Audio('jiangnan.m4a');
+      audio.id = 'jiangnanAudio';
+      audio.loop = true;
+      document.body.appendChild(audio);
+    }
+    var vol = 0.19;
+    var qs = location.search;
+    if(qs.indexOf('vol=') >= 0){
+      var v = parseFloat(qs.split('vol=')[1].split('&')[0]);
+      if(!isNaN(v) && v >= 0 && v <= 1) vol = v;
+    }
+    audio.volume = vol;
+    audio.preload = 'auto';
+    audio.load();
+    // 本地文件加载失败时，切换到备用地址（国内更快）
+    audio.addEventListener('error', function(){
+      audio.src = 'http://c1.zhuanwenzi.com/1785559143842/164060/2d36d34584199945d584facce3a9af71.mp3';
+      audio.load();
+      audio.play().catch(function(){});
+    }, {once:true});
+    // 立即尝试播放，若未就绪则等就绪后播放
+    var tryPlay = function(){
+      audio.play().catch(function(){
+        setTimeout(tryPlay, 300);
+      });
+    };
+    tryPlay();
+  }catch(e){}
   updBadge("29");
   var ov = document.getElementById("letterOverlay");
   ov.style.display = "flex";
@@ -232,6 +264,8 @@ document.getElementById("letterOverlay").addEventListener("click",function(e){
 </script>
 
 <div class="ec-badge" id="ecBadge"><span class="ec-n">28</span><span class="ec-t">/29</span></div>
+
+<audio id="jiangnanAudio" src="jiangnan.m4a" loop preload="auto"></audio>
 
 </body>
 </html>
