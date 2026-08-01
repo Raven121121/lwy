@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+
+<head>
+
+<meta charset="UTF-8">
+
+<title>Internet Explorer</title>
+
+<style>
+
+*{margin:0;padding:0;box-sizing:border-box;}
+
+html,body{width:100%;height:100%;overflow:hidden;}
+
+body{
+
+  background:url('wallpaper.jpg') center/cover no-repeat;
+
+  font-family:"宋体","SimSun","Tahoma","MS Sans Serif",sans-serif;
+
+  font-size:16px;font-weight:bold;-webkit-font-smoothing:none;font-smooth:never;
+
+  user-select:none;
+
+}
+
+.ie-win{
+
+  position:fixed;top:12px;left:50%;transform:translateX(-50%);
+
+  width:960px;height:680px;display:flex;flex-direction:column;
+
+  background:#ece9d8;border:1px solid #0055dd;
+
+  border-radius:8px 8px 0 0;box-shadow:2px 2px 12px rgba(0,0,0,0.4);
+
+  overflow:hidden;
+
+}
+
+.ie-win .titlebar{
+
+  height:28px;
+
+  background:linear-gradient(to bottom,#0066ff,#0055dd 15%,#0044bb 50%,#003399);
+
+  display:flex;align-items:center;padding:0 4px;flex-shrink:0;
+
+}
+
+.ie-win .title-text{
+
+  flex:1;font-size:15px;font-weight:bold;color:#fff;padding-left:6px;
+
+  font-family:"Tahoma","MS Sans Serif",sans-serif;text-shadow:0 1px 0 rgba(0,0,0,0.4);
+
+}
+
+.ie-win .tbtns{display:flex;gap:2px;margin-right:2px;}
+
+.ie-win .tbtns button{
+
+  width:24px;height:24px;
+
+  border:1px solid;border-color:rgba(255,255,255,0.5) rgba(0,0,0,0.2) rgba(0,0,0,0.2) rgba(255,255,255,0.5);
+
+  border-radius:3px;font-size:16px;font-weight:bold;
+
+  display:flex;align-items:center;justify-content:center;
+
+  cursor:pointer;padding:0;line-height:1;
+
+  font-family:"Tahoma","MS Sans Serif",sans-serif;
+
+  background:linear-gradient(to bottom,rgba(255,255,255,0.2),rgba(0,0,0,0.1));color:#000;
+
+}
+
+.ie-win .btn-close{background:linear-gradient(to bottom,#f08080,#c04040);color:#fff;}
+
+.ie-win .menubar{
+
+  height:24px;background:#ece9d8;display:flex;align-items:center;padding:0 3px;
+
+  border-bottom:1px solid #c0c0c0;flex-shrink:0;
+
+}
+
+.ie-win .menubar span{font-size:16px;font-weight:bold;padding:2px 8px;cursor:pointer;color:#111;}
+
+.ie-win .menubar span:hover{background:#1a3a8a;color:#fff;}
+
+
+
+/* 导航工具栏 */
+
+.navbar{
+
+  height:30px;background:linear-gradient(to bottom,#f0ece0,#e0dcd0);
+
+  display:flex;align-items:center;padding:0 4px;gap:2px;
+
+  border-bottom:1px solid #c0c0c0;flex-shrink:0;
+
+}
+
+.navbar button{
+
+  height:24px;min-width:24px;padding:0 4px;font-size:15px;font-weight:bold;
+
+  background:linear-gradient(to bottom,#f8f4ec,#e0dcd0);
+
+  border:1px solid #c0c0c0;border-color:#fff #888 #888 #fff;
+
+  cursor:pointer;font-family:"Tahoma","MS Sans Serif",sans-serif;
+
+}
+
+.navbar button:hover{background:linear-gradient(to bottom,#fff,#e8e4d8);}
+
+.navbar .sep{width:1px;height:20px;background:#c0c0c0;margin:0 2px;}
+
+.navbar .addr-text{margin-left:4px;font-size:14px;font-weight:bold;color:#444;white-space:nowrap;}
+
+.navbar .addr-box{
+
+  flex:1;height:24px;background:#fff;
+
+  border:1px solid #888;border-color:#888 #ccc #ccc #888;
+
+  display:flex;align-items:center;padding:0 5px;margin:0 2px;
+
+}
+
+.navbar .addr-box input{
+
+  flex:1;border:none;outline:none;font-size:16px;height:20px;
+
+  font-family:"Tahoma","MS Sans Serif","宋体",sans-serif;background:transparent;
+
+  -webkit-font-smoothing:none;font-smooth:never;
+
+}
+
+.navbar .go-btn{
+
+  height:24px;padding:0 10px;font-size:15px;font-weight:bold;
+
+  background:linear-gradient(to bottom,#f0f0f0,#d0d0d0);
+
+  border:1px solid #888;border-color:#fff #888 #888 #fff;
+
+  cursor:pointer;font-family:"Tahoma","MS Sans Serif",sans-serif;
+
+}
+
+
+
+/* 主体内容 */
+
+.main-content{
+
+  flex:1;background:#fff;overflow-y:auto;padding:0;
+
+}
+
+
+
+/* 搜索首页 */
+
+.portal{
+
+  display:flex;flex-direction:column;align-items:center;
+
+  padding:40px 20px 20px;
+
+}
+
+.portal .logo-area{
+
+  text-align:center;margin-bottom:20px;
+
+}
+
+.portal .logo-area .logo-text{
+
+  font-family:"Arial Black",sans-serif;font-size:28px;color:#0055cc;
+
+  text-shadow:1px 1px 0 #ccc;
+
+}
+
+.portal .logo-area .logo-sub{
+
+  font-size:15px;color:#888;margin-top:2px;
+
+}
+
+.portal .search-row{
+
+  display:flex;gap:0;width:520px;margin-bottom:25px;
+
+  border:2px solid #aac;background:#fff;
+
+}
+
+.portal .search-row input{
+
+  flex:1;height:30px;border:none;outline:none;padding:0 8px;
+
+  font-size:15px;font-family:"宋体",sans-serif;
+
+  -webkit-font-smoothing:none;font-smooth:never;
+
+}
+
+.portal .search-row button{
+
+  width:70px;height:30px;
+
+  background:linear-gradient(to bottom,#c8d8e8,#a0b8d0);
+
+  border:none;border-left:1px solid #aac;
+
+  cursor:pointer;font-size:16px;font-weight:bold;color:#fff;
+
+  font-family:"Tahoma","MS Sans Serif",sans-serif;
+
+}
+
+.portal .search-row button:hover{background:linear-gradient(to bottom,#d0e0f0,#b0c8e0);}
+
+
+
+/* 猜你想看 */
+
+.guess-section{
+
+  width:580px;margin:0 auto;
+
+  border:1px solid #ddd;background:#fafaf8;
+
+}
+
+.guess-header{
+
+  background:linear-gradient(to bottom,#e8e4d8,#dcd8cc);
+
+  padding:5px 10px;font-size:16px;font-weight:bold;color:#444;
+
+  border-bottom:1px solid #ddd;
+
+}
+
+.guess-body{
+
+  padding:10px;display:grid;grid-template-columns:1fr 1fr;gap:6px;
+
+}
+
+.guess-item{
+
+  padding:6px 8px;cursor:pointer;font-size:16px;color:#06c;
+
+  border:1px solid transparent;border-radius:2px;
+
+}
+
+.guess-item:hover{background:#e8eef8;border-color:#c0d0e0;}
+
+.guess-item .g-sub{font-size:14px;font-weight:bold;color:#888;margin-top:1px;}
+
+
+
+/* 搜索结果页 */
+
+.search-result{
+
+  display:none;padding:15px 20px;
+
+}
+
+.result-item{
+
+  margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid #eee;
+
+  cursor:pointer;
+
+}
+
+.result-item .r-title{
+
+  font-size:16px;color:#06c;font-weight:bold;margin-bottom:2px;
+
+}
+
+.result-item .r-title:hover{text-decoration:underline;}
+
+.result-item .r-url{font-size:14px;font-weight:bold;color:#090;}
+
+.result-item .r-desc{font-size:16px;color:#444;margin-top:3px;line-height:1.5;}
+
+
+
+/* 状态栏 */
+
+.status{
+
+  height:22px;background:#ece9d8;
+
+  border-top:1px solid #c0c0c0;
+
+  display:flex;align-items:center;padding:0 8px;flex-shrink:0;
+
+}
+
+.status .s-left{
+
+  display:flex;align-items:center;gap:8px;font-size:15px;font-weight:bold;color:#444;
+
+  font-family:"Tahoma","MS Sans Serif",sans-serif;
+
+}
+
+.status .s-right{margin-left:auto;font-size:14px;font-weight:bold;color:#888;}
+
+
+
+.back-btn{
+
+  position:fixed;top:6px;right:10px;z-index:9999;
+
+  padding:5px 14px;font-size:16px;font-weight:bold;
+
+  background:linear-gradient(to bottom,#f0f0f0,#d0d0d0);
+
+  border:1px solid #888;border-color:#fff #888 #888 #fff;
+
+  cursor:pointer;font-family:"Tahoma","MS Sans Serif",sans-serif;
+
+}
+
+.back-btn:hover{background:linear-gradient(to bottom,#fff,#e0e0e0);}
+
+
+.ec-badge{position:fixed;top:10px;right:12px;z-index:100000;background:rgba(45,45,55,0.55);border:1px solid rgba(90,90,100,0.4);border-radius:4px;padding:2px 8px;font-family:"Microsoft YaHei","微软雅黑",sans-serif;font-size:13px;color:#d0c8b8;box-shadow:1px 1px 4px rgba(0,0,0,0.2);letter-spacing:1px;backdrop-filter:blur(2px);pointer-events:none;}
+.ec-badge .ec-n{color:#f0d878;font-weight:bold;font-size:15px;}
+.ec-badge .ec-t{color:#b0a898;}
+</style>
+
+</head>
+
+<body>
+
+<div class="ie-win">
+
+  <div class="titlebar">
+
+    <span class="title-text" id="winTitle">Internet Explorer</span>
+
+    <div class="tbtns">
+
+      <button class="btn-close" onclick="window.close()">&#10005;</button>
+
+    </div>
+
+  </div>
+
+  <div class="menubar">
+
+    <span>文件(F)</span><span>编辑(E)</span><span>查看(V)</span>
+
+    <span>收藏(A)</span><span>工具(T)</span><span>帮助(H)</span>
+
+  </div>
+
+  <div class="navbar">
+
+    <button title="返回" onclick="goHome()">&#9664;</button>
+
+    <button title="前进" onclick="goForward()">&#9654;</button>
+
+    <button title="停止" onclick="">&#9632;</button>
+
+    <button title="刷新" onclick="goHome()">&#8635;</button>
+
+    <span class="sep"></span>
+
+    <span class="addr-text">地址(D)：</span>
+
+    <div class="addr-box">
+
+      <input type="text" id="addrInput" value="about:blank" onkeydown="if(event.key==='Enter')navigateTo(this.value)">
+
+    </div>
+
+    <button class="go-btn" onclick="navigateTo(document.getElementById('addrInput').value)">转到</button>
+
+  </div>
+
+
+
+  <div class="main-content" id="mainContent">
+
+    <!-- 搜索首页 -->
+
+    <div id="portalPage" class="portal">
+
+      <div class="logo-area">
+
+        <div class="logo-text" style="font-size:20px;color:#444;font-weight:bold;letter-spacing:2px;">Internet Explorer</div>
+
+        <div class="logo-sub" style="font-size:15px;color:#aaa;">连接到搜索服务</div>
+
+      </div>
+
+      <div class="search-row">
+
+        <input type="text" id="searchInput" placeholder="请输入关键词" 
+
+          onkeydown="if(event.key==='Enter')doSearch()">
+
+        <button onclick="doSearch()" id="searchBtn">搜索</button>
+
+      </div>
+
+
+
+      <!-- 猜你想看 -->
+
+      <div class="guess-section">
+
+        <div class="guess-header">&#9733; 猜你想看</div>
+
+        <div class="guess-body" id="guessBody">
+          <div class="guess-item" onclick="showNews2()">
+            <span style="color:#c00;">&#9654;</span> 多地官宣结婚发钱
+            <div class="g-sub">民政部：鼓励婚育新政策陆续落地</div>
+          </div>
+          <div class="guess-item" onclick="showNews3()">
+
+            <span style="color:#c00;">&#9654;</span> 租车1700元，落地强加4000元保险
+
+            <div class="g-sub">消费者曝光租车平台隐形收费陷阱</div>
+
+          </div>
+
+          <div class="guess-item" onclick="showNews4()">
+
+            <span style="color:#c00;">&#9654;</span> 美国公布新关税政策24日生效
+
+            <div class="g-sub">国际贸易格局再迎变数</div>
+
+          </div>
+
+          <div class="guess-item" onclick="showNews5()">
+
+            <span style="color:#c00;">&#9654;</span> 文班亚马时隔四年再度回到少林寺修行
+
+            <div class="g-sub">NBA球星的中国情缘</div>
+
+          </div>
+
+          <div class="guess-item" onclick="showNewsArticle()">
+
+            <span style="color:#c00;">&#9654;</span> 西安张一洒入室杀人案今日执行死刑
+
+            <div class="g-sub">案件历时四年终告结束</div>
+
+          </div>
+
+          <div class="guess-item" onclick="showNews6()">
+
+            <span style="color:#c00;">&#9654;</span> 多地建立救助庇护所
+
+            <div class="g-sub">为受困群体提供临时避风港</div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- 搜索结果页 -->
+
+    <div id="resultPage" class="search-result"></div>
+    <div id="newsPage" style="display:none;padding:20px 30px;overflow-y:auto;height:100%;"></div>
+  </div>
+
+
+
+  <div class="status">
+
+    <div class="s-left">
+
+      <span id="statusIcon">&#9673;</span>
+
+      <span id="statusText">完成</span>
+
+    </div>
+
+    <div class="s-right" id="statusRight">Internet</div>
+
+  </div>
+
+</div>
+
+
+
+
+<script>
+
+// ===== 搜索数据库 =====
+
+var keywordDB = {
+
+  '槐花理工大学': {
+
+    title: '槐花理工大学 - 官方网站',
+
+    url: 'hhlg.html',
+
+    desc: '槐花理工大学始建于1956年，是槐花市重点综合性大学。学校现有16个学院，在校生20000余人。'
+
+  },
+
+
+
+
+
+
+
+  '槐花论坛': {
+
+    title: '槐花论坛 - 本地生活社区',
+
+    url: 'http://www.hhbbs.com/',
+
+    desc: '槐花论坛，本地人都在用的生活社区。槐花市最大的本地论坛。'
+
+  },
+
+  '严信': {
+
+    title: '严信 - 河洲路街道办同事',
+
+    url: 'http://www.hzjd.gov.cn/workers/',
+
+    desc: '严信，河洲路街道办事处工作人员，曾任宋远同事。2011年后调任其他岗位。'
+
+  },
+
+  '河洲路街道办事处': {
+    title: '河洲路街道首家家庭暴力救助庇护所正式启用 - 槐花晚报',
+    url: 'hzmh.html',
+    desc: '2010年9月，槐花市河洲路街道正式启用首家家庭暴力救助庇护所，为受困女性提供临时住所和法律援助。'
+  },
+  '橡果湾': {
+    title: '橡果湾商圈美食测评 - 城市美食日记',
+    url: 'xiangguowan.html',
+    desc: '橡果湾作为槐花市老牌商圈，隐藏着众多美食等你发现。'
+  },
+  '槐理十佳歌手': {
+    title: '槐理十佳歌手 - 搜索',
+    url: '#',
+    desc: '',
+    multi: true
+  },
+  '槐花论坛': {
+    title: '槐花论坛 - 槐花市地方综合论坛',
+    url: 'forum_login.html',
+    desc: '槐花论坛，槐花市地方综合论坛，创建于2005年。论坛涵盖求助互助、生活分享、情感天地等多个板块。'
+  },
+  '吴中平': {
+    title: '河洲区法院依法宣判吴中平故意伤害案',
+    url: 'news_wuzhongtie.html',
+    desc: '2011年12月20日，槐花市河洲区人民法院依法对吴中平故意伤害案作出一审公开宣判，被告人吴中平因故意伤害罪被判处死刑。'
+  },
+  '红江市第一人民医院': {
+    title: '红江市第一人民医院 - 官方网站',
+    url: 'hospital.html',
+    desc: '红江市第一人民医院，三级甲等综合医院。地址：红江市红江大道200号。'
+  },
+};
+
+
+
+var searchHistory = [];
+
+
+
+function doSearch() {
+
+  var q = document.getElementById('searchInput').value.trim();
+
+  if (!q || !keywordDB[q]) return;
+
+  searchHistory.push(q);
+
+  document.getElementById('addrInput').value = 'http://www.haohua.com/search?q=' + encodeURIComponent(q);
+
+  showResults(q);
+
+}
+
+
+
+function doSearchKeyword(keyword) {
+
+  document.getElementById('searchInput').value = keyword;
+
+  searchHistory.push(keyword);
+
+  document.getElementById('addrInput').value = 'http://www.haohua.com/search?q=' + encodeURIComponent(keyword);
+
+  showResults(keyword);
+
+}
+
+
+
+function showResults(keyword) {
+
+  document.getElementById('portalPage').style.display = 'none';
+
+  var rp = document.getElementById('resultPage');
+
+  rp.style.display = 'block';
+
+  
+
+  // Find matching results
+
+  var results = [];
+  // Handle 槐理十佳歌手 - show multiple results with pagination
+  if(keyword === '槐理十佳歌手'){
+    showSingerPage(1);
+    return;
+  }
+  
+
+  for (var key in keywordDB) {
+
+    if (key === keyword) {
+
+      results.push({key: key, data: keywordDB[key], match: 1});
+
+    }
+
+  }
+
+
+  
+
+  if (results.length === 0) {
+
+    rp.innerHTML = '<div style="padding:30px;text-align:center;color:#999;font-size:15px;">未找到与"<b>' + keyword + '</b>"相关的结果。</div>';
+
+  } else {
+
+    var html = '<div style="margin-bottom:10px;font-size:16px;color:#666;">搜索 "<b>' + keyword + '</b>" 共找到 ' + results.length + ' 条结果</div>';
+
+    for (var i = 0; i < results.length; i++) {
+
+      var r = results[i];
+
+      html += '<div class="result-item" onclick="window.open(\'' + r.data.url + '\', \'_blank\')">';
+
+      html += '<div class="r-title">' + r.data.title + '</div>';
+
+      html += '<div class="r-url">' + r.data.url + '</div>';
+
+      html += '<div class="r-desc">' + r.data.desc + '</div>';
+
+      html += '</div>';
+
+    }
+
+    // Add navigation hint
+
+    if (results.length === 1 && results[0].match === 1) {
+
+      html += '<div style="margin-top:10px;padding:10px;background:#f8f6f0;border:1px solid #ddd;font-size:16px;color:#666;">点击结果进入相关页面。</div>';
+
+    }
+
+    rp.innerHTML = html;
+
+  }
+
+  
+
+  document.getElementById('statusText').textContent = '已返回搜索 (' + results.length + ' 条结果)';
+
+  document.getElementById('winTitle').textContent = '搜索结果 - ' + keyword + ' - Internet Explorer';
+
+}
+
+
+
+function navigateTo(url) {
+
+  if (url === 'about:blank' || url === '' || url === 'about:blank') {
+
+    goHome();
+
+    return;
+
+  }
+
+  // Extract search query from URL
+
+  var qMatch = url.match(/[?&]q=([^&]+)/);
+
+  if (qMatch) {
+
+    var q = decodeURIComponent(qMatch[1]);
+
+    document.getElementById('searchInput').value = q;
+
+    showResults(q);
+
+  }
+
+}
+
+
+
+function goHome() {
+
+  document.getElementById('portalPage').style.display = 'flex';
+
+  document.getElementById('resultPage').style.display = 'none';
+
+  document.getElementById('addrInput').value = 'about:blank';
+
+  document.getElementById('statusText').textContent = '完成';
+
+  document.getElementById('winTitle').textContent = 'Internet Explorer';
+
+  document.getElementById('searchInput').value = '';
+
+}
+
+
+
+function goBack() {
+
+  if (searchHistory.length > 1) {
+
+    searchHistory.pop();
+
+    showResults(searchHistory[searchHistory.length - 1]);
+
+  }
+
+}
+
+
+
+function goForward() {
+
+  // Simplified - just goes back to home
+
+  goHome();
+
+}
+
+
+
+// Welcome splash
+
+document.getElementById('statusText').textContent = '完成';
+
+
+
+function showNews2() {
+  document.getElementById('portalPage').style.display = 'none';
+  document.getElementById('resultPage').style.display = 'none';
+  var np = document.getElementById('newsPage');
+  np.style.display = 'block';
+  np.innerHTML = '<div style="max-width:700px;margin:0 auto;">' +
+    '<div style="font-size:22px;font-weight:bold;color:#222;margin-bottom:6px;line-height:1.4;">多地官宣结婚发钱 民政部回应：鼓励婚育</div>' +
+    '<div style="font-size:14px;color:#888;margin-bottom:15px;padding-bottom:12px;border-bottom:1px solid #ddd;">2030年6月15日 槐花晚报 记者：张明轩</div>' +
+    '<div style="font-size:15px;line-height:1.9;color:#333;">' +
+    '<p style="margin-bottom:12px;">本报综合讯 近日，全国多地陆续出台结婚奖励政策，引发社会广泛关注。</p>' +
+    '<p style="margin-bottom:12px;">据民政部相关负责人介绍，目前已有超过二十个城市推出结婚现金奖励、婚检补贴、生育津贴等系列措施，旨在鼓励适龄婚育。其中，部分地区对首次结婚登记的新人给予最高两万元的一次性奖励。</p>' +
+    '<p style="margin-bottom:12px;">民政部表示，下一步将继续完善配套政策，推动构建生育友好型社会。</p>' +
+    '</div>' +
+    '<button onclick="closeNewsArticle()" style="margin-top:15px;padding:6px 18px;font-size:14px;font-weight:bold;background:linear-gradient(to bottom,#f0f0f0,#d0d0d0);border:1px solid #888;border-color:#fff #888 #888 #fff;cursor:pointer;font-family:宋体,sans-serif;">&larr; 返回</button>' +
+    '</div>';
+}
+function showNews3() {
+  document.getElementById('portalPage').style.display = 'none';
+  document.getElementById('resultPage').style.display = 'none';
+  var np = document.getElementById('newsPage');
+  np.style.display = 'block';
+  np.innerHTML = '<div style="max-width:700px;margin:0 auto;">' +
+    '<div style="font-size:22px;font-weight:bold;color:#222;margin-bottom:6px;line-height:1.4;">租车1700元 落地强加4000元保险 消费者维权难</div>' +
+    '<div style="font-size:14px;color:#888;margin-bottom:15px;padding-bottom:12px;border-bottom:1px solid #ddd;">2030年6月10日 槐花晚报 记者：陈晓雯</div>' +
+    '<div style="font-size:15px;line-height:1.9;color:#333;">' +
+    '<p style="margin-bottom:12px;">本报讯 近日，多位消费者投诉反映，通过网络租车平台下单后遭遇隐形收费陷阱。</p>' +
+    '<p style="margin-bottom:12px;">消费者李先生在租车平台下单时显示租金为1700元，然而到达门店取车时，工作人员强制要求购买4000元保险。李先生表示，下单时平台并未明确告知该项费用。</p>' +
+    '<p style="margin-bottom:12px;">记者调查发现，此类情况并非个例。多地消费者协会已收到相关投诉，提醒消费者在租车前仔细阅读合同条款，保留相关证据。</p>' +
+    '</div>' +
+    '<button onclick="closeNewsArticle()" style="margin-top:15px;padding:6px 18px;font-size:14px;font-weight:bold;background:linear-gradient(to bottom,#f0f0f0,#d0d0d0);border:1px solid #888;border-color:#fff #888 #888 #fff;cursor:pointer;font-family:宋体,sans-serif;">&larr; 返回</button>' +
+    '</div>';
+}
+function showNews4() {
+  document.getElementById('portalPage').style.display = 'none';
+  document.getElementById('resultPage').style.display = 'none';
+  var np = document.getElementById('newsPage');
+  np.style.display = 'block';
+  np.innerHTML = '<div style="max-width:700px;margin:0 auto;">' +
+    '<div style="font-size:22px;font-weight:bold;color:#222;margin-bottom:6px;line-height:1.4;">美国公布新关税政策24日生效 国际贸易格局再迎变数</div>' +
+    '<div style="font-size:14px;color:#888;margin-bottom:15px;padding-bottom:12px;border-bottom:1px solid #ddd;">2030年6月20日 槐花晚报 记者：李佳宁</div>' +
+    '<div style="font-size:15px;line-height:1.9;color:#333;">' +
+    '<p style="margin-bottom:12px;">本报综合外媒消息 美国政府于当地时间19日公布新一轮关税政策，宣布将于本月24日正式生效。</p>' +
+    '<p style="margin-bottom:12px;">新关税政策覆盖多个领域，包括电子产品、汽车零部件和农产品等。分析人士认为，此举可能对全球供应链产生深远影响。</p>' +
+    '<p style="margin-bottom:12px;">对此，商务部发言人表示，中方将密切关注事态发展，坚决维护国家利益和国际贸易秩序。</p>' +
+    '</div>' +
+    '<button onclick="closeNewsArticle()" style="margin-top:15px;padding:6px 18px;font-size:14px;font-weight:bold;background:linear-gradient(to bottom,#f0f0f0,#d0d0d0);border:1px solid #888;border-color:#fff #888 #888 #fff;cursor:pointer;font-family:宋体,sans-serif;">&larr; 返回</button>' +
+    '</div>';
+}
+function showNews5() {
+  document.getElementById('portalPage').style.display = 'none';
+  document.getElementById('resultPage').style.display = 'none';
+  var np = document.getElementById('newsPage');
+  np.style.display = 'block';
+  np.innerHTML = '<div style="max-width:700px;margin:0 auto;">' +
+    '<div style="font-size:22px;font-weight:bold;color:#222;margin-bottom:6px;line-height:1.4;">文班亚马时隔四年再度回到少林寺修行</div>' +
+    '<div style="font-size:14px;color:#888;margin-bottom:15px;padding-bottom:12px;border-bottom:1px solid #ddd;">2030年6月8日 槐花晚报 体育专讯</div>' +
+    '<div style="font-size:15px;line-height:1.9;color:#333;">' +
+    '<p style="margin-bottom:12px;">本报综合消息 NBA球星文班亚马近日现身河南嵩山少林寺，展开为期两周的修行训练。</p>' +
+    '<p style="margin-bottom:12px;">据悉，这已是文班亚马第二次到访少林寺。四年前他曾在此短暂学习，对少林文化产生浓厚兴趣。此次归来，他将系统学习少林功夫和禅修课程。</p>' +
+    '<p style="margin-bottom:12px;">文班亚马表示，少林文化对他的职业生涯和个人成长都有很大帮助，希望通过这次修行进一步提升自己。</p>' +
+    '</div>' +
+    '<button onclick="closeNewsArticle()" style="margin-top:15px;padding:6px 18px;font-size:14px;font-weight:bold;background:linear-gradient(to bottom,#f0f0f0,#d0d0d0);border:1px solid #888;border-color:#fff #888 #888 #fff;cursor:pointer;font-family:宋体,sans-serif;">&larr; 返回</button>' +
+    '</div>';
+}
+function showNews6() {
+  document.getElementById('portalPage').style.display = 'none';
+  document.getElementById('resultPage').style.display = 'none';
+  var np = document.getElementById('newsPage');
+  np.style.display = 'block';
+  np.innerHTML = '<div style="max-width:700px;margin:0 auto;">' +
+    '<div style="font-size:22px;font-weight:bold;color:#222;margin-bottom:6px;line-height:1.4;">多地建立救助庇护所 为受困群体提供临时避风港</div>' +
+    '<div style="font-size:14px;color:#888;margin-bottom:15px;padding-bottom:12px;border-bottom:1px solid #ddd;">2030年6月22日 槐花晚报 记者：林志明</div>' +
+    '<div style="font-size:15px;line-height:1.9;color:#333;">' +
+    '<p style="margin-bottom:12px;">本报综合讯 近年来，全国多地陆续建立救助庇护所，为遭受家庭暴力、临时困境等情况的群体提供临时住所和法律援助。</p>' +
+    '<p style="margin-bottom:12px;">据了解，目前全国已建立超过2000家救助庇护所，覆盖大部分县市。庇护所提供免费食宿、心理疏导、法律咨询等一站式服务。</p>' +
+    '<p style="margin-bottom:12px;">业内人士指出，救助庇护所的建立是社会进步的重要标志。下一步将继续完善相关法律法规，为弱势群体提供更有力的保护。</p>' +
+    '</div>' +
+    '<button onclick="closeNewsArticle()" style="margin-top:15px;padding:6px 18px;font-size:14px;font-weight:bold;background:linear-gradient(to bottom,#f0f0f0,#d0d0d0);border:1px solid #888;border-color:#fff #888 #888 #fff;cursor:pointer;font-family:宋体,sans-serif;">&larr; 返回</button>' +
+    '</div>';
+}
+
+function showNewsArticle() {
+  document.getElementById('portalPage').style.display = 'none';
+  document.getElementById('resultPage').style.display = 'none';
+  var np = document.getElementById('newsPage');
+  np.style.display = 'block';
+  np.innerHTML = '<div style="max-width:700px;margin:0 auto;">' +
+    '<div style="font-size:22px;font-weight:bold;color:#222;margin-bottom:6px;line-height:1.4;">西安张一洒入室杀人案今日执行死刑</div>' +
+    '<div style="font-size:14px;color:#888;margin-bottom:15px;padding-bottom:12px;border-bottom:1px solid #ddd;">2030年3月24日 槐花晚报 记者：林志明</div>' +
+    '<div style="font-size:15px;line-height:1.9;color:#333;">' +
+    '<p style="margin-bottom:12px;">本报西安讯 四年前震惊全国的西安入室杀人案今日告终。经最高人民法院核准，罪犯张一洒于今日上午在西安被执行死刑。</p>' +
+    '<p style="margin-bottom:12px;"><b>案件回顾</b>：2025年11月23日，张一洒因求复合遭拒心生怨恨，伪装成快递员进入前女友万琪雯住处，持刀将其杀害。据了解，张一洒此前考研失利，因嫉妒万琪雯找到工作而心生歹念。</p>' +
+    '<p style="margin-bottom:12px;">张一洒到案后对犯罪事实供认不讳。法院审理认为，张一洒犯罪手段残忍，社会影响恶劣，依法以故意杀人罪判处死刑，剥夺政治权利终身。</p>' +
+    '<p style="margin-bottom:12px;">2027年，西安市中级人民法院以故意杀人罪判处张一洒死刑，剥夺政治权利终身。张一洒不服判决提出上诉，陕西省高级人民法院审理后驳回上诉，维持原判。最高人民法院经复核，依法核准死刑。</p>' +
+    '<p style="margin-bottom:12px;">今日上午，西安市中级人民法院依法对张一洒执行死刑。检察机关依法派员临场监督。</p>' +
+    '<p style="margin-bottom:12px;">此案再次引发公众对恋爱关系中暴力行为的关注。近年来，多地已建立救助庇护所，为遭受暴力侵害的群体提供临时救助和法律援助服务。</p>' +
+    '</div>' +
+    '<button onclick="closeNewsArticle()" style="margin-top:15px;padding:6px 18px;font-size:14px;font-weight:bold;background:linear-gradient(to bottom,#f0f0f0,#d0d0d0);border:1px solid #888;border-color:#fff #888 #888 #fff;cursor:pointer;font-family:宋体,sans-serif;">&larr; 返回</button>' +
+    '</div>';
+  document.getElementById('addrInput').value = 'http://www.haohua.com/news/20300324';
+  document.getElementById('statusText').textContent = '完成';
+}
+
+function closeNewsArticle() {
+  document.getElementById('newsPage').style.display = 'none';
+  goHome();
+}
+
+var suggestData = null;
+function checkSuggestion(){
+  var val = document.getElementById('searchInput').value.trim();
+  var sb = document.getElementById('suggestBox');
+  var sc = document.getElementById('suggestContent');
+  var btn = document.getElementById('searchBtn');
+  if(val && keywordDB[val]){
+    suggestData = keywordDB[val];
+    sc.innerHTML = suggestData.title;
+    sb.style.display = 'block';
+    btn.disabled = false;
+    btn.style.opacity = '1';
+  } else {
+    sb.style.display = 'none';
+    suggestData = null;
+    btn.disabled = true;
+    btn.style.opacity = '0.4';
+  }
+}
+function goSuggestion(){
+  if(suggestData && suggestData.url){
+    window.open(suggestData.url, '_blank');
+  }
+}
+
+
+function renderSingerResults(data, page){
+  var html = '';
+  for(var i=0;i<data.length;i++){
+    var d = data[i];
+    if(d.url){
+      html += '<div class="result-item" onclick="window.open(\'' + d.url + '\', \'_blank\')">';
+      html += '<div class="r-title" style="color:#06c;cursor:pointer;">' + d.title + '</div>';
+      html += '<div class="r-url" style="color:#060;">' + d.url + '</div>';
+      html += '<div class="r-desc">' + d.desc + '</div>';
+      html += '</div>';
+    } else {
+      html += '<div class="result-item">';
+      html += '<div class="r-title" style="color:#06c;">' + d.title + '</div>';
+      html += '<div class="r-url" style="color:#888;">http://www.hhlg.edu.cn/culture/' + (2030-i) + '.html</div>';
+      html += '<div class="r-desc" style="color:#444;">' + d.desc + '</div>';
+      html += '</div>';
+    }
+  }
+  html += '<div style="margin-top:20px;display:flex;gap:5px;font-size:14px;align-items:center;">';
+  html += '<span style="padding:3px 10px;border:1px solid #bbb;background:#e8e8e0;color:#888;">上一页</span>';
+  html += '<span style="padding:3px 10px;border:1px solid #06c;background:#06c;color:#fff;font-weight:bold;">' + page + '</span>';
+  for(var p=2;p<=12;p++){
+    if(p===12){
+      html += '<span style="padding:3px 10px;border:1px solid #bbb;cursor:pointer;" onclick="goSingerPage(12)">' + p + '</span>';
+    } else {
+      html += '<span style="padding:3px 10px;border:1px solid #bbb;color:#888;">' + p + '</span>';
+    }
+  }
+  html += '<span style="padding:3px 10px;border:1px solid #bbb;color:#888;">下一页</span>';
+  html += '</div>';
+  return html;
+}
+function goSingerPage(p){
+  if(p===12){
+    var data = [
+      {title:'槐理十佳歌手大赛圆满落幕 · 2008届', url:'singer_2008.html', desc:'2008年5月12日，槐花理工大学第八届校园十佳歌手大赛在礼堂隆重举行。'},
+      {title:'十佳歌手 · 2007届赛事回顾', url:'', desc:'2007年槐花理工大学十佳歌手大赛。'},
+      {title:'十佳歌手 · 2006届', url:'', desc:'2006年槐花理工大学十佳歌手大赛。'},
+    ];
+    var rp = document.getElementById('resultPage');
+    var html = '<div style="margin-bottom:10px;font-size:16px;color:#666;">搜索 "<b>槐理十佳歌手</b>" 共找到 <b>133</b> 条结果</div>';
+    html += renderSingerResults(data, 12);
+    rp.innerHTML = html;
+  }
+}
+
+
+function showSingerPage(page){updBadge("21");
+  var rp = document.getElementById('resultPage');
+  document.getElementById('statusText').textContent = '已返回搜索 (133 条结果)';
+  document.getElementById('winTitle').textContent = '搜索结果 - 槐理十佳歌手 - Internet Explorer';
+  
+  if(page === 1){
+    var data = [
+      {title:'槐理十佳歌手大赛圆满落幕 · 2030届', url:'singer_2030.html', desc:'2030年槐花理工大学第二十九届校园十佳歌手大赛在礼堂举办。'},
+      {title:'槐理之声 · 2029届十佳歌手精彩回顾', url:'singer_2029.html', desc:'2029年5月，槐花理工大学第二十八届十佳歌手大赛圆满结束。'},
+      {title:'校园十佳歌手大赛海选通知 · 2028', url:'', desc:'2028年校园十佳歌手大赛开始报名。'},
+      {title:'槐理之声 · 2027届十佳歌手大赛', url:'', desc:'2027年槐花理工大学十佳歌手大赛。'},
+      {title:'十佳歌手大赛获奖名单公示 · 2026', url:'', desc:'2026年槐理十佳歌手大赛获奖名单公示。'},
+      {title:'校园文化艺术节暨十佳歌手大赛 · 2025', url:'', desc:'2025年槐花理工大学校园文化艺术节暨十佳歌手大赛。'},
+      {title:'槐理之声 · 2024届十佳歌手', url:'', desc:'2024年槐花理工大学十佳歌手大赛。'},
+      {title:'十佳歌手 · 2023届精彩瞬间', url:'', desc:'2023年槐花理工大学十佳歌手大赛回顾。'},
+      {title:'校园歌手大赛 · 2022届', url:'', desc:'2022年槐花理工大学校园十佳歌手大赛。'},
+      {title:'槐理之声 · 2021届十佳歌手', url:'', desc:'2021年槐花理工大学十佳歌手大赛。'}
+    ];
+  } else {
+    var data = [
+      {title:'槐理十佳歌手大赛圆满落幕 · 2008届', url:'singer_2008.html', desc:'2008年5月12日，槐花理工大学第八届校园十佳歌手大赛在礼堂隆重举行。'},
+      {title:'十佳歌手 · 2007届赛事回顾', url:'', desc:'2007年槐花理工大学十佳歌手大赛。'},
+      {title:'十佳歌手 · 2006届', url:'', desc:'2006年槐花理工大学十佳歌手大赛。'},
+      {title:'十佳歌手 · 2005届', url:'', desc:'2005年槐花理工大学十佳歌手大赛。'},
+      {title:'十佳歌手 · 2004届', url:'', desc:'2004年槐花理工大学十佳歌手大赛。'},
+      {title:'槐理之声 · 2003届', url:'', desc:'2003年槐花理工大学十佳歌手大赛。'},
+      {title:'槐理之声 · 2002届', url:'', desc:'2002年槐花理工大学十佳歌手大赛。'},
+      {title:'槐理之声 · 2001届', url:'', desc:'2001年槐花理工大学十佳歌手大赛。'},
+      {title:'槐理之声 · 2000届', url:'', desc:'2000年槐花理工大学十佳歌手大赛。'},
+      {title:'槐理之声 · 1999届', url:'', desc:'1999年槐花理工大学十佳歌手大赛。'}
+    ];
+  }
+  
+  var html = '<div style="margin-bottom:10px;font-size:16px;color:#666;">搜索 "<b>槐理十佳歌手</b>" 共找到 <b>133</b> 条结果</div>';
+  for(var i=0;i<data.length;i++){
+    var d = data[i];
+    if(d.url){
+      html += '<div class="result-item" onclick="window.open(\'' + d.url + '\', \'_blank\')" style="cursor:pointer;">';
+      html += '<div class="r-title" style="color:#06c;cursor:pointer;">' + d.title + '</div>';
+      html += '<div class="r-url" style="color:#060;">' + d.url + '</div>';
+      html += '<div class="r-desc" style="color:#444;">' + d.desc + '</div>';
+      html += '</div>';
+    } else {
+      html += '<div class="result-item">';
+      html += '<div class="r-title" style="color:#06c;">' + d.title + '</div>';
+      html += '<div class="r-url" style="color:#060;">http://www.hhlg.edu.cn/culture/xxx.html</div>';
+      html += '<div class="r-desc" style="color:#444;">' + d.desc + '</div>';
+      html += '</div>';
+    }
+  }
+  
+  // Pagination
+  html += '<div style="margin-top:20px;display:flex;gap:5px;font-size:14px;align-items:center;">';
+  html += '<span style="padding:3px 10px;border:1px solid #bbb;background:#e8e8e0;color:#888;">上一页</span>';
+  html += '<span style="padding:3px 10px;border:1px solid #bbb;cursor:pointer;color:#06c;" onclick="showSingerPage(1)">1</span>';
+  html += '<span style="padding:3px 10px;border:1px solid #06c;background:#06c;color:#fff;font-weight:bold;">' + page + '</span>';
+  html += '<span style="padding:3px 10px;border:1px solid #bbb;color:#888;">3</span>';
+  html += '<span style="padding:3px 10px;border:1px solid #bbb;color:#888;">...</span>';
+  html += '<span style="padding:3px 10px;border:1px solid #bbb;cursor:pointer;color:#06c;" onclick="showSingerPage(12)">12</span>';
+  html += '<span style="padding:3px 10px;border:1px solid #bbb;color:#888;">13</span>';
+  html += '<span style="padding:3px 10px;border:1px solid #bbb;color:#888;">14</span>';
+  html += '<span style="padding:3px 10px;border:1px solid #bbb;color:#888;">下一页</span>';
+  html += '</div>';
+  rp.innerHTML = html;
+}
+function updBadge(n){var e=document.getElementById("ecBadge");if(e)e.querySelector(".ec-n").textContent=n;}
+</script>
+
+
+<script>discoverEvidence("3");</script>
+<div class="ec-badge" id="ecBadge"><span class="ec-n">3</span><span class="ec-t">/29</span></div>
+</body>
+
+</html>

@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>QQ音乐</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:100%;height:100%;}
+body{
+  background:url('wallpaper.jpg') center/cover no-repeat;
+  font-family:"宋体","SimSun",sans-serif;
+  font-size:12px;font-weight:900;-webkit-font-smoothing:none;font-smooth:never;
+  user-select:none;
+}
+.win{
+  position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:680px;height:500px;
+  background:#f0ede7;
+  border:2px solid #888;border-color:#fff #666 #666 #fff;
+  box-shadow:2px 2px 12px rgba(0,0,0,0.3);
+  display:flex;flex-direction:column;
+}
+.titlebar{
+  height:30px;
+  background:linear-gradient(90deg,#0a246a,#3a6ea5,#0a246a);
+  display:flex;align-items:center;padding:0 8px;cursor:move;
+}
+.titlebar .tb-text{
+  font-size:14px;color:#fff;font-weight:900;
+  font-family:"宋体",sans-serif;text-shadow:1px 1px 0 #000;
+}
+.titlebar .close{
+  margin-left:auto;width:22px;height:20px;
+  background:linear-gradient(to bottom,#f0a0a0,#c04040);
+  border:1px solid #d06060 #802020 #802020 #d06060;
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;color:#fff;font-weight:900;cursor:pointer;
+}
+.body{flex:1;display:flex;flex-direction:column;padding:6px;gap:6px;overflow:hidden;}
+.now-bar{
+  height:60px;background:linear-gradient(to bottom,#f8f8f0,#e8e5dd);
+  border:1px solid #c0bfb8;display:flex;align-items:center;padding:0 12px;gap:12px;
+}
+.now-bar .nb-cover{
+  width:48px;height:48px;background:linear-gradient(135deg,#b0c8e0,#8090b0);
+  border:1px solid #999;border-radius:3px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:24px;color:#fff;flex-shrink:0;
+}
+.now-bar .nb-info{flex:1;}
+.now-bar .nb-info .nb-name{font-size:15px;font-weight:900;color:#222;}
+.now-bar .nb-info .nb-artist{font-size:12px;font-weight:900;color:#666;}
+.now-bar .nb-progress{width:200px;}
+.now-bar .nb-progress .pr-bar{
+  height:4px;background:#ddd;border-radius:2px;overflow:hidden;margin-bottom:4px;
+}
+.now-bar .nb-progress .pr-bar .pr-fill{
+  height:100%;width:0%;background:linear-gradient(to right,#4a8ad0,#6aaae8);border-radius:2px;
+}
+.now-bar .nb-progress .pr-time{font-size:11px;color:#888;font-weight:900;text-align:right;}
+.now-bar .nb-btns{display:flex;gap:4px;}
+.now-bar .nb-btns .pbtn{
+  width:28px;height:26px;
+  background:linear-gradient(to bottom,#f0f0e8,#d0d0c8);
+  border:2px solid #888;border-color:#fff #666 #666 #fff;
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;color:#444;cursor:pointer;font-weight:900;
+}
+.now-bar .nb-btns .pbtn:active{border-color:#666 #fff #fff #666;}
+.now-bar .nb-btns .pbtn.play{color:#2a6a2a;background:linear-gradient(to bottom,#d0e8d0,#b0d0b0);}
+.mid{flex:1;display:flex;gap:6px;overflow:hidden;}
+.playlist{
+  width:200px;background:#fff;border:1px solid #c0bfb8;
+  display:flex;flex-direction:column;flex-shrink:0;
+}
+.playlist .pl-hd{
+  height:26px;background:linear-gradient(to bottom,#e8e5dd,#ddd9d0);
+  border-bottom:1px solid #c0bfb8;display:flex;align-items:center;padding:0 8px;
+  font-size:13px;font-weight:900;color:#333;
+}
+.playlist .pl-list{flex:1;overflow-y:auto;}
+.playlist .pl-item{
+  padding:5px 8px;font-size:13px;font-weight:900;color:#333;
+  cursor:pointer;border-bottom:1px solid #f0efe8;
+  display:flex;align-items:center;gap:6px;
+}
+.playlist .pl-item:hover{background:#d8e8f8;}
+.playlist .pl-item.active{background:#b4d8f8;}
+.playlist .pl-item .pl-num{color:#999;width:22px;font-weight:900;}
+.playlist .pl-item .pl-name{flex:1;}
+.playlist .pl-item .pl-artist{font-size:11px;color:#888;font-weight:900;}
+.lyrics{
+  flex:1;background:#fff;border:1px solid #c0bfb8;
+  padding:10px;overflow-y:auto;
+}
+.lyrics .l-title{
+  font-size:16px;font-weight:900;color:#222;margin-bottom:8px;padding-bottom:6px;
+  border-bottom:1px solid #e0ddd5;
+}
+.lyrics .l-line{
+  font-size:13px;font-weight:900;color:#555;padding:3px 6px;line-height:1.7;
+  font-family:"宋体","SimSun",sans-serif;
+}
+.lyrics .l-line .l-time{color:#aaa;margin-right:8px;font-weight:900;}
+.lyrics .l-line.active{background:#e0edf8;color:#1a5a8a;border-radius:2px;}
+.lyrics .l-line.active .l-time{color:#4a8ad0;}
+.lyrics .l-note{font-size:11px;color:#aaa;font-weight:900;margin-top:8px;text-align:center;}
+.back-btn{
+  position:fixed;top:8px;right:12px;z-index:9999;
+  padding:3px 12px;font-size:12px;font-weight:900;
+  background:linear-gradient(to bottom,#f0f0e8,#d0d0c8);
+  border:2px solid #888;border-color:#fff #666 #666 #fff;
+  cursor:pointer;font-family:"宋体","SimSun",sans-serif;
+}
+.back-btn:active{border-color:#666 #fff #fff #666;}
+
+.ec-badge{position:fixed;top:10px;right:12px;z-index:100000;background:rgba(45,45,55,0.55);border:1px solid rgba(90,90,100,0.4);border-radius:4px;padding:2px 8px;font-family:"Microsoft YaHei","微软雅黑",sans-serif;font-size:13px;color:#d0c8b8;box-shadow:1px 1px 4px rgba(0,0,0,0.2);letter-spacing:1px;backdrop-filter:blur(2px);pointer-events:none;}
+.ec-badge .ec-n{color:#f0d878;font-weight:bold;font-size:15px;}
+.ec-badge .ec-t{color:#b0a898;}
+</style>
+</head>
+<body>
+<div class="win" id="playerWin">
+  <div class="titlebar" id="playerTitlebar">
+    <span class="tb-text">&#9835; QQ音乐 - 你说爱像云的音乐盒</span>
+    <span class="close" onclick='window.close()'>&#10005;</span>
+  </div>
+  <div class="body">
+    <div class="now-bar">
+      <div class="nb-cover">&#9835;</div>
+      <div class="nb-info">
+        <div class="nb-name" id="nowName">一千年以后</div>
+        <div class="nb-artist" id="nowArtist">林俊杰</div>
+      </div>
+      <div class="nb-progress">
+        <div class="pr-bar"><div class="pr-fill" id="prFill" style="width:0%"></div></div>
+        <div class="pr-time" id="nowTime">00:00 / 04:25</div>
+      </div>
+      <div class="nb-btns">
+        <span class="pbtn" onclick="prevSong()">&#9664;&#9664;</span>
+        <span class="pbtn play" id="playBtn" onclick="togglePlay()">&#9654;</span>
+        <span class="pbtn" onclick="nextSong()">&#9654;&#9654;</span>
+      </div>
+    </div>
+    <div class="mid">
+      <div class="playlist">
+        <div class="pl-hd">&#9835; 播放列表 (29首)</div>
+        <div class="pl-list" id="playlistEl"></div>
+      </div>
+      <div class="lyrics" id="lyricsEl"></div>
+    </div>
+  </div>
+</div>
+<script>
+var songs = [
+{id:0,name:'一直很安静',artist:'阿桑',duration:'04:12',
+   lyrics:[
+    {t:'00:15',txt:'空荡的街景'},{t:'00:18',txt:'想找个人放感情'},{t:'00:22',txt:'做这种决定'},{t:'00:26',txt:'是寂寞与我为邻'},
+    {t:'00:31',txt:'我们的爱情'},{t:'00:35',txt:'像你路过的风景'},{t:'00:39',txt:'一直在进行'},{t:'00:43',txt:'脚步却从来不会为我而停'},
+    {t:'00:50',txt:'给你的爱一直很安静'},{t:'00:55',txt:'来交换你偶尔给的关心'},{t:'00:59',txt:'明明是三个人的电影'},{t:'01:04',txt:'我却始终不能有姓名'},
+    {t:'01:12',txt:'给你的爱一直很安静'},{t:'01:16',txt:'我从一开始就下定决心'},{t:'01:21',txt:'以为自己要的是曾经'},{t:'01:32',txt:'却发现爱一定要有回应'},
+    {t:'02:06',txt:'给你的爱一直很安静'},{t:'02:11',txt:'来交换你偶尔给的关心'},{t:'02:15',txt:'明明是三个人的电影'},{t:'02:20',txt:'我却始终不能有姓名'},
+    {t:'02:28',txt:'给你的爱一直很安静'},{t:'02:33',txt:'除了泪在我的脸上任性'},{t:'02:37',txt:'原来缘分是用来说明'},{t:'02:42',txt:'你突然不爱我这件事情'}
+   ]},
+{id:1,name:'发如雪',artist:'周杰伦',duration:'05:02',
+   lyrics:[
+    {t:'00:22',txt:'狼牙月 伊人憔悴'},{t:'00:26',txt:'我举杯 饮尽了风雪'},{t:'00:30',txt:'是谁打翻前世柜'},{t:'00:34',txt:'惹尘埃是非'},
+    {t:'00:40',txt:'缘字诀 几番轮回'},{t:'00:44',txt:'你锁眉 哭红颜唤不回'},{t:'00:48',txt:'纵然青史已经成灰'},{t:'00:52',txt:'我爱不灭'},
+    {t:'01:00',txt:'繁华如三千东流水'},{t:'01:04',txt:'我只取一瓢爱了解'},{t:'01:09',txt:'只恋你化身的蝶'},{t:'01:16',txt:'你发如雪 凄美了离别'},
+    {t:'01:21',txt:'我焚香感动了谁'},{t:'01:32',txt:'邀明月 让回忆皎洁'},{t:'01:29',txt:'爱在月光下完美'},{t:'01:35',txt:'你发如雪 纷飞了眼泪'},
+    {t:'01:40',txt:'我等待苍老了谁'},{t:'01:44',txt:'红尘醉 微醺的岁月'},{t:'01:48',txt:'我用无悔 刻永世爱你的碑'}
+   ]},
+{id:2,name:'笔记',artist:'周笔畅',duration:'03:48',
+   lyrics:[
+    {t:'00:12',txt:'我看见天空很蓝'},{t:'00:16',txt:'就像你在我身边的温暖'},{t:'00:20',txt:'生命有太多遗憾'},{t:'00:25',txt:'人越成长越觉得孤单'},
+    {t:'00:31',txt:'我很想飞'},{t:'00:34',txt:'多远都不会累'},{t:'00:38',txt:'才明白爱的越深'},{t:'00:42',txt:'心就会越痛'},
+    {t:'00:46',txt:'我只想飞'},{t:'00:50',txt:'在我的天空飞'},{t:'00:53',txt:'我知道你会在我身边'},{t:'01:00',txt:'回忆的画面'},
+    {t:'01:04',txt:'记录的语言'},{t:'01:08',txt:'爱始终是你手中长长的线'},{t:'01:13',txt:'载着我的想念'},{t:'01:17',txt:'飞过了地平线'},
+    {t:'01:21',txt:'你温暖的笑脸还一如从前'},{t:'01:32',txt:'回忆的画面'},{t:'01:31',txt:'记录的语言'},{t:'01:35',txt:'你说要我们学着勇敢一点'},
+    {t:'01:40',txt:'偶尔哭红双眼'},{t:'01:44',txt:'你一定会了解'},{t:'01:48',txt:'眼泪是我心中另一种完美'}
+   ]},
+{id:3,name:'该死的温柔',artist:'马天宇',duration:'04:20',
+   lyrics:[
+    {t:'00:15',txt:'你这该死的温柔'},{t:'00:19',txt:'让我心在痛泪在流'},{t:'00:23',txt:'就在和你说分手以后'},{t:'00:27',txt:'想忘记已不能够'},
+    {t:'00:32',txt:'你这该死的温柔'},{t:'00:36',txt:'让我止不住颤抖'},{t:'00:40',txt:'哪怕有再多的借口'},{t:'00:44',txt:'我都无法再去牵你的手'},
+    {t:'00:52',txt:'让我们走完这一次完美的结局'},{t:'00:57',txt:'好像当初的约定爱着对方一直到老'},{t:'01:02',txt:'问自己爱情的游戏还有没有规则'},{t:'01:07',txt:'要怎么面对着问题 说没问题'},
+    {t:'01:14',txt:'心里在一万个不确定'},{t:'01:32',txt:'你这该死的温柔'},{t:'01:30',txt:'让我心在痛泪在流'},{t:'01:35',txt:'就在和你说分手以后'},
+    {t:'01:39',txt:'想忘记已不能够'},{t:'01:44',txt:'你这该死的温柔'},{t:'01:48',txt:'让我止不住颤抖'},{t:'01:53',txt:'哪怕有再多的借口'}
+   ]},
+{id:4,name:'星月神话',artist:'金莎',duration:'03:55',
+   lyrics:[
+    {t:'00:10',txt:'我的一生最美好的场景'},{t:'00:15',txt:'就是遇见你'},{t:'00:19',txt:'在人海茫茫中静静凝望着你'},{t:'00:24',txt:'陌生又熟悉'},
+    {t:'00:30',txt:'尽管呼吸着同一天空的气息'},{t:'00:35',txt:'却无法拥抱到你'},{t:'00:40',txt:'如果转换了时空身份和姓名'},{t:'00:45',txt:'但愿认得你眼睛'},
+    {t:'00:51',txt:'千年之后的你会在哪里'},{t:'00:56',txt:'身边有怎样风景'},{t:'01:02',txt:'我们的故事并不算美丽'},{t:'01:07',txt:'却如此难以忘记'},
+    {t:'01:14',txt:'如果当初勇敢的在一起'},{t:'01:19',txt:'会不会不同结局'},{t:'01:24',txt:'你会不会也有千言万语'},{t:'01:29',txt:'埋在沉默的梦里'}
+   ]},
+{id:5,name:'玫瑰花的葬礼',artist:'许嵩',duration:'05:10',
+   lyrics:[
+    {t:'00:28',txt:'离开你一百个星期'},{t:'00:33',txt:'我回到了这里'},{t:'00:37',txt:'寻找我们爱过的证据'},{t:'00:42',txt:'没有人愿意提起'},
+    {t:'00:47',txt:'玫瑰花它的过去'},{t:'00:52',txt:'今天这里的主题'},{t:'00:57',txt:'我把它叫作 回忆'},{t:'01:03',txt:'我知道 爱情这东西'},
+    {t:'01:08',txt:'它没什么道理'},{t:'01:13',txt:'过去我和你在一起'},{t:'01:18',txt:'是我太叛逆'},{t:'01:23',txt:'现在只剩我自己'},
+    {t:'01:32',txt:'偷偷的想你'},{t:'01:34',txt:'玫瑰花的葬礼'},{t:'01:39',txt:'埋葬关于你的回忆'},{t:'01:44',txt:'感觉双手麻痹'},
+    {t:'01:49',txt:'不能自已'},{t:'01:54',txt:'已拉不住你'},{t:'01:59',txt:'真的好美丽'},{t:'02:04',txt:'那天的烟花雨'},
+    {t:'02:09',txt:'我说要娶穿碎花洋裙的你'}
+   ]},
+{id:6,name:'素颜',artist:'许嵩',duration:'03:55',
+   lyrics:[
+    {t:'00:14',txt:'又是一个安静的晚上'},{t:'00:19',txt:'一个人窝在摇椅里乘凉'},{t:'00:24',txt:'我承认这样真的很安详'},{t:'00:29',txt:'和楼下老爷爷一样'},
+    {t:'00:34',txt:'听说你还在搞什么原创'},{t:'00:39',txt:'搞来搞去好像也就这样'},{t:'00:43',txt:'不如花点时间想想'},{t:'00:48',txt:'琢磨一下模样'},
+    {t:'00:53',txt:'今夜化了美美的妆'},{t:'00:58',txt:'我摇晃在舞池中央'},{t:'01:03',txt:'那种体态可以想象'},{t:'01:08',txt:'我做我的改变 又何必纠结'},
+    {t:'01:15',txt:'如果再看你一眼'},{t:'01:19',txt:'是否还会有感觉'},{t:'01:24',txt:'当年素面朝天要多纯洁就有多纯洁'},
+    {t:'01:32',txt:'不画扮熟的眼线'},{t:'01:34',txt:'不用抹匀粉底液'},{t:'01:38',txt:'暴雨天 照逛街'},{t:'01:42',txt:'偷笑别人花了脸'}
+   ]},
+{id:7,name:'娃娃脸',artist:'后弦',duration:'03:30',
+   lyrics:[
+    {t:'00:10',txt:'你发的娃娃脸 降落在身边'},{t:'00:15',txt:'可惜我 还没有发现'},{t:'00:20',txt:'你画的娃娃脸 拿铁上圈点'},{t:'00:25',txt:'倒一杯 爱情的香甜'},
+    {t:'00:31',txt:'标个引号 你的眉梢'},{t:'00:36',txt:'加个括号 你的微笑'},{t:'00:41',txt:'你牵着独角的白马'},{t:'00:46',txt:'茜茜的卷发'},
+    {t:'00:51',txt:'加一身洛丽塔'},{t:'00:56',txt:'叫醒我口袋中的电话'},{t:'01:01',txt:'格林家的公主'},{t:'01:06',txt:'安徒生的女王'},
+    {t:'01:11',txt:'牵手的孩子喝着幻想'},{t:'01:16',txt:'眨睫毛 撇嘴角'},{t:'01:21',txt:'带坏笑的不老'},{t:'01:26',txt:'懒懒的秒针挂着糖浆'},
+    {t:'01:32',txt:'你发的娃娃脸 降落在身边'},{t:'01:37',txt:'可惜我 还没有发现'},{t:'01:42',txt:'你画的娃娃脸 拿铁上圈点'},{t:'01:47',txt:'倒一杯 爱情的香甜'},
+    {t:'01:53',txt:'最近是南风天 潮潮的爱恋'},{t:'01:58',txt:'夸张些 在你的跟前'},{t:'02:03',txt:'那年的娃娃脸'},{t:'02:08',txt:'给我的不变 不变美丽的一切'}
+   ]},
+{id:8,name:'童话',artist:'光良',duration:'04:10',
+   lyrics:[
+    {t:'00:18',txt:'忘了有多久 再没听到你'},{t:'00:23',txt:'对我说你 最爱的故事'},{t:'00:28',txt:'我想了很久 我开始慌了'},{t:'00:33',txt:'是不是我又做错了什么'},
+    {t:'00:39',txt:'你哭着对我说'},{t:'00:44',txt:'童话里都是骗人的'},{t:'00:49',txt:'我不可能是你的王子'},{t:'00:54',txt:'也许你不会懂'},
+    {t:'00:59',txt:'从你说爱我以后'},{t:'01:04',txt:'我的天空 星星都亮了'},{t:'01:10',txt:'我愿变成童话里'},{t:'01:15',txt:'你爱的那个天使'},
+    {t:'01:20',txt:'张开双手 变成翅膀守护你'},{t:'01:32',txt:'你要相信 相信我们会像童话故事里'},{t:'01:32',txt:'幸福和快乐是结局'}
+   ]},
+{id:9,name:'一千年以后',artist:'林俊杰',duration:'04:25',
+   lyrics:[
+    {t:'00:18',txt:'心跳乱了节奏'},{t:'00:22',txt:'梦也不自由'},{t:'00:26',txt:'爱时的绝对承诺 不说'},{t:'00:31',txt:'沉到一千年以后'},
+    {t:'00:38',txt:'放任无奈'},{t:'00:42',txt:'淹没尘埃'},{t:'00:46',txt:'我在废墟之中守着你走来'},{t:'00:51',txt:'我的泪光'},
+    {t:'00:56',txt:'承载不了'},{t:'00:59',txt:'所有一切你要的爱'},{t:'01:08',txt:'因为在一千年以后'},{t:'01:12',txt:'世界早已没有我'},
+    {t:'01:16',txt:'无法深情挽着你的手'},{t:'01:20',txt:'浅吻着你额头'},{t:'01:24',txt:'别等到一千年以后'},{t:'01:32',txt:'所有人都遗忘了我'},
+    {t:'01:32',txt:'那时红色黄昏的沙漠'},{t:'01:37',txt:'能有谁'},{t:'01:40',txt:'解开缠绕千年的寂寞'}
+   ]},
+{id:10,name:'夜曲',artist:'周杰伦',duration:'03:50',
+   lyrics:[
+    {t:'00:22',txt:'一群嗜血的蚂蚁 被腐肉所吸引'},{t:'00:27',txt:'我面无表情 看孤独的风景'},{t:'00:32',txt:'失去你 爱恨开始分明'},{t:'00:37',txt:'失去你 还有什么事好关心'},
+    {t:'00:42',txt:'当鸽子不再象征和平'},{t:'00:47',txt:'我终于被提醒'},{t:'00:52',txt:'广场上喂食的是秃鹰'},{t:'00:57',txt:'我用漂亮的押韵 形容被掠夺一空的爱情'},
+    {t:'01:04',txt:'为你弹奏肖邦的夜曲'},{t:'01:09',txt:'纪念我死去的爱情'},{t:'01:14',txt:'跟夜风一样的声音'},{t:'01:19',txt:'心碎的很好听'},
+    {t:'01:24',txt:'手在键盘敲很轻'},{t:'01:32',txt:'我给的思念很小心'},{t:'01:34',txt:'你埋葬的地方叫幽冥'}
+   ]},
+{id:11,name:'谁动了我的琴弦',artist:'周笔畅',duration:'03:40',
+   lyrics:[
+    {t:'00:10',txt:'谁动了我的琴弦 唤我到窗前'},{t:'00:15',txt:'流水浮舟 你在深夜的那一边'},{t:'00:20',txt:'谁动了我的琴弦 唤我到窗前'},{t:'00:25',txt:'风吹皱的面庞 惊醒梦中 的荷花'},
+    {t:'00:32',txt:'谁动了我的那根弦'},{t:'00:37',txt:'将你遗忘在昨天'},{t:'00:42',txt:'谁捡起 破碎的琴弦'},{t:'00:47',txt:'在月色中 弹了一夜'},
+    {t:'00:53',txt:'谁动了我的琴弦 唤我到窗前'},{t:'00:58',txt:'你不在 的春天 我在思念'},{t:'01:03',txt:'谁为你 梳妆 谁为你 歌唱'},{t:'01:08',txt:'我在月光下 弹琴 到天亮'}
+   ]},
+{id:12,name:'偏爱',artist:'张芸京',duration:'04:20',
+   lyrics:[
+    {t:'00:18',txt:'把昨天都作废 现在你在我眼前'},{t:'00:23',txt:'我想爱 请给我机会'},{t:'00:28',txt:'如果我错了也承担'},{t:'00:33',txt:'认定你就是答案'},
+    {t:'00:38',txt:'我不怕谁嘲笑我极端'},{t:'00:43',txt:'相信自己的直觉'},{t:'00:48',txt:'顽固的人不喊累'},{t:'00:53',txt:'爱上你 我不撤退'},
+    {t:'01:00',txt:'我说过 我不闪躲 我非要这么做'},{t:'01:05',txt:'讲不听 也偏要爱'},{t:'01:10',txt:'更努力爱 让你明白'},{t:'01:15',txt:'没有别条路能走'},
+    {t:'01:20',txt:'你决定要不要陪我'},{t:'01:32',txt:'讲不听 偏爱 靠我感觉爱'},{t:'01:30',txt:'等你的依赖 对你偏爱'}
+   ]},
+{id:13,name:'犯贱',artist:'徐良',duration:'03:30',
+   lyrics:[
+    {t:'00:08',txt:'我结婚的时候 一定要来喔'},{t:'00:14',txt:'因为看见你我会有安全感'},{t:'00:22',txt:'点燃你总抽的香烟'},{t:'00:28',txt:'欺骗我无法满足的嗅觉'},
+    {t:'00:34',txt:'那夜弄懂你嘴唇甘甜'},{t:'00:40',txt:'但却感觉距离还是很远'},{t:'00:46',txt:'点燃你潇洒的拒绝'},{t:'00:52',txt:'我知道只是一厢的情愿'},
+    {t:'00:58',txt:'你已不再允许我犯贱'},{t:'01:04',txt:'没办法让我再次回到你的身边'},{t:'01:12',txt:'我习惯你走在我的身后'},{t:'01:18',txt:'无论什么要求你全都接受'},
+    {t:'01:24',txt:'我如果能够让时光倒流'},{t:'01:30',txt:'高傲不再有 毫无保留 犯贱的祈求'}
+   ]},
+{id:14,name:'客官不可以',artist:'徐良',duration:'03:32',
+   lyrics:[
+    {t:'00:09',txt:'客官 不可以'},{t:'00:14',txt:'你靠得越来越近'},{t:'00:19',txt:'你眼睛在看哪里'},{t:'00:24',txt:'还假装那么冷静'},
+    {t:'00:29',txt:'客官 不可以'},{t:'00:34',txt:'都怪我生的美丽'},{t:'00:39',txt:'气质又那么多情'},{t:'00:44',txt:'小心我真的生气'},
+    {t:'00:50',txt:'Oh waiter 你是不是弄错了'},{t:'00:55',txt:'好像我没有点这个煲'},{t:'01:00',txt:'又矮又胖又找不到腰'},{t:'01:05',txt:'虽然有点可爱味道'},
+    {t:'01:10',txt:'小姐你是谁家的城堡'},{t:'01:15',txt:'请你靠边坐坐好不好'},{t:'01:20',txt:'挡到电视真的看不到'},{t:'01:25',txt:'你说的话莫名其妙'},
+    {t:'01:32',txt:'你现在哪里'},{t:'01:37',txt:'我每天都在想你'},{t:'01:42',txt:'想念你身旁空气'},{t:'01:47',txt:'想念你坏坏眼睛'},
+    {t:'01:52',txt:'你现在哪里'},{t:'01:57',txt:'我每天都在回忆'},{t:'02:02',txt:'回忆搞笑的相遇'},{t:'02:07',txt:'回忆悲伤的结局'},
+    {t:'02:15',txt:'客官 客官 客官 不可以'},{t:'02:20',txt:'客官 客官 客官 你在哪里'},{t:'02:25',txt:'客官 客官 客官 我想你'}
+   ]},
+{id:15,name:'不分手的恋爱',artist:'汪苏泷',duration:'03:48',
+   lyrics:[
+    {t:'00:12',txt:'不知不觉不问 不痛不痒'},{t:'00:17',txt:'多少的时光'},{t:'00:22',txt:'不确定的某个 夜晚小巷'},{t:'00:27',txt:'泪悄悄流淌'},
+    {t:'00:32',txt:'街边天气微凉 淡淡月光'},{t:'00:37',txt:'我沿路哼唱'},{t:'00:42',txt:'找寻我们一直 找不到的'},{t:'00:47',txt:'缘分被捆绑'},
+    {t:'00:54',txt:'感觉不到你为我坚强'},{t:'00:59',txt:'感觉得到你对我说谎'},{t:'01:04',txt:'我安静听着肖邦'},{t:'01:09',txt:'用维也纳忧伤'},
+    {t:'01:16',txt:'你的爱被埋葬 恨被收藏'},{t:'01:21',txt:'痛应该原谅'},{t:'01:26',txt:'我的爱不用讲 恨不用想'},{t:'01:31',txt:'思念在发烫'},
+    {t:'01:36',txt:'看着你的脸庞 背着行囊'},{t:'01:41',txt:'说要去远方'},{t:'01:46',txt:'谁还记得那年我拉着你说'},{t:'01:51',txt:'爱永远一样'}
+   ]},
+{id:16,name:'青花瓷',artist:'周杰伦',duration:'04:00',
+   lyrics:[
+    {t:'00:20',txt:'素胚勾勒出青花笔锋浓转淡'},{t:'00:24',txt:'瓶身描绘的牡丹一如你初妆'},{t:'00:28',txt:'冉冉檀香透过窗心事我了然'},{t:'00:32',txt:'宣纸上走笔至此搁一半'},
+    {t:'00:38',txt:'釉色渲染仕女图韵味被私藏'},{t:'00:42',txt:'而你嫣然的一笑如含苞待放'},{t:'00:47',txt:'你的美一缕飘散'},{t:'00:51',txt:'去到我去不了的地方'},
+    {t:'00:58',txt:'天青色等烟雨 而我在等你'},{t:'01:02',txt:'炊烟袅袅升起 隔江千万里'},{t:'01:07',txt:'在瓶底书汉隶仿前朝的飘逸'},{t:'01:12',txt:'就当我为遇见你伏笔'},
+    {t:'01:18',txt:'天青色等烟雨 而我在等你'},{t:'01:23',txt:'月色被打捞起 晕开了结局'},{t:'01:28',txt:'如传世的青花瓷自顾自美丽'},{t:'01:33',txt:'你眼带笑意'},
+    {t:'01:40',txt:'天青色等烟雨 而我在等你'},{t:'01:45',txt:'炊烟袅袅升起 隔江千万里'},{t:'01:50',txt:'在瓶底书汉隶仿前朝的飘逸'},{t:'01:55',txt:'就当我为遇见你伏笔'},
+    {t:'02:00',txt:'天青色等烟雨 而我在等你'},{t:'02:05',txt:'月色被打捞起 晕开了结局'},{t:'02:10',txt:'如传世的青花瓷自顾自美丽'},{t:'02:15',txt:'你眼带笑意'}
+   ]},
+{id:17,name:'隐形的翅膀',artist:'张韶涵',duration:'03:40',
+   lyrics:[
+    {t:'00:12',txt:'每一次都在徘徊孤单中坚强'},{t:'00:17',txt:'每一次就算很受伤也不闪泪光'},{t:'00:22',txt:'我知道我一直有双隐形的翅膀'},{t:'00:27',txt:'带我飞飞过绝望'},
+    {t:'00:33',txt:'不去想他们拥有美丽的太阳'},{t:'00:38',txt:'我看见每天的夕阳也会有变化'},{t:'00:43',txt:'我知道我一直有双隐形的翅膀'},{t:'00:48',txt:'带我飞给我希望'},
+    {t:'00:55',txt:'我终于看到所有梦想都开花'},{t:'01:00',txt:'追逐的年轻歌声多嘹亮'},{t:'01:05',txt:'我终于翱翔用心凝望不害怕'},{t:'01:10',txt:'哪里会有风就飞多远吧'},
+    {t:'01:18',txt:'隐形的翅膀 让梦恒久比天长'},{t:'01:25',txt:'留一个愿望 让自己想象'},
+    {t:'01:35',txt:'我终于看到所有梦想都开花'},{t:'01:40',txt:'追逐的年轻歌声多嘹亮'},{t:'01:45',txt:'我终于翱翔用心凝望不害怕'},{t:'01:50',txt:'哪里会有风就飞多远吧'},
+    {t:'02:00',txt:'隐形的翅膀 让梦恒久比天长'},{t:'02:07',txt:'留一个愿望 让自己想象'}
+   ]},
+{id:18,name:'我们的爱',artist:'F.I.R.',duration:'04:10',
+   lyrics:[
+    {t:'00:10',txt:'回忆里想起模糊的小时候'},{t:'00:15',txt:'云朵漂浮在蓝蓝的天空'},{t:'00:20',txt:'那时的你说 要和我手牵手'},{t:'00:25',txt:'一起走到时间的尽头'},
+    {t:'00:31',txt:'从此以后我都不敢抬头看'},{t:'00:36',txt:'彷佛我的天空失去了颜色'},{t:'00:41',txt:'从那一天起 我忘记了呼吸'},{t:'00:46',txt:'眼泪啊永远不再不再哭泣'},
+    {t:'00:53',txt:'我们的爱 过了就不再回来'},{t:'00:58',txt:'直到现在 我还默默的等待'},{t:'01:03',txt:'我们的爱 我明白 已变成你的负担'},{t:'01:08',txt:'只是永远 我都放不开'},
+    {t:'01:13',txt:'最后的温暖'},{t:'01:20',txt:'你给的温暖'},
+    {t:'01:25',txt:'我们的爱 过了就不再回来'},{t:'01:30',txt:'直到现在 我还默默的等待'},{t:'01:35',txt:'我们的爱 我明白 已变成你的负担'},{t:'01:40',txt:'只是永远 我都放不开'},
+    {t:'01:45',txt:'最后的温暖'},{t:'01:50',txt:'你给的温暖'},{t:'01:58',txt:'从此以后我都不敢抬头看'},{t:'02:03',txt:'彷佛我的天空失去了颜色'}
+   ]},
+{id:19,name:'勇气',artist:'梁静茹',duration:'03:50',
+   lyrics:[
+    {t:'00:12',txt:'终于做了这个决定'},{t:'00:17',txt:'别人怎么说我不理'},{t:'00:22',txt:'只要你也一样的肯定'},{t:'00:27',txt:'我愿意天涯海角都随你去'},
+    {t:'00:33',txt:'我知道一切不容易'},{t:'00:38',txt:'我的心一直温习说服自己'},{t:'00:43',txt:'最怕你忽然说要放弃'},{t:'00:50',txt:'爱真的需要勇气 来面对流言蜚语'},
+    {t:'00:56',txt:'只要你一个眼神肯定'},{t:'01:01',txt:'我的爱就有意义'},{t:'01:07',txt:'我们都需要勇气 去相信会在一起'},{t:'01:13',txt:'人潮拥挤我能感觉你'},
+    {t:'01:18',txt:'放在我手心里 你的真心'},
+    {t:'01:24',txt:'如果我的坚强任性 会不小心伤害了你'},{t:'01:30',txt:'你能不能温柔提醒'},{t:'01:35',txt:'我虽然心太急 更害怕错过你'},
+    {t:'01:42',txt:'爱真的需要勇气 来面对流言蜚语'},{t:'01:48',txt:'只要你一个眼神肯定'},{t:'01:53',txt:'我的爱就有意义'},{t:'01:59',txt:'我们都需要勇气 去相信会在一起'},
+    {t:'02:05',txt:'人潮拥挤我能感觉你'},{t:'02:10',txt:'放在我手心里 你的真心'}
+   ]},
+{id:20,name:'江南',artist:'林俊杰',duration:'04:30',
+   lyrics:[
+    {t:'00:20',txt:'风到这里就是黏'},{t:'00:24',txt:'黏住过客的思念'},{t:'00:28',txt:'雨到了这里缠成线'},{t:'00:33',txt:'缠着我们留恋人世间'},
+    {t:'00:38',txt:'你在身边就是缘'},{t:'00:43',txt:'缘分写在三生石上面'},{t:'00:50',txt:'爱有万分之一甜'},{t:'00:55',txt:'宁愿我就葬在这一天'},
+    {t:'01:03',txt:'圈圈圆圆圈圈'},{t:'01:08',txt:'天天年年天天的我'},{t:'01:13',txt:'深深看你的脸'},{t:'01:18',txt:'生气的温柔 埋怨的温柔 的脸'},
+    {t:'01:23',txt:'不懂爱恨情愁煎熬的我们'},{t:'01:27',txt:'都以为相爱就像风云的善变'},{t:'01:32',txt:'相信爱一天 抵过永远'},{t:'01:37',txt:'在这一刹那冻结了时间'},
+    {t:'01:42',txt:'不懂怎么表现温柔的我们'},{t:'01:47',txt:'还以为殉情只是古老的传言'},{t:'01:52',txt:'离愁能有多痛 痛有多浓'},{t:'01:57',txt:'当梦被埋在江南烟雨中 心碎了才懂'},
+    {t:'02:02',txt:'圈圈圆圆圈圈 天天年年天天的我'},{t:'02:07',txt:'深深看你的脸 生气的温柔'},{t:'02:12',txt:'埋怨的温柔 的脸'},{t:'02:17',txt:'不懂爱恨情愁煎熬的我们'}
+   ]},
+{id:21,name:'东风破',artist:'周杰伦',duration:'04:20',
+   lyrics:[
+    {t:'00:20',txt:'一盏离愁孤灯伫立在窗口'},{t:'00:25',txt:'我在门后假装你人还没走'},{t:'00:30',txt:'旧地如重游月圆更寂寞'},{t:'00:35',txt:'夜半清醒的烛火不忍苛责我'},
+    {t:'00:42',txt:'一壶漂泊浪迹天涯难入喉'},{t:'00:47',txt:'你走之后酒暖回忆思念瘦'},{t:'00:52',txt:'水向东流时间怎么偷'},{t:'00:57',txt:'花开就一次成熟我却错过'},
+    {t:'01:05',txt:'谁在用琵琶弹奏 一曲东风破'},{t:'01:10',txt:'岁月在墙上剥落 看见小时候'},{t:'01:15',txt:'犹记得那年我们都还很年幼'},{t:'01:20',txt:'而如今琴声幽幽 我的等候你没听过'},
+    {t:'01:26',txt:'谁在用琵琶弹奏 一曲东风破'},{t:'01:31',txt:'枫叶将故事染色 结局我看透'},{t:'01:36',txt:'篱笆外的古道我牵着你走过'},{t:'01:41',txt:'荒烟蔓草的年头 就连分手都很沉默'},
+    {t:'01:48',txt:'一盏离愁孤灯伫立在窗口'},{t:'01:53',txt:'我在门后假装你人还没走'},{t:'01:58',txt:'旧地如重游月圆更寂寞'},{t:'02:03',txt:'夜半清醒的烛火不忍苛责我'}
+   ]},
+{id:22,name:'可惜不是你',artist:'梁静茹',duration:'04:00',
+   lyrics:[
+    {t:'00:15',txt:'这一刻突然觉得好熟悉'},{t:'00:20',txt:'像昨天今天同时在放映'},{t:'00:25',txt:'我这句语气原来好像你'},{t:'00:30',txt:'不就是我们爱过的证据'},
+    {t:'00:36',txt:'差一点骗了自己骗了你'},{t:'00:41',txt:'爱与被爱不一定成正比'},{t:'00:46',txt:'我知道被疼是一种运气'},{t:'00:51',txt:'但我无法完全交出自己'},
+    {t:'00:58',txt:'努力为你改变 却变不了预留的伏笔'},{t:'01:03',txt:'以为在你身边 那也算永远'},{t:'01:08',txt:'仿佛还是昨天 可是昨天已非常遥远'},{t:'01:13',txt:'但闭上我双眼 我还看得见'},
+    {t:'01:18',txt:'可惜不是你 陪我到最后'},{t:'01:23',txt:'曾一起走却走失那路口'},{t:'01:28',txt:'感谢那是你 牵过我的手'},{t:'01:33',txt:'还能感受那温柔'},
+    {t:'01:40',txt:'可惜不是你 陪我到最后'},{t:'01:45',txt:'曾一起走却走失那路口'},{t:'01:50',txt:'感谢那是你 牵过我的手'},{t:'01:55',txt:'还能感受那温柔'},
+    {t:'02:00',txt:'感谢那是你 牵过我的手'},{t:'02:05',txt:'还能温暖我胸口'}
+   ]},
+{id:23,name:'最初的梦想',artist:'范玮琪',duration:'04:10',
+   lyrics:[
+    {t:'00:15',txt:'如果骄傲没被现实大海冷冷拍下'},{t:'00:20',txt:'又怎会懂得要多努力才走得到远方'},{t:'00:25',txt:'如果梦想不曾坠落悬崖千钧一发'},{t:'00:30',txt:'又怎会晓得执着的人拥有隐形翅膀'},
+    {t:'00:36',txt:'把眼泪装在心上 会开出勇敢的花'},{t:'00:41',txt:'可以在疲惫的时光 闭上眼睛闻到一种芬芳'},{t:'00:46',txt:'就像好好睡了一夜直到天亮'},{t:'00:51',txt:'又能边走着边哼着歌 用轻快的步伐'},
+    {t:'00:59',txt:'沮丧时总会明显感到孤独的重量'},{t:'01:04',txt:'多渴望懂得的人给些温暖借个肩膀'},{t:'01:09',txt:'很高兴一路上我们的默契那么长'},{t:'01:14',txt:'穿过风又绕个弯心还连着像往常一样'},
+    {t:'01:20',txt:'最初的梦想 紧握在手上'},{t:'01:25',txt:'最想要去的地方 怎么能在半路就返航'},{t:'01:32',txt:'最初的梦想 绝对会到达'},
+    {t:'01:38',txt:'实现了真的渴望 才能够算到过了天堂'},{t:'01:45',txt:'最初的梦想 紧握在手上'},{t:'01:50',txt:'最想要去的地方 怎么能在半路就返航'},{t:'01:55',txt:'最初的梦想 绝对会到达'},
+    {t:'02:00',txt:'实现了真的渴望 才能够算到过了天堂'}
+   ]},
+{id:24,name:'孤单北半球',artist:'欧得洋',duration:'03:50',
+   lyrics:[
+    {t:'00:15',txt:'用你的早安陪我吃晚餐'},{t:'00:20',txt:'记得把想念存进扑满'},{t:'00:25',txt:'我望着满天星在闪'},{t:'00:30',txt:'听牛郎对织女说要勇敢'},
+    {t:'00:36',txt:'别怕我们在地球的两端'},{t:'00:41',txt:'看我的问候骑着魔毯'},{t:'00:46',txt:'飞用光速飞到你面前'},{t:'00:51',txt:'要你能看到十字星有北极星作伴'},
+    {t:'00:57',txt:'少了你的手臂当枕头 我还不习惯'},{t:'01:03',txt:'你的望远镜望不到我北半球的孤单'},{t:'01:08',txt:'太平洋的潮水跟着地球来回旋转'},{t:'01:13',txt:'我会耐心地等 等你有一天靠岸'},
+    {t:'01:20',txt:'用你的早安陪我吃晚餐'},{t:'01:25',txt:'记得把想念存进扑满'},{t:'01:30',txt:'我望着满天星在闪'},{t:'01:35',txt:'听牛郎对织女说要勇敢'},
+    {t:'01:42',txt:'别怕我们在地球的两端'},{t:'01:47',txt:'看我的问候骑着魔毯'},{t:'01:52',txt:'飞用光速飞到你面前'},{t:'01:57',txt:'要你能看到十字星有北极星作伴'},
+    {t:'02:03',txt:'少了你的手臂当枕头 我还不习惯'},{t:'02:08',txt:'你的望远镜望不到我北半球的孤单'},{t:'02:13',txt:'太平洋的潮水跟着地球来回旋转'},{t:'02:18',txt:'我会耐心地等 等你有一天靠岸'}
+   ]},
+{id:25,name:'遇见',artist:'孙燕姿',duration:'03:35',
+   lyrics:[
+    {t:'00:12',txt:'听见冬天的离开'},{t:'00:17',txt:'我在某年某月醒过来'},{t:'00:22',txt:'我想我等我期待'},{t:'00:27',txt:'未来却不能因此安排'},
+    {t:'00:33',txt:'阴天傍晚车窗外'},{t:'00:38',txt:'未来有一个人在等待'},{t:'00:43',txt:'向左向右向前看'},{t:'00:48',txt:'爱要拐几个弯才来'},
+    {t:'00:55',txt:'我遇见谁会有怎样的对白'},{t:'01:00',txt:'我等的人他在多远的未来'},{t:'01:05',txt:'我听见风来自地铁和人海'},{t:'01:10',txt:'我排着队拿着爱的号码牌'},
+    {t:'01:18',txt:'我往前飞 飞过一片时间海'},{t:'01:23',txt:'我们也曾在爱情里受伤害'},{t:'01:28',txt:'我看着路 梦的入口有点窄'},{t:'01:33',txt:'我遇见你是最美丽的意外'},
+    {t:'01:40',txt:'总有一天 我的谜底会揭开'},{t:'01:48',txt:'我遇见谁会有怎样的对白'},{t:'01:53',txt:'我等的人他在多远的未来'},{t:'01:58',txt:'我听见风来自地铁和人海'},
+    {t:'02:04',txt:'我排着队拿着爱的号码牌'},{t:'02:10',txt:'我往前飞 飞过一片时间海'},{t:'02:15',txt:'我们也曾在爱情里受伤害'},{t:'02:20',txt:'我看着路 梦的入口有点窄'}
+   ]},
+{id:26,name:'天黑黑',artist:'孙燕姿',duration:'03:40',
+   lyrics:[
+    {t:'00:15',txt:'我的小时候 吵闹任性的时候'},{t:'00:20',txt:'我的外婆总会唱歌哄我'},{t:'00:25',txt:'夏天的午后 老老的歌安慰我'},{t:'00:30',txt:'那首歌好像这样唱的'},
+    {t:'00:36',txt:'天黑黑 欲落雨'},{t:'00:41',txt:'天黑黑 黑黑'},{t:'00:48',txt:'离开小时候 有了自己的生活'},{t:'00:53',txt:'新鲜的歌新鲜的念头'},
+    {t:'00:58',txt:'任性和冲动 无法控制的时候'},{t:'01:03',txt:'我忘记 还有这样的歌'},{t:'01:09',txt:'天黑黑 欲落雨'},{t:'01:14',txt:'天黑黑 黑黑'},
+    {t:'01:20',txt:'我爱上让我奋不顾身的一个人'},{t:'01:25',txt:'我以为这就是我所追求的世界'},{t:'01:30',txt:'然而横冲直撞被误解被骗'},{t:'01:35',txt:'是否成人的世界背后总有残缺'},
+    {t:'01:42',txt:'我走在每天必须面对的分岔路'},{t:'01:47',txt:'我怀念过去单纯美好的小幸福'},{t:'01:52',txt:'爱总是让人哭让人觉得不满足'},{t:'01:57',txt:'天空很大却看不清楚好孤独'},
+    {t:'02:03',txt:'天黑黑 欲落雨'},{t:'02:08',txt:'天黑黑 黑黑'},{t:'02:15',txt:'我爱上让我奋不顾身的一个人'},{t:'02:20',txt:'我以为这就是我所追求的世界'}
+   ]},
+{id:27,name:'情非得已',artist:'庾澄庆',duration:'04:00',
+   lyrics:[
+    {t:'00:15',txt:'难以忘记初次见你'},{t:'00:20',txt:'一双迷人的眼睛'},{t:'00:25',txt:'在我脑海里你的身影挥散不去'},{t:'00:31',txt:'握你的双手感觉你的温柔'},
+    {t:'00:36',txt:'真的有点透不过气'},{t:'00:41',txt:'你的天真我想珍惜'},{t:'00:46',txt:'看到你受委屈我会伤心'},{t:'00:53',txt:'只怕我自己会爱上你'},
+    {t:'00:58',txt:'不敢让自己靠得太近'},{t:'01:03',txt:'怕我没什么能够给你'},{t:'01:08',txt:'爱你也需要很大的勇气'},{t:'01:14',txt:'只怕我自己会爱上你'},
+    {t:'01:19',txt:'也许有天会情不自禁'},{t:'01:24',txt:'想念只让自己苦了自己'},{t:'01:29',txt:'爱上你是我情非得已'},
+    {t:'01:35',txt:'只怕我自己会爱上你'},{t:'01:40',txt:'也许有天会情不自禁'},{t:'01:45',txt:'想念只让自己苦了自己'},{t:'01:50',txt:'爱上你是我情非得已'},
+    {t:'01:57',txt:'难以忘记初次见你'},{t:'02:02',txt:'一双迷人的眼睛'},{t:'02:07',txt:'在我脑海里你的身影挥散不去'},{t:'02:12',txt:'握你的双手感觉你的温柔'}
+   ]},
+{id:28,name:'爱你',artist:'王心凌',duration:'03:30',
+   lyrics:[
+    {t:'00:10',txt:'如果你突然打了个喷嚏'},{t:'00:15',txt:'那一定就是我在想你'},{t:'00:20',txt:'如果半夜被手机吵醒'},{t:'00:25',txt:'啊那是因为我关心'},
+    {t:'00:31',txt:'常常想你说的话是不是别有用心'},{t:'00:36',txt:'明明很想相信却又忍不住怀疑'},{t:'00:41',txt:'在你的心里我是否就是唯一'},{t:'00:46',txt:'爱就是有我常烦着你'},
+    {t:'00:52',txt:'Ho Baby 情话多说一点 想我就多看一眼'},{t:'00:57',txt:'表现多一点点 让我能真的看见'},{t:'01:02',txt:'Oh Bye 少说一点 想陪你不只一天'},{t:'01:07',txt:'多一点 让我心甘情愿爱你'},
+    {t:'01:15',txt:'喜欢在你的臂弯里胡闹'},{t:'01:20',txt:'你的世界是一座城堡'},{t:'01:25',txt:'在大头贴里照出傻傻的我们俩'},{t:'01:30',txt:'躺在你的怀里撒娇'},
+    {t:'01:37',txt:'Ho Baby 情话多说一点 想我就多看一眼'},{t:'01:42',txt:'表现多一点点 让我能真的看见'},{t:'01:47',txt:'Oh Bye 少说一点 想陪你不只一天'},{t:'01:52',txt:'多一点 让我心甘情愿爱你'},
+    {t:'01:58',txt:'Ho Baby 情话多说一点 想我就多看一眼'},{t:'02:03',txt:'表现多一点点 让我能真的看见'},{t:'02:08',txt:'Oh Bye 少说一点 想陪你不只一天'},{t:'02:13',txt:'多一点 让我心甘情愿爱你'}
+   ]}
+];
+
+var cur = 0, playing = false, timer = null, lineIdx = 0;
+
+function renderList(){
+  var el = document.getElementById('playlistEl');
+  el.innerHTML = '';
+  for(var i=0;i<songs.length;i++){
+    var s = songs[i];
+    var d = document.createElement('div');
+    d.className = 'pl-item' + (i===cur?' active':'');
+    d.innerHTML = '<span class="pl-num">'+(i+1)+'.</span><span class="pl-name">'+s.name+'</span><span class="pl-artist">'+s.artist+'</span>';
+    d.onclick = (function(idx){ return function(){ play(idx); }; })(i);
+    el.appendChild(d);
+  }
+}
+function renderLyrics(){
+  var el = document.getElementById('lyricsEl');
+  var s = songs[cur];
+  var html = '<div class="l-title">' + s.name + ' - ' + s.artist + '</div>';
+  for(var i=0;i<s.lyrics.length;i++){
+    html += '<div class="l-line" data-idx="'+i+'"><span class="l-time">['+s.lyrics[i].t+']</span>'+s.lyrics[i].txt+'</div>';
+  }
+  html += '<div class="l-note">共 ' + s.lyrics.length + ' 行歌词</div>';
+  el.innerHTML = html;
+}
+function play(idx){
+  cur = idx;
+  var s = songs[idx];
+  document.getElementById('nowName').textContent = s.name;
+  document.getElementById('nowArtist').textContent = s.artist;
+  document.getElementById('nowTime').textContent = '00:00 / ' + s.duration;
+  document.getElementById('prFill').style.width = '0%';
+  playing = true;
+  document.getElementById('playBtn').textContent = '⏸';
+  renderList();
+  renderLyrics();
+  if(timer) clearInterval(timer);
+  lineIdx = 0;
+  timer = setInterval(function(){
+    var lyr = songs[cur].lyrics;
+    if(lineIdx < lyr.length){
+      var lines = document.querySelectorAll('.l-line');
+      for(var i=0;i<lines.length;i++) lines[i].classList.remove('active');
+      if(lines[lineIdx]) lines[lineIdx].classList.add('active');
+      lineIdx++;
+    } else { clearInterval(timer); }
+  }, 2000);
+}
+function togglePlay(){
+  if(playing){playing=false;clearInterval(timer);document.getElementById('playBtn').textContent='▶';}
+  else{play(cur);}
+}
+function nextSong(){play((cur+1)%songs.length);}
+function prevSong(){play((cur-1+songs.length)%songs.length);}
+renderList();
+play(0);
+(function(){
+  var drag=false,ox,oy,mx,my,win=document.getElementById('playerWin'),bar=document.getElementById('playerTitlebar');
+  bar.onmousedown=function(e){
+    drag=true;ox=e.clientX;oy=e.clientY;
+    mx=parseInt(win.style.left)||(window.innerWidth-680)/2;
+    my=parseInt(win.style.top)||(window.innerHeight-500)/2;
+    document.onmousemove=function(ev){if(!drag)return;win.style.left=(mx+ev.clientX-ox)+'px';win.style.top=(my+ev.clientY-oy)+'px';};
+    document.onmouseup=function(){drag=false;};
+    e.preventDefault();
+  };
+})();
+</script>
+
+<div class="ec-badge" id="ecBadge"><span class="ec-n">5</span><span class="ec-t">/29</span></div>
+</body>
+</html>

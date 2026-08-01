@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>图书馆 · 槐花理工大学</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  font-family:"宋体","SimSun","Microsoft YaHei",sans-serif;
+  background:#f0eee8;color:#333;font-size:16px;font-weight:900;
+  -webkit-font-smoothing:none;font-smooth:never;
+}
+.header{
+  background:linear-gradient(135deg,#b22222,#8b0000);
+  padding:12px 30px;display:flex;align-items:center;gap:12px;
+}
+.header img{height:38px;width:auto;display:block;}
+.header .site-title{color:#fff;font-size:22px;font-weight:900;letter-spacing:4px;}
+.header .site-sub{margin-left:auto;color:rgba(255,255,255,0.7);font-size:14px;font-weight:900;}
+
+/* 搜索区 */
+.search-section{
+  max-width:580px;margin:18px auto;background:#fff;
+  border:1px solid #ddd;border-radius:4px;padding:20px 25px;
+}
+.search-section h3{
+  font-size:18px;color:#b22222;margin-bottom:4px;font-weight:900;
+}
+.search-section .hint{
+  font-size:13px;color:#888;margin-bottom:12px;font-weight:900;
+}
+.search-row{display:flex;gap:8px;align-items:center;margin-bottom:10px;flex-wrap:wrap;}
+.search-row label{font-size:14px;color:#555;font-weight:900;}
+.search-row input{
+  flex:1;min-width:80px;height:30px;border:2px inset #ccc;padding:0 6px;
+  font-size:15px;font-weight:900;font-family:"宋体",sans-serif;
+  -webkit-font-smoothing:none;font-smooth:never;
+}
+.search-row button{
+  height:30px;padding:0 20px;font-size:15px;font-weight:900;
+  background:linear-gradient(to bottom,#b22222,#8b0000);
+  border:none;border-radius:3px;color:#fff;cursor:pointer;
+}
+.search-row button:hover{opacity:0.9;}
+.search-msg{font-size:14px;color:#c00;margin-top:6px;font-weight:900;}
+
+/* 书籍网格 */
+.book-grid{
+  display:none;
+  grid-template-columns:repeat(4,1fr);gap:16px;
+  max-width:750px;margin:0 auto 20px;padding:0 15px;
+}
+.book-grid.show{display:grid;}
+.book-card{
+  background:#fff;border:1px solid #ddd;border-radius:4px;
+  padding:12px 10px 14px;text-align:center;
+}
+.book-cover{
+  width:100%;aspect-ratio:3/4;margin-bottom:6px;
+  border-radius:3px;display:flex;align-items:center;justify-content:center;
+  font-size:15px;font-weight:900;color:#fff;text-align:center;line-height:1.3;
+  padding:5px;
+}
+.book-title{font-size:15px;font-weight:900;color:#333;margin-bottom:2px;}
+.book-author{font-size:12px;color:#888;font-weight:900;}
+.book-status{font-size:11px;font-weight:900;margin-top:2px;}
+.status-returned{color:#090;}
+.status-borrowed{color:#c60;}
+
+.footer{
+  background:#333;color:#aaa;text-align:center;
+  padding:14px 20px;font-size:13px;line-height:1.7;font-weight:900;
+}
+.footer a{color:#aaa;text-decoration:none;font-weight:900;}
+.footer a:hover{color:#fff;}
+.back-link{
+  display:inline-block;margin:5px 25px;padding:4px 12px;
+  font-size:14px;color:#06c;text-decoration:none;border:1px solid #ccc;
+  border-radius:3px;font-weight:900;
+}
+.back-link:hover{background:#f0f0f0;}
+
+.ec-badge{position:fixed;top:10px;right:12px;z-index:100000;background:rgba(45,45,55,0.55);border:1px solid rgba(90,90,100,0.4);border-radius:4px;padding:2px 8px;font-family:"Microsoft YaHei","微软雅黑",sans-serif;font-size:13px;color:#d0c8b8;box-shadow:1px 1px 4px rgba(0,0,0,0.2);letter-spacing:1px;backdrop-filter:blur(2px);pointer-events:none;}
+.ec-badge .ec-n{color:#f0d878;font-weight:bold;font-size:15px;}
+.ec-badge .ec-t{color:#b0a898;}
+</style>
+</head>
+<body>
+<div class="header">
+  <img src="badge_logo_new.jpg">
+  <span class="site-title">图书馆</span>
+  <span class="site-sub">槐花理工大学 · 图书借阅系统</span>
+</div>
+
+<div class="search-section">
+  <h3>&#9733; 借阅记录查询</h3>
+  <div class="hint">请输入借阅人姓名和学号，查询历史借阅记录</div>
+  <div class="search-row">
+    <label>姓名：</label>
+    <input type="text" id="nameInput" placeholder="请输入姓名"
+      onkeydown="if(event.key==='Enter')doSearch()">
+    <label>学号：</label>
+    <input type="text" id="idInput" placeholder="请输入学号"
+      onkeydown="if(event.key==='Enter')doSearch()">
+    <button onclick="doSearch()">查询</button>
+  </div>
+  <div id="searchMsg" class="search-msg"></div>
+</div>
+
+<div class="book-grid" id="bookGrid">
+  <div class="book-card">
+    <div class="book-cover" style="background-image:url('book_01.jpg');background-size:cover;background-position:center;color:transparent;">三体</div>
+    <div class="book-title">三体</div>
+    <div class="book-author">刘慈欣</div>
+    <div class="book-status status-returned">已归还</div>
+  </div>
+  <div class="book-card">
+    <div class="book-cover" style="background-image:url('book_02.jpg');background-size:cover;background-position:center;color:transparent;">一间自己的房间</div>
+    <div class="book-title">一间自己的房间</div>
+    <div class="book-author">弗吉尼亚·伍尔夫</div>
+    <div class="book-status status-returned">已归还</div>
+  </div>
+  <div class="book-card">
+    <div class="book-cover" style="background-image:url('book_03.jpg');background-size:cover;background-position:center;color:transparent;">杀死一只知更鸟</div>
+    <div class="book-title">杀死一只知更鸟</div>
+    <div class="book-author">哈珀·李</div>
+    <div class="book-status status-returned">已归还</div>
+  </div>
+  <div class="book-card">
+    <div class="book-cover" style="background-image:url('book_04.jpg');background-size:cover;background-position:center;color:transparent;">海底两万里</div>
+    <div class="book-title">海底两万里</div>
+    <div class="book-author">儒勒·凡尔纳</div>
+    <div class="book-status status-returned">已归还</div>
+  </div>
+  <div class="book-card">
+    <div class="book-cover" style="background-image:url('book_05.jpg');background-size:cover;background-position:center;color:transparent;">傲慢与偏见</div>
+    <div class="book-title">傲慢与偏见</div>
+    <div class="book-author">简·奥斯汀</div>
+    <div class="book-status status-returned">已归还</div>
+  </div>
+  <div class="book-card">
+    <div class="book-cover" style="background-image:url('book_06.jpg');background-size:cover;background-position:center;color:transparent;">机器人短篇全集</div>
+    <div class="book-title">机器人短篇全集</div>
+    <div class="book-author">艾萨克·阿西莫夫</div>
+    <div class="book-status status-returned">已归还</div>
+  </div>
+  <div class="book-card">
+    <div class="book-cover" style="background-image:url('book_07.jpg');background-size:cover;background-position:center;color:transparent;">第二性</div>
+    <div class="book-title">第二性</div>
+    <div class="book-author">西蒙娜·德·波伏娃</div>
+    <div class="book-status status-returned">已归还</div>
+  </div>
+  <div class="book-card">
+    <div class="book-cover" style="background-image:url('book_08.jpg');background-size:cover;background-position:center;color:transparent;">简爱</div>
+    <div class="book-title">简爱</div>
+    <div class="book-author">夏洛蒂·勃朗特</div>
+    <div class="book-status status-returned">已归还</div>
+  </div>
+  <div class="book-card">
+    <div class="book-cover" style="background-image:url('book_09.jpg');background-size:cover;background-position:center;color:transparent;">小王子</div>
+    <div class="book-title">小王子</div>
+    <div class="book-author">安托万·德·圣-埃克苏佩里</div>
+    <div class="book-status status-returned">已归还</div>
+  </div>
+  <div class="book-card">
+    <div class="book-cover" style="background-image:url('book_10.jpg');background-size:cover;background-position:center;color:transparent;">带上她的眼睛</div>
+    <div class="book-title">带上她的眼睛</div>
+    <div class="book-author">刘慈欣</div>
+    <div class="book-status status-returned">已归还</div>
+  </div>
+  <div class="book-card">
+    <div class="book-cover" style="background-image:url('book_11.jpg');background-size:cover;background-position:center;color:transparent;">献给阿尔吉侬的花束</div>
+    <div class="book-title">献给阿尔吉侬的花束</div>
+    <div class="book-author">丹尼尔·凯斯</div>
+    <div class="book-status status-returned">已归还</div>
+  </div>
+  <div class="book-card">
+    <div class="book-cover" style="background-image:url('book_12.jpg');background-size:cover;background-position:center;color:transparent;">麦田里的守望者</div>
+    <div class="book-title">麦田里的守望者</div>
+    <div class="book-author">J.D.塞林格</div>
+    <div class="book-status status-returned">已归还</div>
+  </div>
+</div>
+<div id="pigBook" style="display:none;max-width:750px;margin:0 auto 20px;padding:0 15px;">
+  <div style="font-size:16px;font-weight:900;color:#b22222;margin-bottom:10px;">&#9733; 查询结果</div>
+  <div style="display:flex;gap:16px;">
+    <div style="width:120px;flex-shrink:0;">
+      <div class="book-cover" style="background-image:url('book_pig.jpg');background-size:cover;background-position:center;aspect-ratio:3/4;border-radius:3px;color:transparent;">小猪哲学</div>
+    </div>
+    <div style="flex:1;">
+      <div style="font-size:17px;font-weight:900;color:#333;">小猪哲学</div>
+      <div style="font-size:13px;color:#888;font-weight:900;margin-top:2px;">作者：佚名</div>
+      <div style="font-size:12px;color:#aaa;font-weight:900;margin-top:4px;">借阅：2006-03-15 ｜ 归还：2006-04-08</div>
+      <div style="font-size:12px;font-weight:900;color:#090;margin-top:2px;">已归还</div>
+      <div style="font-size:13px;color:#666;font-weight:900;margin-top:8px;line-height:1.5;">这是一本关于小猪哲学的神秘小书，书页边缘写满了批注。</div>
+    </div>
+  </div>
+</div>
+
+<div style="padding:0 25px;">
+  <a href="hhlg.html" class="back-link">&larr; 返回官网</a>
+</div>
+
+<div class="footer">
+  槐花理工大学 · 图书馆 &copy; 2030<br>
+  <a href="hhlg.html">返回槐花理工大学官网</a>
+</div>
+
+<script>
+function doSearch(){
+  var name = document.getElementById('nameInput').value.trim();
+  var sid = document.getElementById('idInput').value.trim();
+  var msg = document.getElementById('searchMsg');
+  var grid = document.getElementById('bookGrid');
+  
+  if(name === '宋远' && sid === '8102240688'){updBadge('16');
+    grid.classList.add('show');
+    document.getElementById('pigBook').style.display = 'none';
+    msg.innerHTML = '&#10003; 查询成功，共找到 12 条借阅记录';
+    msg.style.color = '#090';
+    grid.scrollIntoView({behavior:'smooth'});
+  } else if(name === '梅青云' && sid === '8102240666'){
+    grid.classList.remove('show');
+    document.getElementById('pigBook').style.display = 'block';
+    msg.innerHTML = '&#10003; 查询成功，找到 1 条借阅记录';
+    msg.style.color = '#090';
+  } else {
+    grid.classList.remove('show');
+    document.getElementById('pigBook').style.display = 'none';
+    msg.innerHTML = '&#10007; 未找到匹配的借阅记录，请确认姓名和学号。';
+    msg.style.color = '#c00';
+  }
+}
+function updBadge(n){var e=document.getElementById("ecBadge");if(e)e.querySelector(".ec-n").textContent=n;}
+</script>
+<div class="ec-badge" id="ecBadge"><span class="ec-n">11</span><span class="ec-t">/29</span></div>
+</body>
+</html>

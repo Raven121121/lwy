@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>学生天地 · 槐花理工大学</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  font-family:"宋体","SimSun","Microsoft YaHei",sans-serif;
+  background:#f0eee8;color:#333;font-size:16px;font-weight:bold;
+  -webkit-font-smoothing:none;font-smooth:never;
+}
+/* 顶部 */
+.header{
+  background:linear-gradient(135deg,#b22222,#8b0000);
+  padding:12px 30px;display:flex;align-items:center;gap:12px;
+}
+.header img{height:40px;width:auto;display:block;}
+.header .site-title{color:#fff;font-size:22px;font-weight:900;letter-spacing:4px;}
+.header .site-sub{margin-left:auto;color:rgba(255,255,255,0.7);font-size:14px;font-weight:900;}
+
+/* 服务卡片 */
+.service-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:14px;
+  padding:20px 25px;max-width:860px;margin:0 auto;
+}
+.service-card{
+  background:#fff;border:1px solid #ddd;border-radius:4px;
+  padding:18px 10px;text-align:center;cursor:default;
+  transition:box-shadow 0.2s;font-size:15px;color:#555;
+}
+.service-card:hover{box-shadow:0 2px 6px rgba(0,0,0,0.08);}
+.service-card .sc-icon{font-size:28px;margin-bottom:6px;color:#b22222;}
+.service-card .sc-name{font-size:15px;font-weight:900;color:#444;}
+.service-card .sc-sub{font-size:12px;color:#aaa;margin-top:3px;font-weight:900;}
+
+/* 搜索区 */
+.search-section{
+  max-width:600px;margin:10px auto 20px;
+  background:#fff;border:1px solid #ddd;border-radius:4px;padding:20px 25px;
+}
+.search-section h3{
+  font-size:18px;color:#b22222;margin-bottom:4px;font-weight:900;
+}
+.search-section .hint{
+  font-size:13px;color:#888;margin-bottom:14px;font-weight:bold;
+}
+.search-row{
+  display:flex;gap:10px;align-items:center;margin-bottom:12px;flex-wrap:wrap;
+}
+.search-row label{font-size:14px;color:#555;white-space:nowrap;}
+.search-row input{
+  flex:1;min-width:80px;height:30px;border:2px inset #ccc;padding:0 6px;
+  font-size:15px;font-weight:900;font-family:"宋体",sans-serif;
+  -webkit-font-smoothing:none;font-smooth:never;
+}
+.search-row button{
+  height:30px;padding:0 20px;font-size:15px;font-weight:bold;
+  background:linear-gradient(to bottom,#b22222,#8b0000);
+  border:none;border-radius:3px;color:#fff;cursor:pointer;
+}
+.search-row button:hover{opacity:0.9;}
+.search-result-text{
+  font-size:14px;color:#c00;margin-top:6px;font-weight:bold;
+}
+
+/* 底部 */
+.footer{
+  background:#333;color:#aaa;text-align:center;
+  padding:14px 20px;font-size:13px;line-height:1.7;
+  font-weight:bold;margin-top:15px;
+}
+.footer a{color:#aaa;text-decoration:none;}
+.footer a:hover{color:#fff;}
+.back-link{
+  display:inline-block;margin:5px 25px;padding:4px 12px;
+  font-size:14px;color:#06c;text-decoration:none;border:1px solid #ccc;
+  border-radius:3px;font-weight:bold;
+}
+.back-link:hover{background:#f0f0f0;}
+
+.ec-badge{position:fixed;top:10px;right:12px;z-index:100000;background:rgba(45,45,55,0.55);border:1px solid rgba(90,90,100,0.4);border-radius:4px;padding:2px 8px;font-family:"Microsoft YaHei","微软雅黑",sans-serif;font-size:13px;color:#d0c8b8;box-shadow:1px 1px 4px rgba(0,0,0,0.2);letter-spacing:1px;backdrop-filter:blur(2px);pointer-events:none;}
+.ec-badge .ec-n{color:#f0d878;font-weight:bold;font-size:15px;}
+.ec-badge .ec-t{color:#b0a898;}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <img src="badge_logo_new.jpg" style="height:40px;">
+  <span class="site-title">学生天地</span>
+  <span class="site-sub">槐花理工大学 · 学生综合服务平台</span>
+</div>
+
+<div class="service-grid">
+  <div class="service-card"><div class="sc-icon">&#9998;</div><div class="sc-name">学生工作网</div><div class="sc-sub">Student Affairs</div></div>
+  <div class="service-card"><div class="sc-icon">&#9889;</div><div class="sc-name">水电费充值</div><div class="sc-sub">Utility Payment</div></div>
+  <div class="service-card"><div class="sc-icon">&#9783;</div><div class="sc-name">课表查询</div><div class="sc-sub">Class Schedule</div></div>
+  <div class="service-card"><div class="sc-icon">&#9733;</div><div class="sc-name">成绩查询</div><div class="sc-sub">Grade Query</div></div>
+  <div class="service-card"><div class="sc-icon">&#9776;</div><div class="sc-name">校园卡服务</div><div class="sc-sub">Campus Card</div></div>
+  <div class="service-card"><div class="sc-icon">&#9742;</div><div class="sc-name">后勤报修</div><div class="sc-sub">Maintenance</div></div>
+  <div class="service-card"><div class="sc-icon">&#9917;</div><div class="sc-name">体育场馆查询</div><div class="sc-sub">Sports Venue</div></div>
+  <div class="service-card"><div class="sc-icon">&#9786;</div><div class="sc-name">心理咨询</div><div class="sc-sub">Counseling</div></div>
+</div>
+
+<div class="search-section">
+  <h3>&#9733; 毕业生论文查询</h3>
+  <div class="hint">请输入毕业年份和学生姓名，查询毕业论文</div>
+  <div class="search-row">
+    <label>毕业年份：</label>
+    <input type="text" id="yearInput" placeholder="请输入年份" maxlength="4"
+      onkeydown="if(event.key==='Enter')doSearch()">
+    <label>学生姓名：</label>
+    <input type="text" id="nameInput" placeholder="请输入姓名"
+      onkeydown="if(event.key==='Enter')doSearch()">
+    <button onclick="doSearch()">查询</button>
+  </div>
+  <div id="searchResult" class="search-result-text"></div>
+</div>
+
+<div style="padding:0 25px;">
+  <a href="hhlg.html" class="back-link">&larr; 返回官网</a>
+</div>
+
+<div class="footer">
+  槐花理工大学 · 学生工作部 &copy; 2030<br>
+  <a href="hhlg.html">返回槐花理工大学官网</a>
+</div>
+
+<script>
+function doSearch(){
+  var year = document.getElementById('yearInput').value.trim();
+  var name = document.getElementById('nameInput').value.trim();
+  var result = document.getElementById('searchResult');
+  
+  if(year === '2009' && name === '梅青云'){
+    result.innerHTML = '&#10003; 查询成功，正在打开论文页面……';
+    result.style.color = '#090';
+    setTimeout(function(){
+      window.open('thesis.html', '_blank');
+    }, 800);
+  } else if(year === '2028' && name === '李文鸢'){
+    result.innerHTML = '&#10003; 查询成功，正在打开论文页面……';
+    result.style.color = '#090';
+    setTimeout(function(){
+      window.open('thesis_lwy.html', '_blank');
+    }, 800);
+  } else {
+    result.innerHTML = '&#10007; 未找到匹配的论文记录，请确认年份和姓名。';
+    result.style.color = '#c00';
+  }
+}
+</script>
+<div class="ec-badge" id="ecBadge"><span class="ec-n">10</span><span class="ec-t">/29</span></div>
+</body>
+</html>

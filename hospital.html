@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>红江市第一人民医院 - 官方网站</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:"Microsoft YaHei","微软雅黑",sans-serif;background:#f4f6f8;color:#333;}
+
+/* Top bar */
+.top-bar{background:#f0f2f5;border-bottom:1px solid #ddd;font-size:12px;color:#666;}
+.top-bar .wrap{max-width:1100px;margin:0 auto;padding:4px 20px;display:flex;justify-content:space-between;}
+.top-bar a{color:#666;text-decoration:none;margin-left:14px;}
+.top-bar a:hover{color:#1a7ab5;}
+
+/* Header */
+.header{background:#fff;border-bottom:2px solid #1a6ba8;}
+.header .wrap{max-width:1100px;margin:0 auto;padding:14px 20px;display:flex;align-items:center;}
+.header .logo-area{display:flex;align-items:center;gap:16px;}
+.header .logo{width:68px;height:68px;background:#1a6ba8;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:22px;font-weight:bold;overflow:hidden;}
+.header .logo-text{font-size:24px;font-weight:bold;color:#1a6ba8;letter-spacing:1px;}
+.header .logo-text small{font-size:12px;font-weight:400;color:#888;display:block;letter-spacing:0;margin-top:2px;}
+.header .level{font-size:12px;color:#c00;border:1px solid #c00;padding:2px 10px;border-radius:2px;margin-left:20px;white-space:nowrap;}
+
+/* Nav */
+.nav-wrap{background:#1a6ba8;}
+.nav-wrap .nav{max-width:1100px;margin:0 auto;display:flex;}
+.nav-wrap .nav a{padding:10px 20px;color:#fff;text-decoration:none;font-size:14px;transition:background 0.15s;}
+.nav-wrap .nav a:hover,.nav-wrap .nav a.active{background:#145a8a;}
+.nav-wrap .nav a:first-child{padding-left:20px;}
+
+/* Sub nav highlight */
+.sub-nav{background:#eef4f8;border-bottom:1px solid #d0d8e0;padding:0;}
+.banner-img{width:100%;height:380px;margin:0 auto;background:#eef2f5;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+.banner-img img{width:100%;height:100%;object-fit:cover;display:block;}
+.sub-nav .wrap{max-width:1100px;margin:0 auto;padding:6px 20px;font-size:13px;color:#888;}
+.sub-nav .wrap span{color:#1a6ba8;}
+
+/* Main layout */
+.main-wrap{max-width:1100px;margin:20px auto;display:flex;gap:24px;padding:0 20px;}
+
+/* Left column */
+.left-col{flex:1;min-width:0;}
+
+/* Right column */
+.right-col{width:280px;flex-shrink:0;}
+
+/* Section */
+.section{margin-bottom:24px;}
+.section .sec-hd{font-size:17px;font-weight:bold;color:#1a6ba8;padding-bottom:8px;border-bottom:2px solid #1a6ba8;margin-bottom:12px;display:flex;align-items:center;gap:6px;}
+.section .sec-hd .more{margin-left:auto;font-size:12px;font-weight:400;color:#999;text-decoration:none;}
+.section .sec-hd .more:hover{color:#1a6ba8;}
+
+/* News list */
+.news-list{}
+.news-item{display:flex;padding:10px 0;border-bottom:1px solid #e8edf2;gap:10px;align-items:flex-start;}
+.news-item:last-child{border:none;}
+.news-item .ni-date{color:#999;font-size:12px;white-space:nowrap;width:75px;flex-shrink:0;padding-top:2px;}
+.news-item .ni-title{font-size:14px;color:#333;text-decoration:none;line-height:1.5;}
+.news-item .ni-title:hover{color:#1a6ba8;}
+.news-item .ni-views{color:#bbb;font-size:11px;white-space:nowrap;margin-left:auto;padding-top:2px;}
+
+/* Service list */
+.service-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.service-item{background:#f8fafc;border:1px solid #e0e6ed;padding:14px;border-radius:4px;cursor:pointer;transition:all 0.15s;}
+.service-item:hover{border-color:#1a6ba8;background:#f0f5fa;}
+.service-item .si-icon{font-size:20px;color:#1a6ba8;margin-bottom:4px;}
+.service-item .si-name{font-size:14px;color:#333;font-weight:bold;}
+.service-item .si-desc{font-size:11px;color:#999;margin-top:2px;}
+
+/* Right sidebar */
+.rt-box{background:#fff;border:1px solid #e0e6ed;margin-bottom:16px;}
+.rt-box .rt-hd{padding:10px 14px;font-size:14px;font-weight:bold;color:#1a6ba8;border-bottom:1px solid #e8edf2;background:#f8fafc;}
+.rt-box .rt-bd{padding:12px 14px;font-size:13px;color:#555;line-height:1.9;}
+.rt-box .rt-bd .rt-tel{font-size:18px;color:#c00;font-weight:bold;}
+.rt-box .rt-bd .rt-label{color:#888;}
+
+/* Footer */
+.footer{background:#2c3948;color:#b0b8c0;padding:30px 20px;text-align:center;font-size:12px;margin-top:20px;border-top:4px solid #1a6ba8;}
+.footer .wrap{max-width:1100px;margin:0 auto;line-height:2;}
+.footer a{color:#b0b8c0;text-decoration:none;margin:0 8px;}
+.footer a:hover{color:#fff;}
+.footer .fw{color:#889098;font-size:11px;}
+
+/* Health record page (hidden initially) */
+.record-page{display:none;}
+.record-page .rp-hd{font-size:18px;color:#1a6ba8;font-weight:bold;padding-bottom:10px;border-bottom:2px solid #1a6ba8;margin-bottom:16px;}
+.record-page .rp-form{background:#f8fafc;border:1px solid #e0e6ed;padding:20px;border-radius:4px;max-width:460px;}
+.record-page .rp-form label{display:block;font-size:13px;color:#555;margin-bottom:4px;margin-top:12px;}
+.record-page .rp-form label:first-of-type{margin-top:0;}
+.record-page .rp-form input{width:100%;padding:8px 12px;border:1px solid #d0d6de;border-radius:3px;font-size:14px;outline:none;}
+.record-page .rp-form input:focus{border-color:#1a6ba8;}
+.record-page .rp-form .rp-btn{background:#1a6ba8;color:#fff;border:none;padding:8px 24px;border-radius:3px;font-size:14px;cursor:pointer;margin-top:14px;}
+.record-page .rp-form .rp-btn:hover{background:#145a8a;}
+.record-page .rp-form .rp-hint{font-size:12px;color:#999;margin-top:4px;}
+.record-page .rp-form .rp-err{color:#c00;font-size:13px;margin-top:6px;display:none;}
+
+/* Medical record result */
+.record-result{display:none;margin-top:20px;background:#fff;border:1px solid #e0e6ed;border-radius:4px;overflow:hidden;}
+.rec-header{background:#1a6ba8;color:#fff;padding:12px 20px;display:flex;justify-content:space-between;align-items:center;font-size:13px;}
+.rec-header .rec-logo{font-size:15px;font-weight:bold;}
+.rec-header .rec-no{opacity:0.85;}
+.rec-body{padding:16px 20px;}
+.rec-title{font-size:15px;font-weight:bold;color:#1a6ba8;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid #e0e6ed;}
+.rec-patient{background:#f8fafc;border:1px solid #e0e6ed;padding:10px 14px;margin-bottom:14px;display:flex;flex-wrap:wrap;gap:6px 20px;font-size:13px;}
+.rec-patient .rp-l{color:#888;}
+.rec-patient .rp-v{color:#333;font-weight:bold;}
+.rec-section{margin-bottom:14px;}
+.rec-section h4{font-size:13px;color:#1a6ba8;margin-bottom:4px;padding:3px 0;border-left:3px solid #1a6ba8;padding-left:8px;}
+.rec-section .rt{font-size:13px;line-height:1.8;color:#444;padding-left:11px;}
+.rec-section .rt p{margin-bottom:2px;}
+.rec-section .rl{padding-left:24px;font-size:13px;line-height:1.8;color:#444;list-style:disc;}
+.rec-section .rl li{margin-bottom:1px;}
+.rec-footer{border-top:1px solid #e0e6ed;padding:10px 20px;font-size:12px;color:#888;display:flex;justify-content:space-between;}
+
+.ec-badge{position:fixed;top:10px;right:12px;z-index:100000;background:rgba(45,45,55,0.55);border:1px solid rgba(90,90,100,0.4);border-radius:4px;padding:2px 8px;font-family:"Microsoft YaHei","微软雅黑",sans-serif;font-size:13px;color:#d0c8b8;box-shadow:1px 1px 4px rgba(0,0,0,0.2);letter-spacing:1px;backdrop-filter:blur(2px);pointer-events:none;}
+.ec-badge .ec-n{color:#f0d878;font-weight:bold;font-size:15px;}
+.ec-badge .ec-t{color:#b0a898;}
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <div class="wrap">
+    <span>您好，欢迎访问红江市第一人民医院官方网站！</span>
+    <span><a href="#">网站地图</a><a href="#">院长信箱</a><a href="#">English</a></span>
+  </div>
+</div>
+
+<div class="header">
+  <div class="wrap">
+    <div class="logo-area">
+      <div class="logo" id="hospitalLogo"><img src="hospital_logo.png" style="width:120%;height:120%;object-fit:cover;margin:-10%;"></div>
+      <div class="logo-text">
+        红江市第一人民医院
+        <small>Hongjiang First People&#39;s Hospital</small>
+      </div>
+    </div>
+    <div class="level">三级甲等综合医院</div>
+  </div>
+</div>
+
+<div class="nav-wrap">
+  <div class="nav">
+    <a href="#" class="active" onclick="showHome()">首页</a>
+    <a href="#">医院概况</a>
+    <a href="#">新闻公告</a>
+    <a href="#">科室介绍</a>
+    <a href="#">专家团队</a>
+    <a href="#">就医指南</a>
+    <a href="#" onclick="showService()">患者服务</a>
+  </div>
+</div>
+
+<div class="banner-img" id="bannerImg">
+  <img src="hospital_banner.jpg" style="width:100%;height:100%;object-fit:cover;">
+</div>
+
+<!-- Home page -->
+<div id="homePage">
+
+<div class="sub-nav">
+  <div class="wrap"><a href="#" onclick="showHome();return false" style="color:#1a6ba8;text-decoration:none;">首页</a> &gt; 医院动态</div>
+</div>
+
+<div class="main-wrap">
+  <div class="left-col">
+
+    <div class="section">
+      <div class="sec-hd">
+        <span>&#9881;</span> 医院新闻公告
+        <a href="#" class="more">更多 &raquo;</a>
+      </div>
+      <div class="news-list">
+        <div class="news-item">
+          <div class="ni-date">2029-12-10</div>
+          <a href="#" class="ni-title">我院开展2029年度医疗质量提升工作专项检查</a>
+          <div class="ni-views">阅读 187 次</div>
+        </div>
+        <div class="news-item">
+          <div class="ni-date">2029-11-28</div>
+          <a href="#" class="ni-title">关于2029年12月门诊服务时间调整的通知</a>
+          <div class="ni-views">阅读 346 次</div>
+        </div>
+        <div class="news-item">
+          <div class="ni-date">2029-11-15</div>
+          <a href="#" class="ni-title">2029年第四季度专家门诊排班公告</a>
+          <div class="ni-views">阅读 532 次</div>
+        </div>
+        <div class="news-item">
+          <div class="ni-date">2029-10-22</div>
+          <a href="#" class="ni-title">关于调整城乡居民医保报销流程的通知</a>
+          <div class="ni-views">阅读 421 次</div>
+        </div>
+        <div class="news-item">
+          <div class="ni-date">2029-10-08</div>
+          <a href="#" class="ni-title">红江市第一人民医院2029年度公开招聘公告</a>
+          <div class="ni-views">阅读 893 次</div>
+        </div>
+        <div class="news-item">
+          <div class="ni-date">2029-09-20</div>
+          <a href="#" class="ni-title">我院荣获2029年度全省医疗机构考评优秀单位</a>
+          <div class="ni-views">阅读 276 次</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section" id="serviceSection">
+      <div class="sec-hd">
+        <span>&#9829;</span> 患者服务
+        <a href="#" class="more" onclick="showService();return false">进入服务 &raquo;</a>
+      </div>
+      <div class="service-grid">
+        <div class="service-item">
+          <div class="si-icon">&#9776;</div>
+          <div class="si-name">预约挂号</div>
+          <div class="si-desc">在线预约门诊号源</div>
+        </div>
+        <div class="service-item">
+          <div class="si-icon">&#9776;</div>
+          <div class="si-name">检验报告查询</div>
+          <div class="si-desc">在线查看检验结果</div>
+        </div>
+        <div class="service-item">
+          <div class="si-icon">&#9776;</div>
+          <div class="si-name">医疗费用查询</div>
+          <div class="si-desc">查询就诊费用明细</div>
+        </div>
+        <div class="service-item" onclick="showService()">
+          <div class="si-icon">&#9776;</div>
+          <div class="si-name">个人健康档案</div>
+          <div class="si-desc">查询电子病历与体检报告</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="right-col">
+    <div class="rt-box">
+      <div class="rt-hd">&#9742; 联系我们</div>
+      <div class="rt-bd">
+        <div><span class="rt-label">咨询电话：</span></div>
+        <div class="rt-tel">0745-7636257</div>
+        <div style="margin-top:8px;"><span class="rt-label">急诊电话：</span></div>
+        <div class="rt-tel" style="font-size:16px;">0745-7636120</div>
+        <div style="margin-top:10px;"><span class="rt-label">医院地址：</span>红江市红江大道200号</div>
+        <div><span class="rt-label">门诊时间：</span>周一至周日 8:00-17:30</div>
+      </div>
+    </div>
+
+    <div class="rt-box">
+      <div class="rt-hd">&#9432; 快速通道</div>
+      <div class="rt-bd" style="padding:8px 14px;">
+        <div style="padding:6px 0;border-bottom:1px solid #eee;font-size:13px;"><a href="#" style="color:#1a6ba8;text-decoration:none;">&#9654; 预约挂号</a></div>
+        <div style="padding:6px 0;border-bottom:1px solid #eee;font-size:13px;"><a href="#" style="color:#1a6ba8;text-decoration:none;">&#9654; 专家门诊查询</a></div>
+        <div style="padding:6px 0;border-bottom:1px solid #eee;font-size:13px;"><a href="#" style="color:#1a6ba8;text-decoration:none;">&#9654; 体检报告查询</a></div>
+        <div style="padding:6px 0;font-size:13px;"><a href="#" onclick="showService();return false" style="color:#1a6ba8;text-decoration:none;">&#9654; 个人健康档案</a></div>
+      </div>
+    </div>
+
+    <div class="rt-box">
+      <div class="rt-hd">&#9888; 温馨提示</div>
+      <div class="rt-bd" style="font-size:12px;line-height:2;">
+        就诊请携带本人身份证及医保卡。<br>
+        门诊大厅设有自助挂号缴费机。<br>
+        本院为无烟医院，请勿吸烟。
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<!-- Service page (hidden) -->
+<div id="servicePage" style="display:none;">
+<div class="sub-nav">
+  <div class="wrap"><a href="#" onclick="showHome();return false" style="color:#1a6ba8;text-decoration:none;">首页</a> &gt; <a href="#" onclick="showHome();return false" style="color:#1a6ba8;text-decoration:none;">患者服务</a> &gt; 个人健康档案</div>
+</div>
+<div class="main-wrap">
+  <div class="left-col">
+    <div class="section">
+      <div class="sec-hd">&#9829; 个人健康档案</div>
+      <div style="font-size:13px;color:#666;margin-bottom:14px;">输入您的账号和密码，即可查询您的电子病历与健康档案信息。</div>
+      <div class="record-page" style="display:block;">
+        <div class="rp-form">
+          <label>账号</label>
+          <input type="text" id="medAccount" placeholder="请输入您的邮箱地址">
+          <label>密码</label>
+          <input type="password" id="medPwd" placeholder="请输入密码" onkeydown="if(event.key==='Enter')queryRecords()">
+          <div class="rp-hint">初始账号：您的邮箱 ｜ 初始密码：您的出生日期八位数</div>
+          <button class="rp-btn" onclick="queryRecords()">查询</button>
+          <div class="rp-err" id="medErr">账号或密码错误，请重新输入</div>
+        </div>
+
+        <div class="record-result" id="recordResult">
+          <div class="rec-header">
+            <div class="rec-logo">红江市第一人民医院</div>
+            <div class="rec-no">病历号：HY-20130228-0087</div>
+          </div>
+          <div class="rec-body">
+            <div class="rec-title">心理医学科 · 门诊病历</div>
+            <div class="rec-patient">
+              <span><span class="rp-l">就诊人：</span><span class="rp-v">梅青云</span></span>
+              <span><span class="rp-l">性别：</span><span class="rp-v">女</span></span>
+              <span><span class="rp-l">年龄：</span><span class="rp-v">25岁</span></span>
+              <span><span class="rp-l">就诊日期：</span><span class="rp-v">2013年02月28日</span></span>
+              <span><span class="rp-l">科别：</span><span class="rp-v">心理医学科</span></span>
+              <span><span class="rp-l">就诊卡号：</span><span class="rp-v">HJSZ20110079</span></span>
+            </div>
+
+            <div class="rec-section">
+              <h4>一、主诉</h4>
+              <div class="rt">
+                <p>患者自述近半年以来持续存在睡眠质量下降、情绪低落等情况。</p>
+                <p>夜间入睡困难，偶有凌晨惊醒，醒后难以再次入睡。</p>
+                <p>近期常出现对过去经历的反复回忆，难以自控，自觉思维反复陷入同一场景。</p>
+              </div>
+            </div>
+
+            <div class="rec-section">
+              <h4>二、现病史</h4>
+              <div class="rt"><p>患者自述近半年出现明显情绪变化，具体表现如下：</p></div>
+              <ul class="rl">
+                <li>长期心情低落，晨重暮轻，自觉"心里堵着一块石头"</li>
+                <li>对日常活动兴趣明显下降</li>
+                <li>夜间睡眠显著减少，平均入睡时间超过2小时，凌晨3-4点易惊醒</li>
+                <li>食欲减退，近半年体重下降约5kg</li>
+                <li>患者偶有自言自语情况</li>
+              </ul>
+              <div class="rt"><p>患者否认幻听、幻视等明显精神病性症状。否认近期自杀意念及自伤行为。</p></div>
+            </div>
+
+            <div class="rec-section">
+              <h4>三、既往史</h4>
+              <div class="rt">
+                <p>既往体健，否认重大躯体疾病史。</p>
+                <p>否认药物及酒精依赖史。否认精神疾病家族史。</p>
+                <p>患者对既往经历叙述较少，提及相关话题时出现明显回避行为，多次出现长时间沉默。</p>
+              </div>
+            </div>
+
+            <div class="rec-section">
+              <h4>四、心理评估</h4>
+              <div class="rt">
+                <p>患者意识清楚，定向力完整。接触合作，但交流过程中多次出现沉默及流泪。</p>
+                <p>情绪评估：汉密尔顿抑郁量表（HAMD-17）评分：22分（提示中度抑郁状态）。</p>
+                <p>焦虑评估：汉密尔顿焦虑量表（HAMA）评分：15分（提示轻中度焦虑状态）。</p>
+                <p>对既往存在明显情绪反应，提及特定人物及相关场景时情绪波动显著。</p>
+                <p>目前社会功能基本保持，可正常生活及工作，但效率较以往明显下降。</p>
+                <p>认知功能未见明显异常。自知力存在，有主动就医意愿。</p>
+              </div>
+            </div>
+
+            <div class="rec-section">
+              <h4>五、初步诊断</h4>
+              <ul class="rl">
+                <li><strong>抑郁状态（中度）</strong>—— 建议进一步评估以明确诊断分型</li>
+                <li><strong>创伤相关心理反应</strong></li>
+                <li><strong>适应性障碍</strong> —— 伴抑郁焦虑情绪</li>
+              </ul>
+            </div>
+
+            <div class="rec-section">
+              <h4>六、处理意见</h4>
+              <ul class="rl">
+                <li>建议规律心理咨询及心理疏导，每周一次</li>
+                <li>建议患者加强社会支持，与亲友保持沟通</li>
+                <li>鼓励患者逐步接纳既往经历，减少过度自责与反刍思维</li>
+                <li>建议适量有氧运动，改善睡眠质量</li>
+                <li>定期复诊，根据情况调整治疗方案</li>
+                <li>如症状持续加重，考虑药物辅助治疗</li>
+              </ul>
+            </div>
+
+            <div class="rec-section">
+              <h4>七、医生备注</h4>
+              <div class="rt">
+                <p>患者提及过去经历时情绪波动明显，多次落泪及长时间沉默。</p>
+                <p>患者多次表示"我不知道该怎么继续"、"有时候觉得一切都没有意义"。</p>
+                <p>但仍然表示"会为了孩子坚持下去"。</p>
+                <br>
+                <p>建议后续重点关注患者创伤经历对其情绪的持续影响。</p>
+                <p>患者对治疗配合度良好，预后尚可，需长期随访。</p>
+              </div>
+            </div>
+          </div>
+          <div class="rec-footer">
+            <div><span>接诊医生：文庞</span><span style="margin-left:20px;">心理医学科</span></div>
+            <div><span>记录日期：2013年02月28日</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="right-col">
+    <div class="rt-box">
+      <div class="rt-hd">&#9432; 服务导航</div>
+      <div class="rt-bd" style="padding:8px 14px;">
+        <div style="padding:6px 0;border-bottom:1px solid #eee;font-size:13px;"><span style="color:#1a6ba8;">&#9654; 个人健康档案</span></div>
+        <div style="padding:6px 0;border-bottom:1px solid #eee;font-size:13px;"><a href="#" style="color:#555;text-decoration:none;">&#9654; 预约挂号</a></div>
+        <div style="padding:6px 0;border-bottom:1px solid #eee;font-size:13px;"><a href="#" style="color:#555;text-decoration:none;">&#9654; 检验报告查询</a></div>
+        <div style="padding:6px 0;border-bottom:1px solid #eee;font-size:13px;"><a href="#" style="color:#555;text-decoration:none;">&#9654; 医疗费用查询</a></div>
+        <div style="padding:6px 0;font-size:13px;"><a href="#" style="color:#555;text-decoration:none;">&#9654; 住院清单查询</a></div>
+      </div>
+    </div>
+    <div class="rt-box">
+      <div class="rt-hd">&#9742; 帮助中心</div>
+      <div class="rt-bd" style="font-size:12px;line-height:2;">
+        如遇查询问题<br>
+        请拨打服务热线：<br>
+        <span style="font-size:16px;color:#c00;font-weight:bold;">0745-7636257</span>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="footer">
+  <div class="wrap">
+    <p>红江市第一人民医院 ｜ Hongjiang First People&#39;s Hospital</p>
+    <p><a href="#">网站首页</a> | <a href="#">医院概况</a> | <a href="#">联系方式</a> | <a href="#">网站声明</a> | <a href="#">院长信箱</a></p>
+    <p>地址：红江市红江大道200号 ｜ 咨询电话：0745-7636257 ｜ 急诊电话：0745-7636120</p>
+    <p class="fw">Copyright &copy; 2026 红江市第一人民医院 All Rights Reserved.</p>
+    <p class="fw">ICP备案号：红ICP备2026XXXXXX号</p>
+  </div>
+</div>
+
+<script>
+function queryRecords(){
+  var acc = document.getElementById('medAccount').value.trim();
+  var pwd = document.getElementById('medPwd').value.trim();
+  var expectedAcc = '1973672118@bmail.com';
+  var expectedPwd = '19870712';
+  var ok = (acc === expectedAcc && pwd === expectedPwd);
+  // Debug login for testing
+  if(acc === '111' && pwd === '111') ok = true;
+  updBadge("8");if(ok){
+    document.getElementById('medErr').style.display = 'none';
+    document.getElementById('recordResult').style.display = 'block';
+  } else {
+    document.getElementById('medErr').style.display = 'block';
+    document.getElementById('recordResult').style.display = 'none';
+  }
+}
+
+function showService(){
+  document.getElementById('homePage').style.display = 'none';
+  document.getElementById('servicePage').style.display = 'block';
+}
+
+function showHome(){
+  document.getElementById('homePage').style.display = 'block';
+  document.getElementById('servicePage').style.display = 'none';
+}
+</script>
+<div class="ec-badge" id="ecBadge"><span class="ec-n">7</span><span class="ec-t">/29</span></div>
+<script>function updBadge(n){var e=document.getElementById("ecBadge");if(e)e.querySelector(".ec-n").textContent=n;}</script>
+</body>
+</html>

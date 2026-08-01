@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>橡果湾商圈美食测评</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  background:linear-gradient(180deg,#fff5f0 0%,#fef8f4 30%,#f5f0eb 100%);
+  font-family:-apple-system,BlinkMacSystemFont,"Microsoft YaHei","PingFang SC",sans-serif;
+  color:#222;line-height:1.6;min-height:100vh;
+}
+.profile{
+  position:relative;
+  background:linear-gradient(135deg,#ff7e5f,#feb47b);
+  padding:32px 16px 24px;text-align:center;color:#fff;
+  overflow:hidden;
+}
+.profile .bg-img{
+  position:absolute;top:0;left:0;width:100%;height:100%;
+  object-fit:cover;z-index:0;display:none;
+}
+.profile .bg-img.show{display:block;}
+.profile .bg-overlay{
+  position:absolute;top:0;left:0;width:100%;height:100%;
+  background:radial-gradient(ellipse at center, rgba(255,126,95,0.15) 50%, rgba(245,230,200,0.5) 100%);
+  z-index:1;
+}
+.profile>*:not(.bg-img):not(.bg-overlay){position:relative;z-index:2;}
+  padding:32px 16px 24px;text-align:center;color:#fff;
+}
+.profile .av{
+  width:80px;height:80px;border-radius:50%;margin:0 auto 10px;
+  background:rgba(255,255,255,0.3);border:3px solid rgba(255,255,255,0.6);
+  overflow:hidden;padding:0;
+}
+.profile .av img{width:100%;height:100%;object-fit:cover;display:block;}
+.profile .name{font-size:20px;font-weight:700;color:#222;}
+.profile .id{font-size:13px;color:#444;margin-bottom:4px;}
+.profile .bio{font-size:14px;color:#444;margin-bottom:12px;}
+.profile .stats{display:flex;justify-content:center;gap:24px;font-size:13px;opacity:1;}
+.profile .stats span{font-weight:700;font-size:16px;}
+
+.tabs{
+  display:flex;background:#fff;border-bottom:1px solid #e8ddd5;
+  position:sticky;top:0;z-index:10;
+}
+.tabs div{
+  flex:1;text-align:center;padding:12px 0;font-size:13px;font-weight:600;
+  color:#888;cursor:default;border-bottom:3px solid transparent;
+}
+.tabs div.active{color:#e06030;border-bottom-color:#e06030;}
+
+.feed{max-width:960px;margin:0 auto;padding:12px;display:flex;flex-wrap:wrap;gap:12px;justify-content:center;}
+.post{
+  background:#fff;border-radius:10px;
+  overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.06);
+  width:200px;flex-shrink:0;
+}
+.post .p-img{
+  width:100%;height:280px;
+  background:linear-gradient(135deg,#f8f4f0,#ede4da);
+  display:flex;align-items:center;justify-content:center;
+  font-size:36px;color:#d0c8c0;overflow:hidden;
+}
+.post .p-img img{width:100%;height:100%;object-fit:cover;}
+.post .p-body{padding:10px 12px 6px;}
+.post .p-title{font-size:14px;font-weight:700;color:#333;margin-bottom:4px;line-height:1.4;}
+.post .p-text{font-size:12px;color:#555;line-height:1.6;}
+.post .p-text .hl{color:#e06030;font-weight:700;}
+.post 
+.post.stagger{margin-top:20px;}
+.post.stagger2{margin-top:10px;}
+.post .p-meta span{display:flex;align-items:center;gap:4px;}
+.back-btn{
+  position:fixed;top:12px;right:16px;z-index:9999;
+  padding:6px 14px;font-size:12px;font-weight:600;
+  background:#fff;border:1px solid #ddd;border-radius:8px;
+  cursor:pointer;color:#333;box-shadow:0 1px 4px rgba(0,0,0,0.1);
+  font-family:"Microsoft YaHei",sans-serif;
+}
+
+.ec-badge{position:fixed;top:10px;right:12px;z-index:100000;background:rgba(45,45,55,0.55);border:1px solid rgba(90,90,100,0.4);border-radius:4px;padding:2px 8px;font-family:"Microsoft YaHei","微软雅黑",sans-serif;font-size:13px;color:#d0c8b8;box-shadow:1px 1px 4px rgba(0,0,0,0.2);letter-spacing:1px;backdrop-filter:blur(2px);pointer-events:none;}
+.ec-badge .ec-n{color:#f0d878;font-weight:bold;font-size:15px;}
+.ec-badge .ec-t{color:#b0a898;}
+</style>
+</head>
+<body>
+
+<div class="profile">
+  <img class="bg-img show" id="profileBg" src="bg_blogger.jpg?v=2" alt="bg">
+  <div class="bg-overlay"></div>
+  <div class="av" id="avatarPlaceholder"><img src="avatar_blogger_v2.png?v=2" style="width:80px;height:80px;object-fit:cover;display:block;"></div>
+  <div class="name">橡果湾商圈美食测评</div>
+  <div class="id">@xiangguowan_food</div>
+  <div class="bio">📸 认真吃饭的槐花土著 · 橡果湾逛吃全攻略</div>
+  <div class="stats">
+    <div><span>168</span> 探店</div>
+    <div><span>3826</span> 粉丝</div>
+    <div><span>1.8w</span> 获赞</div>
+  </div>
+</div>
+
+<div class="tabs">
+  <div class="active">笔记</div>
+  <div>收藏</div>
+  <div>探店合集</div>
+</div>
+
+<div class="feed">
+
+  <div class="post">
+    <div class="p-img"><img src="food_01.png" alt="砂锅"></div>
+    <div class="p-body">
+      <div class="p-title">老槐花砂锅居 · 番茄牛腩砂锅</div>
+      <div class="p-text">橡果湾南街23号，汤底浓郁牛腩炖得软烂🍲 天冷的时候来一锅整个人都暖了🔥🔥 每次去都要排队，但是值得！！</div>
+    </div>
+  </div>
+
+  <div class="post stagger">
+    <div class="p-img"><img src="food_02.png" alt="豌杂面"></div>
+    <div class="p-body">
+      <div class="p-title">巷子深面馆 · 豌杂面</div>
+      <div class="p-text">豌杂面豌豆煮得绵密杂酱肉粒大颗，每根面条都裹满酱汁🍜✨ 一口下去太满足了！！不是本地人根本找不到的宝藏小店🤫💕</div>
+    </div>
+  </div>
+
+  <div class="post">
+    <div class="p-img"><img src="food_03.png" alt="酱板鸭"></div>
+    <div class="p-body">
+      <div class="p-title">红一帆酱板鸭</div>
+      <div class="p-text">橡果湾北街的老店，开了十几年🦆 鸭子每天现卤，酱香味浓肉质紧实🤤 每次路过都要打包一只带回家😋🔥 老顾客搬走了还专门回来买！</div>
+    </div>
+  </div>
+
+  <div class="post stagger2">
+    <div class="p-img"><img src="food_07.png" alt="烧烤"></div>
+    <div class="p-body">
+      <div class="p-title">阿婆烧烤 · 夜市扛把子</div>
+      <div class="p-text">阿婆烤了二十年串了🔥 烤牛肉串和烤茄子是招牌！每次去至少十串起步😋🍢 夜市06号摊位，去晚了就卖完了！！</div>
+    </div>
+  </div>
+
+  <div class="post stagger2">
+    <div class="p-img"><img src="food_06.png" alt="饺子"></div>
+    <div class="p-body">
+      <div class="p-title">东北饺子王 · 手工现包</div>
+      <div class="p-text">皮薄馅大蘸上醋和辣椒油🥟🔥 一口一个根本停不下来！！老板娘是东北人贼拉热情～每次去都像回了家一样🥹💕</div>
+    </div>
+  </div>
+
+  <div class="post">
+    <div class="p-img"><img src="food_05.png" alt="奶茶"></div>
+    <div class="p-body">
+      <div class="p-title">茶语时光 · 网红打卡</div>
+      <div class="p-text">招牌杨枝甘露料挺足🥭 环境不错适合拍照📸 店面装修很ins风～路过橡果湾可以来一杯✨</div>
+    </div>
+  </div>
+
+  <div class="post stagger">
+    <div class="p-img"><img src="food_04.png" alt="煲仔饭"></div>
+    <div class="p-body">
+      <div class="p-title">老街煲仔饭 · 锅巴是灵魂</div>
+      <div class="p-text">腊味煲仔饭米饭粒粒分明🍚 底下的锅巴焦香酥脆，淋上酱油拌匀～每一口都是享受😭🔥 每次去都要等二十分钟现做，但值得！！</div>
+    </div>
+  </div>
+
+  <div class="post stagger2">
+    <div class="p-img"><img src="xiangguowan_ma.png" style="width:100%;height:100%;object-fit:cover;border-radius:8px;"></div>
+    <div class="p-body">
+      <div class="p-title">麻辣烫小店 · 槐花人的深夜食堂</div>
+      <div class="p-text">橡果湾巷子里藏着的小店🌶️ 汤底浓郁麻辣鲜香🌶️🌶️ 丸子蔬菜应有尽有，自己选料自己搭配，每次都能吃出不同花样🔥 夜宵首选！！</div>
+    </div>
+  </div>
+
+</div>
+
+<button class="back-btn" onclick="window.close()">&#9664; 关闭</button>
+<div class="ec-badge" id="ecBadge"><span class="ec-n">17</span><span class="ec-t">/29</span></div>
+
+</body>
+</html>

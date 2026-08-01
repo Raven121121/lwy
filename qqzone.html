@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>QQ空间 - 你说爱像云</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  background:#dff2fb;
+  font-family:"Microsoft YaHei","微软雅黑","宋体",sans-serif;
+  -webkit-font-smoothing:none;font-smooth:never;
+  user-select:none;
+}
+
+/* ===== 密码验证 ===== */
+.pwd-overlay{
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  background:rgba(0,0,0,0.5);display:flex;
+  align-items:center;justify-content:center;z-index:9999;
+}
+.pwd-dialog{
+  width:380px;background:#f0f0e8;
+  border:2px solid #888;border-color:#fff #666 #666 #fff;
+  box-shadow:2px 2px 12px rgba(0,0,0,0.4);
+}
+.pwd-dialog .titlebar{
+  height:28px;
+  background:linear-gradient(90deg,#0a246a,#3a6ea5,#0a246a);
+  display:flex;align-items:center;padding:0 8px;
+}
+.pwd-dialog .titlebar span{
+  font-size:14px;color:#fff;font-weight:bold;
+  font-family:"宋体",sans-serif;text-shadow:1px 1px 0 #000;
+}
+.pwd-dialog .titlebar .close{
+  margin-left:auto;width:22px;height:20px;
+  background:linear-gradient(to bottom,#f0a0a0,#c04040);
+  border:1px solid #d06060 #802020 #802020 #d06060;
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;color:#fff;font-weight:bold;cursor:pointer;
+}
+.pwd-dialog .body{padding:20px;}
+.pwd-dialog .body .label{font-size:14px;color:#333;margin-bottom:10px;font-weight:bold;}
+.pwd-dialog .body .hint{font-size:13px;color:#666;margin-bottom:4px;font-weight:bold;}
+.pwd-dialog .body .subhint{font-size:12px;color:#999;margin-bottom:12px;font-weight:bold;}
+.pwd-dialog .body input{
+  width:100%;height:32px;border:2px solid #999;
+  border-color:#666 #fff #fff #666;padding:0 10px;font-size:14px;
+  font-family:"宋体",sans-serif;outline:none;background:#fff;font-weight:bold;
+}
+.pwd-dialog .body .btn-row{margin-top:12px;display:flex;gap:8px;}
+.pwd-dialog .body .btn-row button{
+  padding:4px 20px;font-size:13px;font-weight:bold;
+  background:linear-gradient(to bottom,#f0f0e8,#d0d0c8);
+  border:2px solid #888;border-color:#fff #666 #666 #fff;
+  cursor:pointer;font-family:"宋体",sans-serif;
+}
+.pwd-dialog .body .btn-row button:active{
+  border-color:#666 #fff #fff #666;
+}
+.pwd-dialog .body .error{
+  color:#c00;font-size:13px;font-weight:bold;margin-top:8px;display:none;
+}
+
+/* ===== QQ空间主布局 ===== */
+.qzone-wrap{display:none;}
+
+/* 顶部导航 */
+.qz-header{
+  width:100%;height:40px;
+  background:linear-gradient(to bottom,#1fc0e0,#17b5d7);
+  border-bottom:1px solid #0e8aaa;
+  min-width:1100px;
+}
+.qz-header .hd-inner{
+  width:1100px;margin:0 auto;height:40px;
+  display:flex;align-items:center;
+}
+.qz-header .hd-logo{
+  font-size:18px;color:#fff;font-weight:bold;margin-right:30px;
+  text-shadow:1px 1px 0 #0a7a9a;cursor:default;
+}
+.qz-header .hd-nav{display:flex;gap:0;flex:1;}
+.qz-header .hd-nav a{
+  color:#fff;font-size:13px;padding:8px 14px;text-decoration:none;
+  font-weight:bold;white-space:nowrap;
+}
+.qz-header .hd-nav a:hover{background:rgba(0,0,0,0.12);}
+.qz-header .hd-right{display:flex;align-items:center;gap:8px;}
+.qz-header .hd-right input{
+  width:140px;height:24px;border:1px solid #0e8aaa;padding:0 6px;
+  font-size:12px;font-family:"Microsoft YaHei",sans-serif;outline:none;
+}
+.qz-header .hd-right .hd-icon{
+  width:24px;height:24px;background:rgba(255,255,255,0.2);
+  border:1px solid rgba(255,255,255,0.3);border-radius:2px;
+  cursor:pointer;display:inline-block;
+}
+.qz-header .hd-right .hd-avatar{
+  width:28px;height:28px;background:#b0d0e0;
+  border:1px solid rgba(255,255,255,0.4);cursor:pointer;
+  display:inline-block;vertical-align:middle;
+}
+
+/* Banner */
+.qz-banner{
+  width:1100px;height:130px;margin:0 auto;
+  background:linear-gradient(to bottom,#d0eaf8,#b0d8f0);
+  display:flex;align-items:center;padding:0 30px;
+  border-bottom:1px solid #b8d8e8;
+}
+.qz-banner .bz-left{flex:1;}
+.qz-banner .bz-left .bz-name{
+  font-size:28px;color:#333;font-weight:bold;margin-bottom:4px;
+}
+.qz-banner .bz-left .bz-sig{
+  font-size:13px;color:#666;font-weight:bold;
+}
+.qz-banner .bz-left .bz-url{
+  font-size:12px;color:#2b8cc4;margin-top:4px;font-weight:bold;
+}
+.qz-banner .bz-right{
+  text-align:right;font-size:13px;color:#555;font-weight:bold;
+}
+
+/* 子导航 */
+.qz-nav{
+  width:1100px;margin:0 auto;height:34px;
+  background:#fff;border-bottom:1px solid #c8dce8;
+  display:flex;align-items:center;padding:0 4px;
+}
+.qz-nav a{
+  padding:6px 16px;font-size:14px;color:#1a85a5;text-decoration:none;
+  font-weight:bold;display:inline-block;
+}
+.qz-nav a:hover{color:#0b6080;}
+.qz-nav a.active{color:#0b6080;background:#eef8fd;}
+
+/* 主体内容 */
+.qz-main{
+  width:1100px;margin:12px auto 0;
+  display:flex;gap:20px;
+}
+
+/* 左侧栏 */
+.qz-left{width:250px;flex-shrink:0;}
+
+.qz-module{
+  background:#fff;border:1px solid #d7eaf4;margin-bottom:10px;
+}
+.qz-module .m-hd{
+  height:28px;background:#eef8fd;border-bottom:1px solid #d7eaf4;
+  display:flex;align-items:center;padding:0 10px;font-size:13px;color:#333;font-weight:bold;
+}
+.qz-module .m-bd{padding:10px;font-size:12px;color:#555;font-weight:bold;line-height:1.6;}
+
+.profile-avatar{
+  text-align:center;padding:10px 0 6px;
+}
+.profile-avatar .pa-img{
+  width:100px;height:100px;margin:0 auto;background:#e0e8f0;
+  border:1px solid #c8d8e4;overflow:hidden;display:flex;align-items:center;justify-content:center;
+}
+.profile-avatar .pa-img img{width:100%;height:100%;object-fit:cover;}
+.profile-avatar .pa-name{font-size:16px;color:#222;font-weight:bold;margin:6px 0 2px;}
+.profile-avatar .pa-level{font-size:11px;color:#999;font-weight:bold;}
+.profile-info{padding:0 10px 10px;font-size:12px;color:#555;font-weight:bold;line-height:2;}
+.profile-info span{color:#2b8cc4;font-weight:bold;}
+
+.friend-item2{font-size:12px;color:#555;padding:2px 0;font-weight:bold;}
+.friend-item2 .fi2-name{color:#2b8cc4;cursor:pointer;font-weight:bold;}
+.friend-item2 .fi2-name:hover{color:#0b75aa;}
+
+.visitor-item{font-size:12px;color:#555;padding:2px 0;font-weight:bold;}
+.visitor-item .v-name{color:#2b8cc4;cursor:pointer;font-weight:bold;}
+
+/* 右侧 - 日志列表 */
+.qz-right{flex:1;min-width:0;}
+
+.qz-entry{
+  background:#fff;border:1px solid #d7eaf4;margin-bottom:10px;
+}
+.qz-entry .e-hd{
+  height:28px;background:#eef8fd;border-bottom:1px solid #d7eaf4;
+  display:flex;align-items:center;padding:0 10px;font-size:13px;color:#333;font-weight:bold;
+}
+
+.blog-list{padding:0;}
+.blog-item{
+  padding:14px 16px;border-bottom:1px solid #e8f0f4;
+}
+.blog-item:last-child{border-bottom:none;}
+.blog-item .bi-title{
+  font-size:18px;color:#2b8cc4;cursor:pointer;font-weight:bold;margin-bottom:6px;
+}
+.blog-item .bi-title:hover{color:#0b75aa;text-decoration:underline;}
+.blog-item .bi-summary{
+  font-size:13px;color:#555;line-height:1.7;font-weight:bold;margin-bottom:8px;
+}
+.blog-item .bi-meta{
+  font-size:12px;color:#999;font-weight:bold;
+}
+.blog-item .bi-meta a{color:#2b8cc4;text-decoration:none;font-weight:bold;}
+.blog-item .bi-meta a:hover{text-decoration:underline;}
+.blog-item .bi-meta .bi-sep{padding:0 6px;color:#ccc;}
+
+/* 相册页 - 隐藏 */
+.album-grid{padding:10px;display:flex;flex-wrap:wrap;gap:10px;}
+.album-item{
+  width:130px;text-align:center;padding:8px;
+}
+.album-item .al-cover{
+  width:120px;height:120px;background:#e0e8f0;border:1px solid #d0dce8;
+  margin:0 auto 4px;display:flex;align-items:center;justify-content:center;
+  font-size:11px;color:#888;font-weight:bold;cursor:pointer;
+}
+.album-item .al-name{font-size:12px;color:#2b8cc4;font-weight:bold;cursor:pointer;}
+.album-item .al-count{font-size:11px;color:#999;font-weight:bold;}
+
+/* 留言板页 - 隐藏 */
+.msg-area{padding:10px;}
+.msg-item{padding:8px 0;border-bottom:1px solid #e8f0f4;font-size:13px;color:#555;font-weight:bold;line-height:1.6;}
+.msg-item .m-author{color:#2b8cc4;font-weight:bold;}
+
+.back-btn{
+  position:fixed;top:8px;right:12px;z-index:9999;
+  padding:3px 12px;font-size:12px;font-weight:bold;
+  background:#f0f0e8;border:1px solid #888;
+  border-color:#fff #666 #666 #fff;
+  cursor:pointer;font-family:"Microsoft YaHei","宋体",sans-serif;
+}
+.back-btn:active{border-color:#666 #fff #fff #666;}
+
+.ec-badge{position:fixed;top:10px;right:12px;z-index:100000;background:rgba(45,45,55,0.55);border:1px solid rgba(90,90,100,0.4);border-radius:4px;padding:2px 8px;font-family:"Microsoft YaHei","微软雅黑",sans-serif;font-size:13px;color:#d0c8b8;box-shadow:1px 1px 4px rgba(0,0,0,0.2);letter-spacing:1px;backdrop-filter:blur(2px);pointer-events:none;}
+.ec-badge .ec-n{color:#f0d878;font-weight:bold;font-size:15px;}
+.ec-badge .ec-t{color:#b0a898;}
+</style>
+</head>
+<body>
+
+<!-- 密码验证 -->
+<div class="pwd-overlay" id="pwdOverlay">
+  <div class="pwd-dialog">
+    <div class="titlebar">
+      <span>QQ空间 - 密码验证</span>
+      <span class="close" onclick="window.close()">&#10005;</span>
+    </div>
+    <div class="body">
+      <div class="label">请输入访问密码</div>
+      <div class="hint">提示：特别的人</div>
+      <div class="subhint">无大写字母</div>
+      <input type="text" id="qzPwd" placeholder="请输入密码"
+        onkeydown="if(event.key==='Enter')checkPwd()"
+        style="font-family:宋体,SimSun,sans-serif;font-weight:bold;">
+      <div class="btn-row">
+        <button onclick="checkPwd()">确定</button>
+        <button onclick="window.close()">取消</button>
+      </div>
+      <div class="error" id="pwdError">密码错误，请重新输入</div>
+    </div>
+  </div>
+</div>
+
+<!-- QQ空间主体 -->
+<div class="qzone-wrap" id="qzoneWrap">
+
+  <!-- 顶部导航 -->
+  <div class="qz-header">
+    <div class="hd-inner">
+      <div class="hd-logo">QQ空间</div>
+      <div class="hd-nav">
+        <a href="#">个人中心</a>
+        <a href="#">我的主页</a>
+        <a href="#">好友</a>
+        <a href="#">游戏</a>
+        <a href="#">装扮</a>
+      </div>
+      <div class="hd-right">
+        <input type="text" placeholder="搜索">
+        <span class="hd-icon"></span>
+        <span class="hd-icon"></span>
+        <span class="hd-avatar"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Banner -->
+  <div class="qz-banner">
+    <div class="bz-left">
+      <div class="bz-name">你说爱像云</div>
+      <div class="bz-sig">懒懒的秒针挂着糖浆(´▽｀)</div>
+      <div class="bz-url">http://mqy.qzone.qq.com</div>
+    </div>
+    <div class="bz-right">
+      2030年12月15日<br>
+      晴 -2℃~5℃
+    </div>
+  </div>
+
+  <!-- 子导航 -->
+  <div class="qz-nav">
+    <a href="#" class="active" onclick="switchTab('blog')">首页</a>
+    <a href="#" onclick="switchTab('blog');return false">日志</a>
+    <a href="#" onclick="switchTab('album');return false">相册</a>
+    <a href="#" onclick="switchTab('msg');return false">留言板</a>
+    <a href="#" onclick="return false">说说</a>
+    <a href="#" onclick="openProfilePwd();return false">个人档</a>
+    <a href="#" onclick="return false">音乐</a>
+    <a href="#" onclick="return false">更多</a>
+  </div>
+
+  <!-- 主体 -->
+  <div class="qz-main">
+    <!-- 左侧栏 -->
+    <div class="qz-left">
+      <div class="qz-module">
+        <div class="profile-avatar">
+          <div class="pa-img">
+            <img src="avatar_mqy.jpg" alt="avatar">
+          </div>
+          <div class="pa-name">你说爱像云</div>
+          <img src="zz_name_badge.jpg" style="width:50%;display:block;margin:6px 0 0;">
+        </div>
+        <div class="profile-info">
+          访问量：<span>3821</span> <img src="zz_p1_badge.png" style="height:16px;vertical-align:middle;margin-left:2px;"><br>
+          日志：<span>13</span>&nbsp;&nbsp;照片：<span>26</span>
+        </div>
+      </div>
+      <div class="qz-module">
+        <div class="m-hd">&#9733; 我的说说</div>
+        <div class="m-bd">
+          要自在漂浮才美丽(´▽｀)
+        </div>
+      </div>
+      <div class="qz-module">
+        <div class="m-hd">&#9733; 好友列表</div>
+        <div class="m-bd">
+          <div class="friend-item2"><span class="fi2-name">阿远</span></div>
+          <div class="friend-item2"><span class="fi2-name">严信</span></div>
+          <div class="friend-item2"><span class="fi2-name">蓝小蓝</span></div>
+          <div class="friend-item2"><span class="fi2-name">不觉晓</span></div>
+          <div class="friend-item2"><span class="fi2-name">林老师</span></div>
+          <div class="friend-item2"><span class="fi2-name">宿舍长</span></div>
+          <div class="friend-item2"><span class="fi2-name">王叔</span></div>
+        </div>
+      </div>
+      <div class="qz-module">
+        <div class="m-hd">&#9733; 最近访客</div>
+        <div class="m-bd">
+          <div class="visitor-item"><span class="v-name">严信</span></div>
+          <div class="visitor-item"><span class="v-name">阿远</span></div>
+          <div class="visitor-item"><span class="v-name">不觉晓</span></div>
+          <div class="visitor-item"><span class="v-name">蓝小蓝</span></div>
+          <div class="visitor-item"><span class="v-name">林老师</span></div>
+          <div class="visitor-item"><span class="v-name">宿舍长</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 右侧 - 日志列表（默认显示） -->
+    <div class="qz-right" style="position:relative;">
+      <div id="blogPage" style="position:absolute;top:0;left:0;right:0;bottom:0;overflow:auto;">
+      <div class="qz-entry">
+        <div class="e-hd">&#9733; 我的日志 (13篇)</div>
+        <div class="blog-list">
+          <div class="blog-item">
+            <div class="bi-title">老爸的三国</div>
+            <div class="bi-summary">老爸从小就喜欢给我讲三国演义，虽然每次我都听得昏昏欲睡，但还是记住了不少～什么三顾茅庐啊、草船借箭啊、赤壁之战啊，都是他一遍遍念叨出来的。 老爸说男孩子要读三国，女孩子更要懂三分天下的道理。行吧行吧，您说得对～</div>
+            <div class="bi-meta">2005-06-01 21:00 &nbsp;|&nbsp; 阅读(58) &nbsp;|&nbsp; <a href="#">评论(2)</a> &nbsp;|&nbsp; <a href="#">转载</a></div>
+          </div>
+          <div class="blog-item">
+            <div class="bi-title">终于考完啦！</div>
+            <div class="bi-summary">终于考完啦！！！！开心！！！~(≧▽≦)~ 终于拥有大把自由时间，可以随便上网、听歌、追剧。愿我们奔赴不同远方，依旧保持联络。有空常来踩，我会回访～\(^o^)/</div>
+            <div class="bi-meta">2005-06-08 17:30 &nbsp;|&nbsp; 阅读(102) &nbsp;|&nbsp; <a href="#">评论(5)</a> &nbsp;|&nbsp; <a href="#">转载</a></div>
+          </div>
+          <div class="blog-item">
+            <div class="bi-title">老妈送的MP3</div>
+            <div class="bi-summary">老妈居然真的要送我MP3啦！！！好开森好开森～～～(≧▽≦)~ 以后可以随时随地听歌了，太幸福了吧！</div>
+            <div class="bi-meta">2005-06-18 14:30 &nbsp;|&nbsp; 阅读(45) &nbsp;|&nbsp; <a href="#">评论(2)</a> &nbsp;|&nbsp; <a href="#">转载</a></div>
+          </div>
+          <div class="blog-item">
+            <div class="bi-title">李逍遥你到底爱谁</div>
+            <div class="bi-summary">有木有人来说说李逍遥你到底爱谁啊～～T_T 不知道大家站逍遥灵儿还是心疼月如... "明明是三个人的电影，我却始终不能有姓名" T_T<br><a href="zz_post_xian1.png" target="_blank"><img src="zz_post_xian1.png" style="width:200px;height:150px;object-fit:cover;margin:4px;border:1px solid #ddd;cursor:pointer;"></a>
+            <a href="zz_post_xian2.jpg" target="_blank"><img src="zz_post_xian2.jpg" style="width:200px;height:150px;object-fit:cover;margin:4px;border:1px solid #ddd;cursor:pointer;"></a></div>
+            <div class="bi-meta">2005-08-12 21:00 &nbsp;|&nbsp; 阅读(86) &nbsp;|&nbsp; <a href="#">评论(7)</a> &nbsp;|&nbsp; <a href="#">转载</a></div>
+          </div>
+          <div class="blog-item">
+            <div class="bi-title">槐理我来啦</div>
+            <div class="bi-summary">槐理报道～我来啦！(≧∇≦)ﾉ 以后我就是8102240666啦～幸运的666(‾◡◝) 新学校新生活，一切都是新鲜的模样。<br><a href="zz_post_school1.JPG" target="_blank"><img src="zz_post_school1.JPG" style="width:200px;height:150px;object-fit:cover;margin:4px;border:1px solid #ddd;cursor:pointer;"></a>
+            <a href="zz_post_school2.jpg" target="_blank"><img src="zz_post_school2.jpg" style="width:200px;height:150px;object-fit:cover;margin:4px;border:1px solid #ddd;cursor:pointer;"></a></div>
+            <div class="bi-meta">2005-09-01 08:30 &nbsp;|&nbsp; 阅读(135) &nbsp;|&nbsp; <a href="#">评论(8)</a> &nbsp;|&nbsp; <a href="#">转载</a></div>
+          </div>
+          <div class="blog-item">
+            <div class="bi-title">新朋友</div>
+            <div class="bi-summary">今天认识了一个新盆友～发现这个同学的学号居然就后面两位数和我不一样，是88！一样的幸运88(‾◡◝)</div>
+            <div class="bi-meta">2005-12-07 19:30 &nbsp;|&nbsp; 阅读(93) &nbsp;|&nbsp; <a href="#">评论(3)</a> &nbsp;|&nbsp; <a href="#">转载</a></div>
+          </div>
+          <div class="blog-item">
+            <div class="bi-title">阿远唱歌好好听</div>
+            <div class="bi-summary">今天才发现阿远唱歌这么好听，有机会一定要把我喜欢的歌都在阿远嗓子里过一遍！♪(^∇^*)</div>
+            <div class="bi-meta">2006-03-24 22:15 &nbsp;|&nbsp; 阅读(67) &nbsp;|&nbsp; <a href="#">评论(4)</a> &nbsp;|&nbsp; <a href="#">转载</a></div>
+          </div>
+          <div class="blog-item">
+            <div class="bi-title">缘分</div>
+            <div class="bi-summary">其实我还没跟阿远说呢，我真是看不下那些难以下咽的书籍，就想好好的看看我的花火(‾◡◝)，也就那天心血来潮想起舍友推荐的那本书，于是认识了阿远，想来也是缘分吧！阿远喜欢泡图书馆看书那就陪着吧！必须宠着呀 ❤</div>
+            <div class="bi-meta">2007-03-14 20:30 &nbsp;|&nbsp; 阅读(41) &nbsp;|&nbsp; <a href="#">评论(1)</a> &nbsp;|&nbsp; <a href="#">转载</a> &nbsp;|&nbsp; <span style="color:#c00;">🔒 私密</span></div>
+          </div>
+          <div class="blog-item">
+            <div class="bi-title">槐理十佳歌手</div>
+            <div class="bi-summary"><b>槐理十佳歌手</b>果然有阿远！我就知道你可以的啦！！为你呐喊～以后我就是后援会头子，远迷来了～～o(≧v≦)o~~</div>
+            <div class="bi-meta">2008-05-18 21:00 &nbsp;|&nbsp; 阅读(112) &nbsp;|&nbsp; <a href="#">评论(6)</a> &nbsp;|&nbsp; <a href="#">转载</a></div>
+          </div>
+          <div class="blog-item">
+            <div class="bi-title">胖胖奶茶店</div>
+            <div class="bi-summary">胖胖奶茶店你不要走哇～～T_T 放一张和舍友最后一次在胖胖的合照。<br><a href="zz_post_milktea1.png" target="_blank"><img src="zz_post_milktea1.png" style="width:200px;height:150px;object-fit:cover;margin:4px;border:1px solid #ddd;cursor:pointer;"></a></div>
+            <div class="bi-meta">2008-10-18 16:45 &nbsp;|&nbsp; 阅读(78) &nbsp;|&nbsp; <a href="#">评论(5)</a> &nbsp;|&nbsp; <a href="#">转载</a></div>
+          </div>
+          <div class="blog-item">
+            <div class="bi-title">毕业快乐</div>
+            <div class="bi-summary">毕业快乐！答辩顺利呀！梅青云你可以的！<\(^o^)/></div>
+            <div class="bi-meta">2009-06-18 10:00 &nbsp;|&nbsp; 阅读(88) &nbsp;|&nbsp; <a href="#">评论(4)</a> &nbsp;|&nbsp; <a href="#">转载</a></div>
+          </div>
+          <div class="blog-item">
+            <div class="bi-title">小房子</div>
+            <div class="bi-summary">终于有一个只属于自己的小房子啦，不大但很温馨。感谢母上父亲的大力支持呀！<br><a href="zz_post_house1.png" target="_blank"><img src="zz_post_house1.png" style="width:200px;height:150px;object-fit:cover;margin:4px;border:1px solid #ddd;cursor:pointer;"></a>
+            <a href="zz_post_house.png" target="_blank"><img src="zz_post_house.png" style="width:200px;height:150px;object-fit:cover;margin:4px;border:1px solid #ddd;cursor:pointer;"></a></div>
+            <div class="bi-meta">2009-09-17 15:20 &nbsp;|&nbsp; 阅读(65) &nbsp;|&nbsp; <a href="#">评论(3)</a> &nbsp;|&nbsp; <a href="#">转载</a></div>
+          </div>
+
+          <div class="blog-item">
+            <div class="bi-title">纪念特别的日子</div>
+            <div class="bi-summary">纪念特别的日子～<br><a href="qqzone_jinian.jpg" target="_blank"><img src="qqzone_jinian.jpg" style="width:200px;height:150px;object-fit:cover;margin:4px;border:1px solid #ddd;cursor:pointer;"></a></div>
+            <div class="bi-meta">2011-01-21 18:00 &nbsp;|&nbsp; 阅读(104) &nbsp;|&nbsp; <a href="#">评论(6)</a> &nbsp;|&nbsp; <a href="#">转载</a></div>
+          </div>          </div>
+        </div>
+    </div>
+
+    <!-- 相册页 -->
+    <div id="albumPage" style="position:absolute;top:0;left:0;right:0;bottom:0;overflow:auto;display:none;">
+      <div class="qz-entry">
+        <div class="e-hd">&#9733; 我的相册</div>
+        <div id="albumLock" style="padding:40px;text-align:center;font-size:13px;font-weight:900;color:#999;min-height:300px;display:flex;align-items:center;justify-content:center;">
+          请输入密码查看相册
+        </div>
+        <div id="albumContent" style="display:none;">
+          <div class="album-grid">
+            <div class="album-item">
+              <div class="al-cover" style="background-image:url('qqzone_childhood.jpg');background-size:cover;background-position:center;">&nbsp;</div>
+              <div class="al-name">小时候</div>
+              <div class="al-count">共121张</div>
+            </div>
+            <div class="album-item">
+              <div class="al-cover" style="background-image:url('cover_highschool.jpg');background-size:cover;background-position:center;">&nbsp;</div>
+              <div class="al-name">高中</div>
+              <div class="al-count">共81张</div>
+            </div>
+            <div class="album-item">
+              <div class="al-cover" style="background-image:url('cover_yummy.jpg');background-size:cover;background-position:center;">&nbsp;</div>
+              <div class="al-name">好吃的yummy</div>
+              <div class="al-count">共281张</div>
+            </div>
+            <div class="album-item">
+              <div class="al-cover" style="background-image:url('cover_427.jpg?v=2');background-size:cover;background-position:center;">&nbsp;</div>
+              <div class="al-name">427</div>
+              <div class="al-count">共29张</div>
+            </div>
+            <div class="album-item">
+              <div class="al-cover" style="background-image:url('cover_kaomoji.jpg');background-size:cover;background-position:center;">&nbsp;</div>
+              <div class="al-name" style="color:#c060a0;">(◕‿◕✿)</div>
+              <div class="al-count">共519张</div>
+            </div>
+            <div class="album-item">
+              <div class="al-cover" style="background-image:url('cover_yunnan.jpg');background-size:cover;background-position:center;">&nbsp;</div>
+              <div class="al-name">云南之旅</div>
+              <div class="al-count">共73张</div>
+            </div>
+            <div class="album-item">
+              <div class="al-cover" style="background-image:url('cover_misc.png');background-size:cover;background-position:center;">&nbsp;</div>
+              <div class="al-name">一些杂七杂八</div>
+              <div class="al-count">共32张</div>
+            </div>
+            <div class="album-item">
+              <div class="al-cover" style="background-image:url('cover_album1.jpg');background-size:cover;background-position:center;">&nbsp;</div>
+              <div class="al-name">1</div>
+              <div class="al-count">共5张</div>
+            </div>
+          </div>
+        </div>
+        </div>
+    </div>
+
+    <!-- 留言板页 -->
+    <div id="msgPage" style="position:absolute;top:0;left:0;right:0;bottom:0;overflow:auto;display:none;">
+      <div class="qz-entry">
+        <div class="e-hd">&#9733; 留言板</div>
+        <div class="msg-area" style="padding:16px;min-height:300px;">
+          <div class="msg-item"><span class="m-author">小星星</span> <span style="color:#999;">2005-06-08 18:30</span><br>终于考完啦！！解放了！！大家以后也要常联系呀～</div>
+          <div class="msg-item"><span class="m-author">薄荷微凉</span> <span style="color:#999;">2005-06-10 14:20</span><br>以后再也听不到老班的语文课了，突然有点舍不得T_T</div>
+          <div class="msg-item"><span class="m-author">向日葵</span> <span style="color:#999;">2005-07-15 20:00</span><br>暑假好无聊啊，有没有人一起出来玩！</div>
+          <div class="msg-item"><span class="m-author">棉花糖</span> <span style="color:#999;">2006-04-05 15:30</span><br>今天在街上看到一个超可爱的发卡，要不要一起去买！</div>
+          <div class="msg-item"><span class="m-author">阿远</span> <span style="color:#999;">2006-09-20 23:52</span><br><b style="color:#06c;">1:32</b></div>
+          <div class="msg-item"><span class="m-author">不觉晓</span> <span style="color:#999;">2009-01-10 21:05</span><br>新的一年也要一起玩！</div>
+          <div class="msg-item"><span class="m-author">蓝小蓝</span> <span style="color:#999;">2009-06-20 16:10</span><br>毕业快乐！以后常联系呀！</div>
+          <div class="msg-item"><span class="m-author">小情绪</span> <span style="color:#999;">2009-11-09 23:00</span><br>你睡了吗？我睡不着。</div>
+          <div class="msg-item"><span class="m-author">阿远</span> <span style="color:#999;">2010-08-20 22:15</span><br>不管发生什么，我都在。</div>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<button class="back-btn" onclick="window.close()">&#9664; 关闭</button>
+
+<script>
+function checkPwd(){
+  var pwd = document.getElementById('qzPwd').value.trim().toLowerCase();
+  if(pwd === 'songyuan'){
+    document.getElementById('pwdOverlay').style.display = 'none';
+    document.getElementById('qzoneWrap').style.display = 'block';
+    document.getElementById('pwdError').style.display = 'none';
+  } else {
+    document.getElementById('pwdError').style.display = 'block';
+  }
+}
+
+function updBadge(n){var e=document.getElementById("ecBadge");if(e)e.querySelector(".ec-n").textContent=n;}
+function switchTab(tab){
+  document.getElementById('blogPage').style.display = tab === 'blog' ? 'block' : 'none';
+  document.getElementById('albumPage').style.display = tab === 'album' ? 'block' : 'none';
+  document.getElementById('msgPage').style.display = tab === 'msg' ? 'block' : 'none';if(tab==='msg')updBadge('19');
+  if(tab === 'album'){
+    var content = document.getElementById('albumContent');
+    if(content.style.display !== 'block'){
+      document.getElementById('albumPwdOverlay').style.display = 'flex';
+    }
+  }
+  var links = document.querySelectorAll('.qz-nav a');
+  for(var i=0;i<links.length;i++){
+    links[i].classList.remove('active');
+    if((tab==='blog' && (i===0||i===1)) || (tab==='album' && i===2) || (tab==='msg' && i===3)){
+      links[i].classList.add('active');
+    }
+  }
+}
+function checkAlbumPwd(){
+  var pwd = document.getElementById('albumPwdInput').value.trim();
+  if(pwd === '3707'){
+    document.getElementById('albumPwdOverlay').style.display = 'none';
+    document.getElementById('albumContent').style.display = 'block';
+    document.getElementById('albumLock').style.display = 'none';
+    document.getElementById('albumPwdError').style.display = 'none';
+  } else {
+    document.getElementById('albumPwdError').style.display = 'block';
+  }
+}
+function openProfilePwd(){updBadge('20');
+  document.getElementById('profilePwdOverlay').style.display = 'flex';
+}
+function checkProfilePwd(){
+  var pwd = document.getElementById('profilePwdInput').value.trim().toLowerCase();
+  if(pwd === 'hyfjby'){
+    document.getElementById('profilePwdOverlay').style.display = 'none';
+    document.getElementById('profilePwdError').style.display = 'none';
+    document.getElementById('profilePage').style.display = 'block';
+  } else {
+    document.getElementById('profilePwdError').style.display = 'block';
+  }
+}
+function closeProfilePage(){document.getElementById("profilePage").style.display="none";}
+function closeProfilePwd(){
+  document.getElementById('profilePwdOverlay').style.display = 'none';
+}
+function closeAlbumPwd(){
+  document.getElementById('albumPwdOverlay').style.display = 'none';
+}
+</script>
+<!-- 个人档密码 -->
+<div id="profilePwdOverlay" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:99999;align-items:center;justify-content:center;">
+  <div style="width:420px;background:#f0f0e8;border:2px solid #888;border-color:#fff #666 #666 #fff;box-shadow:2px 2px 12px rgba(0,0,0,0.4);">
+    <div style="height:28px;background:linear-gradient(90deg,#0a246a,#3a6ea5,#0a246a);display:flex;align-items:center;padding:0 8px;">
+      <span style="font-size:14px;color:#fff;font-weight:900;font-family:宋体,sans-serif;text-shadow:1px 1px 0 #000;">个人档 - 密码验证</span>
+      <span onclick="closeProfilePwd()" style="margin-left:auto;width:22px;height:20px;background:linear-gradient(to bottom,#f0a0a0,#c04040);border:1px solid #d06060 #802020 #802020 #d06060;display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff;font-weight:900;cursor:pointer;">&#10005;</span>
+    </div>
+    <div style="padding:20px;">
+      <div style="font-size:14px;font-weight:900;color:#333;margin-bottom:6px;">请输入访问密码</div>
+      <div style="font-size:13px;font-weight:900;color:#555;line-height:1.8;margin-bottom:12px;padding:10px;background:#f8f6ef;border:1px solid #e0ddd5;">
+        最爱的食物^o^
+      </div>
+      <input type="text" id="profilePwdInput" placeholder="请输入密码"
+        onkeydown="if(event.key==='Enter')checkProfilePwd()"
+        style="width:100%;height:32px;border:2px solid #999;border-color:#666 #fff #fff #666;padding:0 10px;font-size:14px;font-family:宋体,sans-serif;outline:none;background:#fff;font-weight:900;">
+      <div style="font-size:12px;color:#999;margin-top:4px;text-align:center;">提示：首字母</div>
+      <div style="margin-top:12px;display:flex;gap:8px;">
+        <button onclick="checkProfilePwd()" style="padding:4px 20px;font-size:13px;font-weight:900;background:linear-gradient(to bottom,#f0f0e8,#d0d0c8);border:2px solid #888;border-color:#fff #666 #666 #fff;cursor:pointer;font-family:宋体,sans-serif;">确定</button>
+        <button onclick="closeProfilePwd()" style="padding:4px 20px;font-size:13px;font-weight:900;background:linear-gradient(to bottom,#f0f0e8,#d0d0c8);border:2px solid #888;border-color:#fff #666 #666 #fff;cursor:pointer;font-family:宋体,sans-serif;">取消</button>
+      </div>
+      <div id="profilePwdError" style="color:#c00;font-size:13px;font-weight:900;margin-top:8px;display:none;">密码错误，请重新输入</div>
+    </div>
+  </div>
+</div>
+
+<!-- 个人档内容 -->
+<div id="profilePage" style="position:absolute;top:0;left:0;right:0;bottom:0;overflow:auto;display:none;">
+  <div style="position:fixed;top:12px;right:14px;z-index:20;"><span onclick="closeProfilePage()" style="width:28px;height:24px;background:linear-gradient(to bottom,#f0a0a0,#c04040);border:1px solid #d06060 #802020 #802020 #d06060;display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff;font-weight:900;cursor:pointer;border-radius:2px;">&#10005;</span></div>
+  <div class="qz-entry">
+    <div class="e-hd" style="display:flex;align-items:center;"><span onclick="closeProfilePage()" style="font-size:13px;color:#06c;cursor:pointer;margin-right:12px;font-weight:bold;">&#9664; 返回</span><span>&#9733; 个人档</span></div>
+    <div style="padding:16px;">
+      <div style="background:#fff;border:1px solid #d7eaf4;border-radius:4px;padding:16px;">
+        <div style="font-size:14px;font-weight:900;color:#333;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid #e8e0d8;">基本资料</div>
+        <div style="display:flex;flex-wrap:wrap;gap:12px;font-size:13px;color:#555;line-height:2;">
+          <div style="width:45%;"><span style="color:#888;">昵称：</span>你说爱像云</div>
+          <div style="width:45%;"><span style="color:#888;">性别：</span>女</div>
+          <div style="width:45%;"><span style="color:#888;">生日：</span>1987年7月12日</div>
+          <div style="width:45%;"><span style="color:#888;">星座：</span>巨蟹座</div>
+          <div style="width:45%;"><span style="color:#888;">学校：</span>槐花理工大学</div>
+          <div style="width:45%;"><span style="color:#888;">家乡：</span>槐花市</div>
+        </div>
+      </div>
+      <div style="background:#fff;border:1px solid #d7eaf4;border-radius:4px;padding:16px;margin-top:12px;">
+        <div style="font-size:14px;font-weight:900;color:#333;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid #e8e0d8;">碎碎念</div>
+        <div style="font-size:15px;color:#222;line-height:2.2;">
+          <div style="padding:6px 0;border-bottom:1px dashed #e0d8d0;">今天天气真好，出去走了一圈心情好了很多～(‾◡◝)</div>
+          <div style="padding:6px 0;border-bottom:1px dashed #e0d8d0;">最近怎么老是失眠，数羊数到两千只了还是睡不着T_T</div>
+          <div style="padding:6px 0;border-bottom:1px dashed #e0d8d0;">今天我的槐花论坛死活登不上去幸好阿远把账号借给我了，没想到密码居然是我们相遇的那本书的全拼，哼(#^.^#)，嘻嘻嘻，不过好像输错三次就会被锁住诶～</div>
+          <div style="padding:6px 0;">好想吃红一帆的酱板鸭，下次一定要去剁一只回来！</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 相册密码 -->
+<div id="albumPwdOverlay" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:99999;align-items:center;justify-content:center;">
+  <div style="width:420px;background:#f0f0e8;border:2px solid #888;border-color:#fff #666 #666 #fff;box-shadow:2px 2px 12px rgba(0,0,0,0.4);">
+    <div style="height:28px;background:linear-gradient(90deg,#0a246a,#3a6ea5,#0a246a);display:flex;align-items:center;padding:0 8px;">
+      <span style="font-size:14px;color:#fff;font-weight:900;font-family:宋体,sans-serif;text-shadow:1px 1px 0 #000;">QQ相册 - 密码验证</span>
+      <span onclick="closeAlbumPwd()" style="margin-left:auto;width:22px;height:20px;background:linear-gradient(to bottom,#f0a0a0,#c04040);border:1px solid #d06060 #802020 #802020 #d06060;display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff;font-weight:900;cursor:pointer;">&#10005;</span>
+    </div>
+    <div style="padding:20px;">
+      <div style="font-size:14px;font-weight:900;color:#333;margin-bottom:6px;">请输入访问密码</div>
+      <div style="font-size:13px;font-weight:900;color:#555;line-height:1.8;margin-bottom:12px;padding:10px;background:#f8f6ef;border:1px solid #e0ddd5;">
+        明君数访隐者庐<br>
+        南征屡纵蛮夷躯<br>
+        城门敞辟弦歌响<br>
+        单骑驰突救孤婴
+      </div>
+      <input type="text" id="albumPwdInput" placeholder="请输入密码" maxlength="4"
+        onkeydown="if(event.key==='Enter')checkAlbumPwd()"
+        style="width:100%;height:32px;border:2px solid #999;border-color:#666 #fff #fff #666;padding:0 10px;font-size:14px;font-family:宋体,sans-serif;outline:none;background:#fff;font-weight:900;letter-spacing:4px;text-align:center;">
+            <div style="margin-top:12px;display:flex;gap:8px;">
+        <button onclick="checkAlbumPwd()" style="padding:4px 20px;font-size:13px;font-weight:900;background:linear-gradient(to bottom,#f0f0e8,#d0d0c8);border:2px solid #888;border-color:#fff #666 #666 #fff;cursor:pointer;font-family:宋体,sans-serif;">确定</button>
+        <button onclick="closeAlbumPwd()" style="padding:4px 20px;font-size:13px;font-weight:900;background:linear-gradient(to bottom,#f0f0e8,#d0d0c8);border:2px solid #888;border-color:#fff #666 #666 #fff;cursor:pointer;font-family:宋体,sans-serif;">取消</button>
+      </div>
+      <div id="albumPwdError" style="color:#c00;font-size:13px;font-weight:900;margin-top:8px;display:none;">密码错误，请重新输入</div>
+    </div>
+  </div>
+</div>
+
+<div class="ec-badge" id="ecBadge"><span class="ec-n">15</span><span class="ec-t">/29</span></div>
+</body>
+</html>
