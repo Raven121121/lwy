@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>槐花论坛 - 首页</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  background:#e8e4dc;
+  font-family:"宋体","SimSun",sans-serif;
+  font-size:15px;font-weight:900;-webkit-font-smoothing:none;color:#222;
+}
+.topbar{
+  background:linear-gradient(90deg,#0a246a,#3a6ea5,#0a246a);
+  height:34px;display:flex;align-items:center;padding:0 16px;color:#fff;font-size:15px;
+  text-shadow:1px 1px 0 #000;min-width:960px;
+}
+.topbar .tb-links{display:flex;gap:16px;margin-left:auto;font-size:13px;color:#ccc;}
+.wrap{max-width:1000px;margin:0 auto;padding:12px 0;min-height:calc(100vh - 34px);}
+.header{
+  background:#fff;border:2px solid #c0bfb8;padding:14px 18px;margin-bottom:8px;
+  display:flex;align-items:center;gap:12px;
+}
+.header .logo{font-size:26px;color:#0a246a;font-weight:900;}
+.header .logo-sub{font-size:13px;color:#888;font-weight:900;}
+.header .user-info{margin-left:auto;font-size:13px;color:#555;font-weight:900;}
+.header .user-info .un{color:#06c;font-weight:900;}
+.nav{
+  background:#fff;border:2px solid #c0bfb8;margin-bottom:8px;
+  display:flex;border-bottom:none;
+}
+.nav a{
+  padding:10px 20px;font-size:15px;font-weight:900;color:#444;text-decoration:none;
+  border-bottom:3px solid transparent;display:inline-block;cursor:default;
+}
+.nav a.active{color:#0a246a;border-bottom-color:#0a246a;font-weight:900;}
+.nav a.clickable{cursor:pointer;}
+.nav a.clickable:hover{background:#eef4fa;}
+.main{display:flex;gap:10px;}
+.left{flex:1;}
+.section{
+  background:#fff;border:2px solid #c0bfb8;margin-bottom:10px;
+}
+.section .s-hd{
+  background:linear-gradient(to bottom,#e8e5dd,#ddd9d0);
+  padding:8px 14px;font-size:15px;font-weight:900;color:#222;
+  border-bottom:2px solid #c0bfb8;display:flex;align-items:center;gap:8px;
+}
+.post{
+  padding:12px 14px;border-bottom:1px solid #f0efe8;display:flex;align-items:center;gap:8px;
+  line-height:1.5;
+}
+.post:last-child{border-bottom:none;}
+.post .p-tag{
+  font-size:11px;color:#c00;border:1px solid #c00;padding:1px 6px;border-radius:2px;
+  margin-right:4px;font-weight:900;white-space:nowrap;
+}
+.post .p-tag.green{color:#060;border-color:#060;}
+.post .p-tag.blue{color:#06c;border-color:#06c;}
+.post .p-title{flex:1;font-size:15px;font-weight:900;color:#06c;cursor:default;}
+.post .p-title:hover{text-decoration:underline;}
+.post .p-author{font-size:13px;color:#666;width:90px;font-weight:900;}
+.post .p-time{font-size:12px;color:#999;width:65px;text-align:right;font-weight:900;}
+.post .p-count{font-size:12px;color:#aaa;width:55px;text-align:right;font-weight:900;}
+.post.sticky .p-title{color:#c00;font-weight:900;}
+.post .p-hashtag{font-size:12px;color:#888;margin-right:6px;font-weight:900;}
+.right{width:260px;flex-shrink:0;}
+.rbox{background:#fff;border:2px solid #c0bfb8;margin-bottom:10px;}
+.rbox .r-hd{
+  background:linear-gradient(to bottom,#e8e5dd,#ddd9d0);
+  padding:8px 12px;font-size:14px;font-weight:900;color:#222;border-bottom:2px solid #c0bfb8;
+}
+.rbox .r-bd{padding:10px 12px;font-size:14px;color:#444;line-height:2;}
+.rbox .r-bd .u-item{display:flex;align-items:center;gap:8px;padding:4px 0;}
+.rbox .r-bd .u-item .u-name{color:#06c;cursor:default;font-weight:900;font-size:14px;}
+.rbox .r-bd .btn{
+  display:block;width:100%;padding:6px;text-align:center;font-size:14px;font-weight:900;
+  background:linear-gradient(to bottom,#f0f0e8,#d0d0c8);
+  border:2px solid #888;border-color:#fff #666 #666 #fff;
+  cursor:pointer;font-family:"宋体",sans-serif;margin-top:6px;color:#222;
+}
+.rbox .r-bd .btn:active{border-color:#666 #fff #fff #666;}
+.back-btn{
+  position:fixed;top:4px;right:12px;z-index:9999;
+  padding:3px 12px;font-size:12px;font-weight:900;
+  background:rgba(240,240,232,0.9);
+  border:2px solid #888;border-color:#fff #666 #666 #fff;
+  cursor:pointer;font-family:"宋体","SimSun",sans-serif;color:#222;
+}
+
+.ec-badge{position:fixed;top:10px;right:12px;z-index:100000;background:rgba(45,45,55,0.55);border:1px solid rgba(90,90,100,0.4);border-radius:4px;padding:2px 8px;font-family:"Microsoft YaHei","微软雅黑",sans-serif;font-size:13px;color:#d0c8b8;box-shadow:1px 1px 4px rgba(0,0,0,0.2);letter-spacing:1px;backdrop-filter:blur(2px);pointer-events:none;}
+.ec-badge .ec-n{color:#f0d878;font-weight:bold;font-size:15px;}
+.ec-badge .ec-t{color:#b0a898;}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <span>槐花论坛</span>
+  <div class="tb-links">
+    <span>我的帖子</span>
+    <span>消息</span>
+    <span>设置</span>
+    <span onclick="window.location.href='desktop.html'">退出</span>
+  </div>
+</div>
+<div class="wrap">
+
+<div class="header" style="background:linear-gradient(135deg,#eef4fa,#fff);border:2px solid #3a6ea5;padding:18px;">
+  <div style="flex:1;">
+    <div class="logo" style="font-size:28px;">槐花论坛</div>
+    <div class="logo-sub" style="margin-top:4px;font-size:14px;font-weight:900;">槐花市地方综合论坛 · 2005年创站</div>
+    <div style="font-size:13px;color:#666;margin-top:6px;font-weight:900;">🌿 槐花人的网上家园 · 今日帖子 48 · 注册会员 56,891 人</div>
+  </div>
+  <div class="user-info" style="text-align:right;">
+    <div style="font-size:14px;font-weight:900;">欢迎回来，<span class="un" style="font-size:16px;">Lillian</span></div>
+    <div style="font-size:12px;color:#888;font-weight:900;">最后登录：2030-12-15</div>
+  </div>
+</div>
+
+<div class="nav">
+  <a href="#" class="active" onclick="window.location.href='forum_main.html'">首页</a>
+  <a href="#" onclick="return false">槐花茶馆</a>
+  <a href="#" class="clickable" onclick="window.location.href='forum_help.html'">求助互助</a>
+  <a href="#" onclick="return false">生活分享</a>
+  <a href="#" onclick="return false">跳蚤市场</a>
+  <a href="#" onclick="return false">情感天地</a>
+</div>
+
+<div class="main">
+  <div class="left">
+
+    <div class="section">
+      <div class="s-hd">📌 置顶 · 论坛公告</div>
+      <div class="post sticky"><span class="p-tag">置顶</span><span class="p-title">槐花论坛版规及发帖须知</span><span class="p-author">管理员</span><span class="p-time">2005-03</span><span class="p-count">12873</span></div>
+      <div class="post sticky"><span class="p-tag">置顶</span><span class="p-title">【求助指南】如何寻求帮助</span><span class="p-author">版主</span><span class="p-time">2008-06</span><span class="p-count">5621</span></div>
+    </div>
+
+    <div class="section">
+      <div class="s-hd">📋 槐花居民 · 最新帖子</div>
+
+      <div class="post"><span class="p-tag green">分享</span><span class="p-title">听说槐花最近有两个超萌的狗狗虎子和大大，有照片吗？</span><span class="p-author">蓓蓓又饿了</span><span class="p-time">2030-12</span><span class="p-count">45</span></div>
+      <div class="post"><span class="p-tag blue">求助</span><span class="p-title">槐花市图书馆周末开放吗？</span><span class="p-author">小韩保洁</span><span class="p-time">2030-11</span><span class="p-count">23</span></div>
+      <div class="post"><span class="p-tag">讨论</span><span class="p-title">槐花哪家烧烤最好吃？来推荐！</span><span class="p-author">夜宵大王</span><span class="p-time">2030-11</span><span class="p-count">89</span></div>
+      <div class="post"><span class="p-tag green">分享</span><span class="p-title">周末一起去迎丰公园露营吧</span><span class="p-author">胡拳劲</span><span class="p-time">2030-10</span><span class="p-count">67</span></div>
+      <div class="post"><span class="p-tag blue">求助</span><span class="p-title">橡果湾附近有没有靠谱的宠物医院</span><span class="p-author">撸猫达人</span><span class="p-time">2030-10</span><span class="p-count">34</span></div>
+      <div class="post"><span class="p-tag">讨论</span><span class="p-title">有人一起拼单买书吗？</span><span class="p-author">爱读书的文胖</span><span class="p-time">2030-09</span><span class="p-count">28</span></div>
+      <div class="post"><span class="p-tag green">分享</span><span class="p-title">自己做的酱板鸭，跟大家分享做法</span><span class="p-author">老马驾车</span><span class="p-time">2030-09</span><span class="p-count">156</span></div>
+      <div class="post"><span class="p-tag green">分享</span><span class="p-title">槐花学院校庆活动邀请大家参加</span><span class="p-author">校友会</span><span class="p-time">2030-08</span><span class="p-count">234</span></div>
+
+    </div>
+
+  </div>
+
+  <div class="right">
+    <div class="rbox">
+      <div class="r-hd">👤 Lillian</div>
+      <div class="r-bd">
+        <div>帖子：47</div>
+        <div>注册：2006-04-21</div>
+        <div>最后登录：2011-10-28</div>
+        <div class="btn" onclick="window.open('forum_profile.html','_blank')">📋 查看主页</div>
+      </div>
+    </div>
+    <div class="rbox">
+      <div class="r-hd">📊 论坛统计</div>
+      <div class="r-bd">
+        <div>帖子总数：328,473</div>
+        <div>注册用户：56,891</div>
+        <div>今日新帖：48</div>
+        <div>在线用户：203</div>
+      </div>
+    </div>
+    <div class="rbox">
+      <div class="r-hd">💬 最近访客</div>
+      <div class="r-bd">
+        <div class="u-item"><span class="u-name">你说爱像云</span> 2012-01-10</div>
+        <div class="u-item"><span class="u-name">禾禾milk</span> 2011-10-20</div>
+        <div class="u-item"><span class="u-name">小夜灯</span> 2030-11-20</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+<button class="back-btn" onclick="window.close()">&#9664; 关闭</button>
+<div class="ec-badge" id="ecBadge"><span class="ec-n">24</span><span class="ec-t">/29</span></div>
+
+</body>
+</html>

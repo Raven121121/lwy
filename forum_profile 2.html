@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta charset="UTF-8"><title>Lillian的个人主页 - 槐花论坛</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#e8e4dc;font-family:"宋体","SimSun",sans-serif;font-size:12px;color:#222;}
+.topbar{background:linear-gradient(90deg,#0a246a,#3a6ea5,#0a246a);height:34px;display:flex;align-items:center;padding:0 16px;color:#fff;font-size:15px;text-shadow:1px 1px 0 #000;min-width:960px;}
+.topbar .tb-links{margin-left:auto;font-size:13px;color:#ccc;}
+.wrap{max-width:960px;margin:0 auto;padding:12px 0;}
+
+.profile-box{background:#fff;border:2px solid #c0bfb8;margin-bottom:10px;padding:16px 20px;display:flex;gap:16px;align-items:center;}
+.profile-box .pb-avatar{width:70px;height:70px;border-radius:50%;background:linear-gradient(135deg,#6aaae8,#3a6ea5);display:flex;align-items:center;justify-content:center;font-size:30px;color:#fff;flex-shrink:0;overflow:hidden;}
+.profile-box .pb-avatar img{width:100%;height:100%;object-fit:cover;}
+.profile-box .pb-info{flex:1;}
+.profile-box .pb-info .pb-name{font-size:20px;font-weight:900;color:#222;}
+.profile-box .pb-info .pb-meta{font-size:13px;color:#666;line-height:1.7;margin-top:3px;}
+
+.forum-floor{background:#fff;border:2px solid #c0bfb8;margin-bottom:10px;display:flex;}
+.floor-side{width:80px;flex-shrink:0;background:#f8f6f0;border-right:1px solid #d8d0c8;padding:8px 4px;text-align:center;font-size:12px;color:#888;display:flex;flex-direction:column;justify-content:flex-start;padding-top:14px;}
+.floor-side .fs-level{font-size:11px;color:#c80;margin-bottom:4px;}
+.floor-side .fs-meta{font-size:10px;color:#aaa;line-height:1.5;}
+.floor-side .fs-sig{font-size:10px;color:#bbb;line-height:1.4;margin-top:8px;padding:4px;border-top:1px dotted #e0dcd4;}
+
+.floor-main{flex:1;min-width:0;}
+.floor-main .fm-hd{padding:7px 14px;background:#f0eee8;border-bottom:1px solid #d8d0c8;display:flex;align-items:center;gap:8px;}
+.floor-main{flex:1;min-width:0;}
+.floor-main .fm-hd .fm-tag{font-size:11px;padding:1px 8px;border-radius:2px;font-weight:bold;}
+.floor-main{flex:1;min-width:0;}
+.floor-main .fm-hd .fm-tag.green{color:#060;border:1px solid #060;}
+.floor-main{flex:1;min-width:0;}
+.floor-main .fm-hd .fm-tag.blue{color:#06c;border:1px solid #06c;}
+.floor-main{flex:1;min-width:0;}
+.floor-main .fm-hd .fm-tag.purple{color:#808;border:1px solid #808;}
+.floor-main{flex:1;min-width:0;}
+.floor-main .fm-hd .fm-title{font-size:15px;font-weight:bold;color:#222;}
+.floor-main{flex:1;min-width:0;}
+.floor-main .fm-hd .fm-date{margin-left:auto;font-size:12px;color:#999;}
+.floor-main .fm-body{padding:12px 14px;font-size:14px;line-height:1.9;color:#444;}
+.floor-main .fm-body p{margin-bottom:5px;}
+.floor-main .fm-body img{max-width:260px;border:1px solid #d8d0c8;margin-top:6px;}
+
+.reply-line{padding:5px 14px 5px 24px;border-top:1px dashed #e0e0e0;font-size:13px;color:#444;line-height:1.8;background:#fcfaf6;}
+.reply-line .rl-floor{color:#999;margin-right:6px;}
+.reply-line .rl-name{color:#06c;font-weight:bold;margin-right:4px;}
+.reply-line .rl-text{color:#444;}
+.back-btn{position:fixed;top:4px;right:12px;z-index:9999;padding:3px 12px;font-size:12px;font-weight:bold;background:rgba(240,240,232,0.9);border:2px solid #888;border-color:#fff #666 #666 #fff;cursor:pointer;font-family:"宋体","SimSun",sans-serif;color:#222;}
+
+.ec-badge{position:fixed;top:10px;right:12px;z-index:100000;background:rgba(45,45,55,0.55);border:1px solid rgba(90,90,100,0.4);border-radius:4px;padding:2px 8px;font-family:"Microsoft YaHei","微软雅黑",sans-serif;font-size:13px;color:#d0c8b8;box-shadow:1px 1px 4px rgba(0,0,0,0.2);letter-spacing:1px;backdrop-filter:blur(2px);pointer-events:none;}
+.ec-badge .ec-n{color:#f0d878;font-weight:bold;font-size:15px;}
+.ec-badge .ec-t{color:#b0a898;}
+</style></head>
+<body>
+<div class="topbar"><span>槐花论坛</span><div class="tb-links">Lillian的个人主页</div></div>
+<div class="wrap">
+
+<button class="back-btn" onclick="window.close()">&#9664; 关闭</button>
+
+<div class="profile-box">
+  <div class="pb-avatar" id="lillianAvatar"><img src="avatar_lillian.jpg?v=2"></div>
+  <div class="pb-info">
+    <div class="pb-name">Lillian</div>
+    <div class="pb-meta">10 篇帖子 · 注册于 2006.4.21<br>签名：记录一些故事，也等待一些故事。</div>
+  </div>
+</div>
+
+<!-- 哈哈，第一次用论坛 -->
+<div class="forum-floor">
+<div class="floor-side"><div class="fs-level">&#9733; 元老</div><div class="fs-meta">帖：10</div><div class="fs-meta">分：128</div><div class="fs-sig">记录一些故事</div></div><div class="floor-main"><div class="fm-hd"><span class="fm-tag green">分享</span><span class="fm-title">哈哈，第一次用论坛</span><span class="fm-date">2006-04-21</span></div><div class="fm-body">
+<p>第一次发博文，摸索了好一会，感觉像是在一个很大的房间里，突然拥有了一张属于自己的桌子。以后如果有什么想说的话，应该都会写在这里吧。希望未来的自己回来看的时候，还能记得现在的样子。</p>
+</div></div></div>
+
+<!-- 小王子 -->
+<div class="forum-floor">
+<div class="floor-side"><div class="fs-level">&#9733; 元老</div><div class="fs-meta">帖：10</div><div class="fs-meta">分：128</div><div class="fs-sig">记录一些故事</div></div><div class="floor-main"><div class="fm-hd"><span class="fm-tag green">分享</span><span class="fm-title">小王子</span><span class="fm-date">2006-04-22</span></div><div class="fm-body">
+<p>我想转载一下之前在日记本写下的文字：&ldquo;今天那个女孩把看完了的《小王子》给了我。于是我又开始细细地看。其实以前一直觉得这是一本写给小孩子看的书。可是重新读一遍，突然发现里面很多话，好像只有长大以后才能看懂。&rdquo;</p>
+<p>小王子离开自己的星球，遇见很多奇怪的大人。有人只在乎数字，有人在乎权力，有人在乎别人怎么看自己。可最后他发现，真正重要的是自己认真爱过的人。</p>
+<p>"你为你的玫瑰花费的时间，使你的玫瑰花变得重要。"</p>
+<p>大概人与人之间也是这样吧。因为某个人出现，所以一本普通的书、一首普通的歌、一条普通的路，都变得特别。</p>
+</div></div></div>
+
+<!-- 给新同学的几句建议 -->
+<div class="forum-floor">
+<div class="floor-side"><div class="fs-level">&#9733; 元老</div><div class="fs-meta">帖：10</div><div class="fs-meta">分：128</div><div class="fs-sig">记录一些故事</div></div><div class="floor-main"><div class="fm-hd"><span class="fm-tag green">分享</span><span class="fm-title">给新同学的几句建议</span><span class="fm-date">2006-08-26</span></div><div class="fm-body">
+<p>明天就是新生报到的日子了。想起去年这个时候的自己，也是一个人拖着行李站在校门口。那时候觉得槐花好大。不认识任何人，也不知道未来四年会发生什么。后来才发现，大学其实没有想象中那么可怕。</p>
+<p>你会认识新的朋友。会在图书馆待到闭馆。会因为一门课焦虑，也会因为一件小事开心很久。ps：想去自习的可以去五楼文学区，一般人我可不告诉ta</p>
+<p>给新来的同学几个小建议：第一，一定要去图书馆看看。那里藏着很多你还没有遇见的世界。第二，不要害怕孤独。有时候一个人在校园里走一圈，也是一件很幸福的事情。第三，如果遇到了困难，不要一个人扛。总会有人愿意听你说。</p>
+<p>欢迎来到槐花。希望这里会成为你记忆里很特别的地方。</p>
+</div></div></div>
+<div class="reply-line"><span class="rl-floor">1楼</span><span class="rl-name">风一样的男子</span><span class="rl-text">：谢谢学姐！刚来什么都不知道，这帖子太及时了。</span></div>
+<div class="reply-line"><span class="rl-floor">2楼</span><span class="rl-name">小鱼</span><span class="rl-text">：五楼文学区是真的安静哈哈，第一次去还以为没人。</span></div>
+<div class="reply-line"><span class="rl-floor">3楼</span><span class="rl-name">薄荷微凉</span><span class="rl-text">：学姐好暖！希望明年我也能写出这样的帖子给新生。</span></div>
+
+<!-- 读《第二性》有感 -->
+<div class="forum-floor">
+<div class="floor-side"><div class="fs-level">&#9733; 元老</div><div class="fs-meta">帖：10</div><div class="fs-meta">分：128</div><div class="fs-sig">记录一些故事</div></div><div class="floor-main"><div class="fm-hd"><span class="fm-tag purple">感悟</span><span class="fm-title">读《第二性》有感</span><span class="fm-date">2007-11-22</span></div><div class="fm-body">
+<p>最近读完了西蒙娜·德·波伏娃的《第二性》。读的时候其实有很多地方看不懂。但是有一句话让我印象很深：</p>
+<p>"女人不是天生的，而是成为的。"</p>
+<p>我想，也许每个人都应该有选择自己人生的权利。不应该因为别人一句"你应该怎样"，就放弃成为自己的可能。女孩子可以喜欢文学，也可以喜欢科学。可以温柔，也可以坚定。可以选择事业，也可以选择另一条路。</p>
+<p>人这一生最重要的事情，大概就是找到真正的自己。</p>
+<p>推荐给所有正在迷茫的人。</p>
+</div></div></div>
+<div class="reply-line"><span class="rl-floor">1楼</span><span class="rl-name">夏日微风</span><span class="rl-text">：这本书我一直想读，被你安利到了！</span></div>
+<div class="reply-line"><span class="rl-floor">2楼</span><span class="rl-name">向日葵</span><span class="rl-text">说得真好，女孩子可以成为任何想成为的人。</span></div>
+
+<!-- 图书馆的旧版《小王子》 -->
+<div class="forum-floor">
+<div class="floor-side"><div class="fs-level">&#9733; 元老</div><div class="fs-meta">帖：10</div><div class="fs-meta">分：128</div><div class="fs-sig">记录一些故事</div></div><div class="floor-main"><div class="fm-hd"><span class="fm-tag purple">感悟</span><span class="fm-title">图书馆的旧版《小王子》</span><span class="fm-date">2008-05-12</span></div><div class="fm-body">
+<p>今天去图书馆，又借到了《小王子》。很巧，是一本旧版本。扉页上还有不知道是谁留下来的字："希望你永远记得，有人认真爱过你。"</p>
+<p>突然想起第一次认识这本书的时候。那时候图书馆只剩最后一本。有个女生站在书架前，看着那本书发呆。她说："怎么每次喜欢的东西都差一点。"</p>
+<p>后来我们因为一本书认识。她叫梅青云。她喜欢很多我以前不了解的东西。她推荐给我一首歌，叫《江南》。她说："有些歌第一次听没感觉，但是以后某一天你会突然想起。"</p>
+<p>她说得对。有些人也是这样。</p>
+</div></div></div>
+<div class="reply-line"><span class="rl-floor">1楼</span><span class="rl-name">你说爱像云</span><span class="rl-text">：突然被点名。谢谢你让我更加懂得这本书。</span></div>
+<div class="reply-line"><span class="rl-floor">2楼</span><span class="rl-name">Lillian</span><span class="rl-text">：谢谢你陪我看完这本书。</span></div>
+<div class="reply-line"><span class="rl-floor">3楼</span><span class="rl-name">青柠汽水</span><span class="rl-text">：以前也觉得小王子只是童话，看完你的分享突然想重新读一遍。</span></div>
+
+<!-- 毕业 -->
+<div class="forum-floor">
+<div class="floor-side"><div class="fs-level">&#9733; 元老</div><div class="fs-meta">帖：10</div><div class="fs-meta">分：128</div><div class="fs-sig">记录一些故事</div></div><div class="floor-main"><div class="fm-hd"><span class="fm-tag purple">感悟</span><span class="fm-title">毕业</span><span class="fm-date">2009-06-25</span></div><div class="fm-body">
+<p>今天毕业。四年真的很快。曾经觉得毕业离自己很远。可现在站在校门口，突然不知道该说什么。</p>
+<p>大家分道扬镳前往不同的未来。</p>
+<p>我想去做一些真正有意义的事情，起码是我认为有意义的事情。如果有人遇到困难，希望有人可以站出来帮帮她。所以我选择去了河洲路街道办。可能工资不高。可能很辛苦。但是我觉得值得。</p>
+<p>这个世界，总需要有人听见那些被忽略的声音。</p>
+</div></div></div>
+<div class="reply-line"><span class="rl-floor">1楼</span><span class="rl-name">橘子汽水</span><span class="rl-text">：毕业快乐！前程似锦！</span></div>
+
+<!-- 长大以后 -->
+<div class="forum-floor">
+<div class="floor-side"><div class="fs-level">&#9733; 元老</div><div class="fs-meta">帖：10</div><div class="fs-meta">分：128</div><div class="fs-sig">记录一些故事</div></div><div class="floor-main"><div class="fm-hd"><span class="fm-tag purple">感悟</span><span class="fm-title">长大以后</span><span class="fm-date">2010-11-18</span></div><div class="fm-body">
+<p>我们长大以后，好像越来越擅长计算。计算成绩。计算未来。计算得失。可很少有人告诉我们：不要忘记喜欢一朵花、一首歌、一本书的感觉。</p>
+<p>今天和青云聊天。她说："其实人和人之间的遇见挺神奇的。"我觉得也是。世界这么大。能遇见一个愿意听你讲话的人，很幸运。</p>
+</div></div></div>
+
+<!-- 今天见到了禾禾 -->
+<div class="forum-floor">
+<div class="floor-side"><div class="fs-level">&#9733; 元老</div><div class="fs-meta">帖：10</div><div class="fs-meta">分：128</div><div class="fs-sig">记录一些故事</div></div><div class="floor-main"><div class="fm-hd"><span class="fm-tag blue">求助</span><span class="fm-title">今天见到了禾禾</span><span class="fm-date">2011-04-02</span></div><div class="fm-body">
+<p>今天见到了禾禾。第一次见面的时候，她一直低着头。她很瘦。手腕上有明显的伤痕。她坐在那里，不停地说："是不是我哪里做得不好？""是不是我再忍一忍就好了？"</p>
+<p>我听着这些话，很难受。因为我知道，她不是第一个这样问自己的女孩。她才21岁。可她已经习惯了向别人道歉。</p>
+<p>她告诉我，她结婚不是因为喜欢。是家里觉得那个男人条件不错。她说她以为结婚以后会慢慢变好的。可后来他开始控制她。不允许她联系朋友。不允许她出去工作。一次又一次地伤害她。</p>
+<p>她说："我想离开。"说完这句话，她哭了很久。我告诉她："你没有做错任何事情。""你有离开的权利。"今天帮她联系了法律援助。也联系了临时庇护机构。希望她可以重新开始。</p>
+<p>我一直觉得。人活着，总要为别人留下些什么。哪怕只是一句："别怕，我在这里。"</p>
+</div></div></div>
+<div class="reply-line"><span class="rl-floor">1楼</span><span class="rl-name">你说爱像云</span><span class="rl-text">：辛苦你了。</span></div>
+<div class="reply-line"><span class="rl-floor">2楼</span><span class="rl-name">Lillian</span><span class="rl-text">：如果多一个人知道，多一个人愿意帮忙，就值得。</span></div>
+<div class="reply-line"><span class="rl-floor">3楼</span><span class="rl-name">小夜灯</span><span class="rl-text">：世界有你这样的人真好。</span></div>
+
+<!-- 禾禾说想开一家小店 -->
+<div class="forum-floor">
+<div class="floor-side"><div class="fs-level">&#9733; 元老</div><div class="fs-meta">帖：10</div><div class="fs-meta">分：128</div><div class="fs-sig">记录一些故事</div></div><div class="floor-main"><div class="fm-hd"><span class="fm-tag green">分享</span><span class="fm-title">禾禾说想开一家小店</span><span class="fm-date">2011-06-01</span></div><div class="fm-body">
+<p>今天和青云还有严信去看禾禾。</p>
+<p>这是青云第一次见到禾禾，她们看起来聊的很投缘。我和青云很少拍照，这张严信拍的照片更显珍贵。</p>
+<br>
+<p>而且禾禾第一次主动跟我说："宋姐，我以后想开一家小店。"</p>
+<p>我问她："开什么店？"</p>
+<p>她想了一会儿，说："卖小蛋糕吧。"</p>
+<p>她说她小时候喜欢吃甜的东西。可后来很久没有吃过了。</p>
+<p>青云在一旁一直鼓励她。</p>
+<br>
+<p>我突然觉得很开心。</p>
+<p>因为一个人开始想未来的时候。</p>
+<p>就说明她正在慢慢回来。</p>
+<div style="margin-top:8px;"><img src="forum_hehe.jpg"></div>
+</div></div></div>
+<div class="reply-line"><span class="rl-floor">1楼</span><span class="rl-name"><a href="forum_profile_hehe.html" style="color:#06c;text-decoration:none;">禾禾milk</a></span><span class="rl-text" style="color:#06c;">：谢谢宋姐和青云姐姐来看我，我会加油的！</span></div>
+<div class="reply-line"><span class="rl-floor">2楼</span><span class="rl-name">你说爱像云</span><span class="rl-text">：蛋糕店开张了记得叫我！</span></div>
+<div class="reply-line"><span class="rl-floor">3楼</span><span class="rl-name">棉花糖</span><span class="rl-text">：好温暖的故事，希望禾禾越来越好。</span></div>
+
+<!-- 开庭前 -->
+<div class="forum-floor">
+<div class="floor-side"><div class="fs-level">&#9733; 元老</div><div class="fs-meta">帖：10</div><div class="fs-meta">分：128</div><div class="fs-sig">记录一些故事</div></div><div class="floor-main"><div class="fm-hd"><span class="fm-tag purple">感悟</span><span class="fm-title">开庭前</span><span class="fm-date">2011-10-30</span></div><div class="fm-body">
+<p>最近天气越来越冷。过几天就是禾禾开庭的日子，也大概是她能够解脱的日子。</p>
+<p>但是今天看到禾禾的时候，她正在笑。</p>
+<p>她说："宋姐，等以后孩子出生，我想带她去看看槐花。"</p>
+<p>我问："为什么？"</p>
+<p>她说："因为我想让她知道，这个世界其实很好。"</p>
+<p>我没有回答。有时候觉得，人真的很奇怪。</p>
+<p>明明经历过那么多黑暗。可还是会期待春天。</p>
+<p>希望所有女孩。都不用再害怕回家的路。</p>
+</div></div></div>
+<div class="reply-line"><span class="rl-floor">1楼</span><span class="rl-name">你说爱像云</span><span class="rl-text">：宋远，我把她带回家了。</span></div>
+<div class="reply-line"><span class="rl-floor">2楼</span><span class="rl-name">小夜灯</span><span class="rl-text">：愿春天早点来。</span></div>
+<div class="reply-line"><span class="rl-floor">3楼</span><span class="rl-name">向日葵</span><span class="rl-text">看得我好难过……禾禾一定要幸福。</span></div>
+
+<div style="text-align:center;padding:10px 0;color:#999;font-size:12px;">— 共 10 篇帖子 —</div>
+
+</div>
+<div class="ec-badge" id="ecBadge"><span class="ec-n">26</span><span class="ec-t">/29</span></div>
+
+</body>
+</html>

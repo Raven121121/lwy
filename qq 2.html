@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>QQ2012</title>
+<style>
+:root{
+  --nick-blue:#2A73C5;
+  --nick-teal:#3A9D96;
+  --time-gray:#888888;
+  --text-dark:#222222;
+  --bg-white:#FFFFFF;
+  --border-light:#DCDCDC;
+  --divider:#E6E6E6;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:100%;height:100%;overflow:hidden;}
+body{
+  background:url('wallpaper.jpg') center/cover no-repeat;
+  font-family:"宋体","SimSun","Tahoma","MS Sans Serif",sans-serif;
+  font-size:14px;font-weight:900;-webkit-font-smoothing:none;font-smooth:never;
+  user-select:none;
+}
+.login-win{
+  position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:600px;max-width:95vw;
+  overflow:hidden;z-index:9999;
+}
+.login-win .login-bg{width:100%;aspect-ratio:1167/849;position:relative;}
+.xp-titlebar{
+  height:32px;
+  background:linear-gradient(90deg,#0a246a,#3a6ea5,#0a246a);
+  display:flex;align-items:center;padding:0 8px;
+  cursor:move;user-select:none;flex-shrink:0;
+}
+.xp-titlebar .tb-icon{
+  width:22px;height:22px;margin-right:6px;
+  background:#ffd700;border-radius:3px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;color:#fff;font-weight:900;
+}
+.xp-titlebar .tb-text{
+  font-size:15px;color:#fff;font-weight:900;
+  font-family:"宋体","SimSun",sans-serif;
+  text-shadow:1px 1px 0 #000;
+  margin-right:auto;
+}
+.xp-titlebar .tb-btns{display:flex;gap:3px;}
+.xp-titlebar .tb-btn{
+  width:24px;height:22px;
+  background:linear-gradient(to bottom,#e8e8e8,#c0c0c0);
+  border:1px solid #888;
+  border-color:#fff #666 #666 #fff;
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;color:#222;font-weight:900;
+  cursor:pointer;font-family:"宋体",sans-serif;
+  line-height:1;
+}
+.xp-titlebar .tb-btn:active{
+  border-color:#666 #fff #fff #666;
+  background:linear-gradient(to bottom,#b0b0b0,#d0d0d0);
+}
+.xp-titlebar .tb-btn.close{
+  background:linear-gradient(to bottom,#f0a0a0,#c04040);
+  color:#fff;border-color:#d06060 #802020 #802020 #d06060;
+}
+.xp-titlebar .tb-btn.close:active{
+  background:linear-gradient(to bottom,#b03030,#d05050);
+}
+#qqPanel{
+  position:fixed;top:20px;left:15px;
+  width:360px;height:740px;
+  background:#e8e8e0;
+  border:2px solid #888;
+  border-color:#fff #666 #666 #fff;
+  box-shadow:2px 2px 10px rgba(0,0,0,0.35);
+  display:none;z-index:100;
+  flex-direction:column;
+}
+#qqPanel .panel-body{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.panel-top{
+  padding:10px;
+  background:linear-gradient(to bottom,#f0f0e8,#e0ddd5);
+  border-bottom:2px solid #c0bfb8;
+  display:flex;align-items:center;gap:10px;
+}
+.panel-top .avatar{
+  width:60px;height:60px;
+  border:2px solid #c8a800;border-radius:4px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;color:#888;font-weight:900;
+  flex-shrink:0;background:#f5f0e0;
+  overflow:hidden;
+}
+.panel-top .avatar img{width:100%;height:100%;object-fit:cover;}
+.panel-top .user-info{flex:1;}
+.panel-top .user-name{font-size:16px;font-weight:900;color:#222;font-family:"宋体","SimSun",sans-serif;}
+.panel-top .user-status{font-size:14px;color:#090;font-weight:900;}
+.panel-top .top-icons{display:flex;gap:4px;}
+.panel-top .top-icons .ti{
+  width:26px;height:26px;
+  border:2px solid #999;border-radius:2px;
+  background:linear-gradient(to bottom,#f8f8f0,#d8d8d0);
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;color:#444;cursor:pointer;
+  font-family:"宋体",sans-serif;font-weight:900;
+}
+.panel-top .top-icons .ti:hover{background:linear-gradient(to bottom,#fff,#e0e0d8);}
+.panel-mid{flex:1;display:flex;overflow:hidden;}
+.panel-mid .icon-bar{
+  width:36px;background:#f5f0e8;
+  border-right:2px solid #c0bfb8;
+  display:flex;flex-direction:column;align-items:center;
+  padding:8px 0;gap:6px;flex-shrink:0;
+}
+.panel-mid .icon-bar .ib-icon{
+  width:26px;height:26px;
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;color:#fff;font-weight:900;
+  cursor:default;font-family:"宋体",sans-serif;
+}
+.friend-list-wrap{
+  flex:1;overflow-y:auto;
+  background:#f8f8f0;padding:4px 0;
+}
+.friend-list-wrap .group-title{
+  font-size:14px;font-weight:900;color:#222;
+  background:linear-gradient(to bottom,#e8e5dd,#ddd9d0);
+  padding:4px 10px;border-bottom:2px solid #c8c4bb;
+  cursor:default;font-family:"宋体","SimSun",sans-serif;
+}
+.friend-item{
+  padding:6px 10px;display:flex;align-items:center;gap:8px;
+  cursor:default;font-family:"宋体","SimSun",sans-serif;
+  border-bottom:1px solid #f0efe8;
+}
+.friend-item.clickable{cursor:pointer;}
+.friend-item.clickable:hover{background:#d8e8f8;}
+.friend-item.sel{background:#b4d8f8;}
+.friend-item.disabled{opacity:0.55;}
+.friend-item .f-avatar{
+  width:40px;height:40px;border-radius:3px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;color:#fff;font-weight:900;flex-shrink:0;
+  border:1px solid rgba(0,0,0,0.1);
+}
+.friend-item .f-info{flex:1;line-height:1.4;}
+.friend-item .f-name{font-size:15px;font-weight:900;color:#222;}
+.friend-item .f-sig{font-size:13px;color:#666;font-weight:900;}
+.friend-item .f-status{font-size:13px;color:#090;font-weight:900;}
+.panel-bot{
+  padding:5px 8px;
+  background:linear-gradient(to bottom,#e8e5dd,#d5d2c9);
+  border-top:2px solid #c0bfb8;
+  display:flex;align-items:center;gap:5px;
+}
+.panel-bot .ply{font-size:14px;color:#444;font-weight:900;font-family:"宋体",sans-serif;}
+.panel-bot .green-btn{
+  padding:3px 14px;font-size:13px;font-weight:900;
+  background:linear-gradient(to bottom,#4aaa4a,#3a8a3a);
+  border:2px solid #3a8a3a;
+  border-color:#5aca5a #2a7a2a #2a7a2a #5aca5a;
+  color:#fff;cursor:pointer;
+  font-family:"宋体","SimSun",sans-serif;
+}
+.panel-bot .green-btn:active{
+  border-color:#2a7a2a #5aca5a #5aca5a #2a7a2a;
+}
+.panel-bot .sm-icon{
+  width:22px;height:22px;
+  border:2px solid #999;border-radius:2px;
+  background:linear-gradient(to bottom,#f8f8f0,#d8d8d0);
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;color:#555;cursor:default;
+  font-family:"宋体",sans-serif;font-weight:900;
+}
+#chatWindow{
+  position:fixed;top:20px;left:395px;
+  width:800px;height:580px;
+  background:#f0f0e8;
+  border:2px solid #888;
+  border-color:#fff #666 #666 #fff;
+  box-shadow:2px 2px 10px rgba(0,0,0,0.35);
+  display:none;z-index:101;
+  flex-direction:column;
+}
+#chatWindow .chat-body{flex:1;display:flex;overflow:hidden;}
+.chat-funcbar{
+  height:30px;
+  background:linear-gradient(to bottom,#e8e8e0,#d8d8d0);
+  border-bottom:2px solid #b0b0a8;
+  display:flex;align-items:center;padding:0 8px;gap:4px;
+  flex-shrink:0;
+}
+.chat-funcbar .cf-btn{
+  padding:3px 12px;font-size:13px;font-weight:900;
+  background:linear-gradient(to bottom,#f0f0e8,#d8d8d0);
+  border:2px solid #999;
+  border-color:#fff #888 #888 #fff;
+  cursor:default;font-family:"宋体","SimSun",sans-serif;
+  color:#222;
+  display:flex;align-items:center;gap:2px;
+}
+.chat-funcbar .cf-btn:active{
+  border-color:#888 #fff #fff #888;
+}
+.chat-msg-area{flex:1;display:flex;flex-direction:column;}
+.chat-history{
+  flex:1;overflow-y:auto;padding:12px 18px;
+  background:#FFFFFF;
+  border-bottom:2px solid #DCDCDC;
+}
+.chat-history::-webkit-scrollbar{width:16px;}
+.chat-history::-webkit-scrollbar-track{background:#f0f0f0;}
+.chat-history::-webkit-scrollbar-thumb{
+  background:linear-gradient(to bottom,#d0d0d0,#b8b8b8);
+  border:1px solid #a0a0a0;
+  border-color:#e0e0e0 #888 #888 #e0e0e0;
+}
+.chat-history::-webkit-scrollbar-button{
+  background:linear-gradient(to bottom,#e8e8e8,#c8c8c8);
+  border:1px solid #999;
+  height:16px;display:block;
+}
+.chat-toolbar{
+  height:30px;
+  background:linear-gradient(to bottom,#f0f0e8,#e0e0d8);
+  border-bottom:2px solid #DCDCDC;
+  display:flex;align-items:center;padding:0 8px;gap:2px;
+}
+.chat-toolbar .ct-btn{
+  width:24px;height:24px;
+  border:2px solid #aaa;
+  border-color:#fff #888 #888 #fff;
+  background:linear-gradient(to bottom,#f8f8f0,#e0e0d8);
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;color:#444;cursor:default;
+  font-family:"宋体",sans-serif;font-weight:900;
+}
+.chat-toolbar .ct-btn:active{
+  border-color:#888 #fff #fff #888;
+}
+.chat-input-wrap{
+  height:80px;background:#f8f8f0;
+  border-bottom:2px solid #DCDCDC;
+  padding:6px;
+}
+.chat-input-wrap textarea{
+  width:100%;height:100%;border:none;resize:none;
+  font-family:"宋体","SimSun",sans-serif;
+  font-size:14px;font-weight:900;color:#222;
+  background:transparent;outline:none;
+  -webkit-font-smoothing:none;font-smooth:never;
+}
+.chat-bot-bar{
+  height:28px;
+  background:linear-gradient(to bottom,#e8e8e0,#d8d8d0);
+  display:flex;align-items:center;padding:0 8px;gap:4px;
+}
+.chat-bot-bar .cb-btn{
+  padding:3px 12px;font-size:13px;font-weight:900;
+  background:linear-gradient(to bottom,#f0f0e8,#d8d8d0);
+  border:2px solid #999;
+  border-color:#fff #888 #888 #fff;
+  cursor:default;font-family:"宋体","SimSun",sans-serif;
+  color:#222;
+}
+.chat-bot-bar .cb-btn:active{
+  border-color:#888 #fff #fff #888;
+}
+.chat-bot-bar .cb-btn.func{cursor:pointer;}
+.chat-bot-bar .cb-btn.send{
+  background:linear-gradient(to bottom,#e0e8f0,#c0d0e0);
+  font-weight:900;margin-left:auto;
+}
+.chat-sidebar{
+  width:180px;background:#f5f0e8;
+  border-left:2px solid #c0bfb8;
+  display:flex;flex-direction:column;flex-shrink:0;
+}
+.chat-sidebar .qs-section{
+  padding:10px;border-bottom:2px solid #d0ccc3;
+}
+.chat-sidebar .qs-section .qs-title{
+  font-size:14px;font-weight:900;color:#222;
+  font-family:"宋体","SimSun",sans-serif;
+  margin-bottom:6px;
+  border-bottom:1px solid #ccc;
+  padding-bottom:3px;
+}
+.chat-sidebar .qs-section .qs-item{
+  font-size:14px;font-weight:900;color:#444;
+  padding:4px 6px;margin-bottom:2px;
+  cursor:default;font-family:"宋体","SimSun",sans-serif;
+}
+.chat-sidebar .qs-section .qs-item.func{cursor:pointer;color:#06c;font-weight:900;}
+.chat-sidebar .qs-section .qs-item.func:hover{text-decoration:underline;background:#e0e8f4;border-radius:2px;}
+.chat-sidebar .qs-section .qs-item .qs-icon{display:inline-block;width:20px;text-align:center;margin-right:6px;font-size:14px;}
+.back-btn{
+  position:fixed;top:6px;right:10px;z-index:9999;
+  padding:3px 12px;font-size:13px;font-weight:900;
+  background:linear-gradient(to bottom,#f0f0e8,#d0d0c8);
+  border:2px solid #888;
+  border-color:#fff #666 #666 #fff;
+  cursor:pointer;font-family:"宋体","SimSun",sans-serif;
+}
+.back-btn:active{
+  border-color:#666 #fff #fff #666;
+}
+
+/* ===== QQ2011 聊天消息样式 ===== */
+.qq-date-sep{
+  margin-bottom:8px;
+}
+.qq-date-sep .date-text{
+  font-size:15px;color:#666;font-weight:900;
+  font-family:"Microsoft YaHei","SimSun",Arial,sans-serif;
+  margin-bottom:6px;
+}
+.qq-date-sep .date-line{
+  border:none;border-top:1px solid #E6E6E6;
+  margin:0;
+}
+.qq-msg{
+  margin-bottom:4px;padding-left:0;
+}
+.qq-msg .msg-header{
+  line-height:1.4;margin-bottom:4px;
+}
+.qq-msg .msg-header .nick{
+  font-size:15px;font-weight:900;
+  font-family:"Microsoft YaHei","SimSun",Arial,sans-serif;
+}
+.qq-msg .msg-header .nick.self{color:#2A73C5;font-weight:900;font-size:16px;}
+.qq-msg .msg-header .nick.friend{color:#3A9D96;}
+.qq-msg .msg-header .msg-time{
+  font-size:12px;color:#888888;font-weight:900;
+  font-family:"Microsoft YaHei","SimSun",Arial,sans-serif;
+  margin-left:6px;
+}
+.qq-msg .msg-body{
+  font-size:16px;color:#222222;font-weight:900;
+  font-family:"Microsoft YaHei","SimSun",Arial,sans-serif;
+  line-height:1.6;padding-left:0;
+}
+.qq-msg .msg-body .qq-emoticon{
+  display:inline-block;width:20px;height:20px;
+  vertical-align:middle;margin:0 1px;
+}
+.qq-msg .msg-body .qq-emoticon svg{width:20px;height:20px;display:block;}
+.qq-msg-gap{margin-bottom:14px;}
+.qq-msg-gap-diff{margin-bottom:18px;}
+
+.ec-badge{position:fixed;top:10px;right:12px;z-index:100000;background:rgba(45,45,55,0.55);border:1px solid rgba(90,90,100,0.4);border-radius:4px;padding:2px 8px;font-family:"Microsoft YaHei","微软雅黑",sans-serif;font-size:13px;color:#d0c8b8;box-shadow:1px 1px 4px rgba(0,0,0,0.2);letter-spacing:1px;backdrop-filter:blur(2px);pointer-events:none;}
+.ec-badge .ec-n{color:#f0d878;font-weight:bold;font-size:15px;}
+.ec-badge .ec-t{color:#b0a898;}
+</style>
+</head>
+<body>
+
+<!-- 登录弹窗 -->
+<div class="login-win" id="loginWin">
+  <div class="login-bg" style="position:relative;">
+    <span onclick="window.location.href='desktop.html'" style="position:absolute;top:6px;right:10px;width:28px;height:28px;cursor:pointer;z-index:10;opacity:0;">&#10005;</span>
+    <img src="qq_login_bg.jpg" style="width:100%;display:block;">
+    <input type="text" id="accountInput" placeholder="手机号码"
+      onkeydown="if(event.key==='Enter')doLogin()"
+      style="position:absolute;left:29%;top:52%;width:36%;height:8.9%;
+        border:none;background:transparent;
+        padding:0 8px;outline:none;cursor:text;
+        font-size:14px;font-family:宋体,Tahoma,sans-serif;font-weight:900;
+        -webkit-font-smoothing:none;font-smooth:never;">
+    <input type="password" id="pwdInput" placeholder="密码（四位数字）"
+      onkeydown="if(event.key==='Enter')doLogin()"
+      style="position:absolute;left:29%;top:66%;width:36%;height:8.8%;
+        border:none;background:transparent;
+        padding:0 8px;outline:none;cursor:text;
+        font-size:14px;font-family:宋体,Tahoma,sans-serif;font-weight:900;
+        -webkit-font-smoothing:none;font-smooth:never;">
+    <div class="login-error" id="loginError"
+      style="position:absolute;left:29%;top:75%;font-size:13px;color:#c00;font-weight:900;display:none;">
+      账号或密码错误
+    </div>
+    <div onclick="doLogin()"
+      style="position:absolute;right:0;bottom:0;width:45%;height:25%;
+        cursor:pointer;background:transparent;">
+    </div>
+  </div>
+</div>
+
+<!-- ===== QQ主面板 ===== -->
+<div id="qqPanel">
+  <div class="xp-titlebar" id="panelTitlebar">
+    <span class="tb-icon">Q</span>
+    <span class="tb-text">QQ2012</span>
+    <span class="tb-btns">
+      <span class="tb-btn">&#95;</span>
+      <span class="tb-btn">&#9744;</span>
+      <span class="tb-btn close" onclick="window.location.href='desktop.html'">&#10005;</span>
+    </span>
+  </div>
+  <div class="panel-body">
+    <div class="panel-top">
+      <div class="avatar" id="mqyAvatar">
+        <img src="avatar_mqy.jpg" alt="梅青云">
+      </div>
+      <div class="user-info">
+        <div class="user-name">你说爱像云</div>
+        <div class="user-status">&#9670; 在线</div>
+      </div>
+      <div class="top-icons">
+        <span class="ti" title="QQ空间" onclick="window.open('qqzone.html','_blank')" style="font-size:15px;width:32px;background:linear-gradient(to bottom,#e8f0ff,#c8d8f0);border-color:#88a0c0;">&#9733;</span>
+        <span class="ti" title="QQ相册" style="cursor:default;">&#128247;</span>
+        <span class="ti" title="QQ邮箱">&#9993;</span>
+      </div>
+    </div>
+    <div class="panel-mid">
+      <div class="icon-bar">
+        <span class="ib-icon" style="background:#4c8;">&#9786;</span>
+        <span class="ib-icon" style="background:#49c;">T</span>
+        <span class="ib-icon" style="background:#c84;">&#9990;</span>
+        <span class="ib-icon" style="background:#c4c;">&#9835;</span>
+        <span class="ib-icon" style="background:#48c;">&#9733;</span>
+      </div>
+      <div class="friend-list-wrap">
+        <div class="group-title">我的好友 (4/6)</div>
+        <div class="friend-item clickable" data-friend="lillian">
+          <span class="f-avatar" style="border:none;overflow:hidden;"><img src="avatar_ayuan.jpg" style="width:100%;height:100%;object-fit:cover;border-radius:3px;"></span>
+          <span class="f-info">
+            <span class="f-name">阿远</span>
+            <span class="f-sig">明天见</span>
+          </span>
+        </div>
+        <div class="friend-item clickable" data-friend="yanxin">
+          <span class="f-avatar" style="border:none;overflow:hidden;"><img src="avatar_yanxin.jpg" style="width:100%;height:100%;object-fit:cover;border-radius:3px;"></span>
+          <span class="f-info">
+            <span class="f-name">严信</span>
+            <span class="f-sig">漂流瓶最终会流去哪里呢</span>
+          </span>
+        </div>
+        <div class="friend-item clickable" data-friend="lanlan">
+          <span class="f-avatar" style="border:none;overflow:hidden;"><img src="avatar_lanlan.jpg" style="width:100%;height:100%;object-fit:cover;border-radius:3px;"></span>
+          <span class="f-info">
+            <span class="f-name">蓝小蓝</span>
+            <span class="f-sig">既然选择了地平线,那留给世界的只能是背影</span>
+          </span>
+        </div>
+        <div class="friend-item clickable" data-friend="xiaoxiao">
+          <span class="f-avatar" style="border:none;overflow:hidden;"><img src="avatar_xiaoxiao.jpg" style="width:100%;height:100%;object-fit:cover;border-radius:3px;"></span>
+          <span class="f-info">
+            <span class="f-name">不觉晓</span>
+            <span class="f-sig">承诺。。。多么卑微。。。</span>
+          </span>
+        </div>
+        <div class="group-title">QQ town</div>
+        <div class="friend-item disabled">
+          <span class="f-avatar" style="background:#c0c0c0;">T</span>
+          <span class="f-info">
+            <span class="f-name">Town管理员</span>
+            <span class="f-sig">小镇欢迎你</span>
+          </span>
+        </div>
+        <div class="group-title">手机好友</div>
+        <div class="friend-item disabled">
+          <span class="f-avatar" style="background:#c0c0c0;">手</span>
+          <span class="f-info">
+            <span class="f-name">手机联系人</span>
+            <span class="f-sig">暂无在线</span>
+          </span>
+        </div>
+        <div class="group-title">群/校友录</div>
+        <div class="friend-item disabled">
+          <span class="f-avatar" style="border:none;overflow:hidden;"><img src="avatar_group.png" style="width:100%;height:100%;object-fit:cover;border-radius:3px;"></span>
+          <span class="f-info">
+            <span class="f-name">槐花理工校友群</span>
+            <span class="f-sig">123条消息</span>
+          </span>
+        </div>
+        <div class="group-title">最近联系人</div>
+        <div class="friend-item disabled">
+          <span class="f-avatar" style="background:#c0c0c0;">近</span>
+          <span class="f-info">
+            <span class="f-name">最近联系人</span>
+            <span class="f-sig">暂无记录</span>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="panel-bot">
+      <span class="ply">&#9654;</span>
+      <span class="green-btn" onclick="alert('QQ菜单')">菜单</span>
+      <span class="green-btn" onclick="alert('查找')">查找</span>
+      <span class="sm-icon">&#9829;</span>
+      <span class="sm-icon">&#9733;</span>
+      <span class="sm-icon">&#9788;</span>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 聊天窗口 ===== -->
+<div id="chatWindow">
+  <div class="xp-titlebar" id="chatTitlebar">
+    <span class="tb-icon">&#9993;</span>
+    <span class="tb-text" id="chatTitle">与 阿远 聊天中</span>
+    <span class="tb-btns">
+      <span class="tb-btn">&#95;</span>
+      <span class="tb-btn">&#9744;</span>
+      <span class="tb-btn close" onclick="closeChat()">&#10005;</span>
+    </span>
+  </div>
+  <div class="chat-funcbar">
+    <span class="cf-btn">&#9654; 影音交谈</span>
+    <span class="cf-btn">&#9654; 传文件</span>
+    <span class="cf-btn">&#9993; 短信</span>
+    <span class="cf-btn">&#9829; 游戏</span>
+    <span class="cf-btn">&#9788; 远程控制</span>
+  </div>
+  <div class="chat-body">
+    <div class="chat-msg-area">
+      <div class="chat-history" id="chatHistory">
+      </div>
+      <div class="chat-toolbar">
+        <span class="ct-btn">B</span>
+        <span class="ct-btn">I</span>
+        <span class="ct-btn">U</span>
+        <span class="ct-btn" style="font-size:13px;">A</span>
+        <span class="ct-btn">&#9786;</span>
+        <span class="ct-btn" style="font-size:10px;">&#128247;</span>
+        <span class="ct-btn" style="font-size:10px;">&#128206;</span>
+        <span class="ct-btn" style="font-size:10px;">&#128176;</span>
+      </div>
+      <div class="chat-input-wrap">
+        <textarea placeholder="请输入消息..." disabled></textarea>
+      </div>
+      <div class="chat-bot-bar">
+        <span class="cb-btn func" onclick="alert('聊天记录')">聊天记录</span>
+        <span class="cb-btn">消息模式</span>
+        <span class="cb-btn" onclick="closeChat()">关闭</span>
+        <span class="cb-btn send" onclick="alert('消息功能暂不可用')">发送</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<script>
+// ===== QQ表情 SVG 定义 =====
+var emoticons = {
+  '微笑': '<svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="9" fill="#FFD700" stroke="#DAA520" stroke-width="0.5"/><circle cx="6.5" cy="8" r="1.2" fill="#333"/><circle cx="13.5" cy="8" r="1.2" fill="#333"/><path d="M5 13 Q10 17 15 13" stroke="#333" stroke-width="1.2" fill="none" stroke-linecap="round"/></svg>',
+  '委屈': '<svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="9" fill="#FFD700" stroke="#DAA520" stroke-width="0.5"/><circle cx="6.5" cy="7.5" r="1.2" fill="#333"/><circle cx="13.5" cy="7.5" r="1.2" fill="#333"/><path d="M5 14 Q10 11 15 14" stroke="#333" stroke-width="1.2" fill="none" stroke-linecap="round"/><path d="M4 6 Q6 4.5 8 6" stroke="#333" stroke-width="0.8" fill="none"/><path d="M12 6 Q14 4.5 16 6" stroke="#333" stroke-width="0.8" fill="none"/></svg>',
+  '亲亲': '<svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="9" fill="#FFD700" stroke="#DAA520" stroke-width="0.5"/><circle cx="6.5" cy="8" r="1.2" fill="#333"/><circle cx="13.5" cy="8" r="1.2" fill="#333"/><path d="M7 14 Q8.5 16 10 14 Q11.5 16 13 14" stroke="#E8536D" stroke-width="1.5" fill="#E8536D" stroke-linecap="round"/></svg>',
+  '害羞': '<svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="9" fill="#FFD700" stroke="#DAA520" stroke-width="0.5"/><circle cx="6.5" cy="8" r="1.2" fill="#333"/><circle cx="13.5" cy="8" r="1.2" fill="#333"/><path d="M5 13 Q10 16 15 13" stroke="#333" stroke-width="1.2" fill="none" stroke-linecap="round"/><ellipse cx="5" cy="12.5" rx="3" ry="1.5" fill="#FFB6C1" opacity="0.6"/><ellipse cx="15" cy="12.5" rx="3" ry="1.5" fill="#FFB6C1" opacity="0.6"/></svg>',
+  '大哭': '<svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="9" fill="#FFD700" stroke="#DAA520" stroke-width="0.5"/><circle cx="6.5" cy="8" r="1.2" fill="#333"/><circle cx="13.5" cy="8" r="1.2" fill="#333"/><ellipse cx="10" cy="13" rx="2.5" ry="2" fill="#333"/><path d="M4 7 Q3 5 4 4" stroke="#6CB4EE" stroke-width="1" fill="none"/><circle cx="4.5" cy="4.5" r="0.8" fill="#6CB4EE"/><path d="M16 7 Q17 5 16 4" stroke="#6CB4EE" stroke-width="1" fill="none"/><circle cx="15.5" cy="4.5" r="0.8" fill="#6CB4EE"/></svg>',
+  '可爱': '<svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="9" fill="#FFD700" stroke="#DAA520" stroke-width="0.5"/><path d="M5.5 8 Q6.5 6 7.5 8" stroke="#333" stroke-width="1" fill="none"/><path d="M12.5 8 Q13.5 6 14.5 8" stroke="#333" stroke-width="1" fill="none"/><path d="M5 13 Q10 17 15 13" stroke="#333" stroke-width="1.2" fill="none" stroke-linecap="round"/><circle cx="5.5" cy="7" r="0.6" fill="#fff"/><circle cx="6" cy="6.5" r="0.4" fill="#fff"/><circle cx="14.5" cy="7" r="0.6" fill="#fff"/><circle cx="14" cy="6.5" r="0.4" fill="#fff"/></svg>',
+  '奸笑': '<svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="9" fill="#FFD700" stroke="#DAA520" stroke-width="0.5"/><ellipse cx="6.5" cy="8" rx="1.5" ry="1" fill="#333" transform="rotate(-10 6.5 8)"/><ellipse cx="13.5" cy="8" rx="1.5" ry="1" fill="#333" transform="rotate(10 13.5 8)"/><path d="M5 13 Q10 16 15 13" stroke="#333" stroke-width="1.2" fill="none" stroke-linecap="round"/><path d="M14 10 L17 8 L16 11" stroke="#333" stroke-width="1" fill="none"/></svg>',
+  '微笑_old': '<svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="9" fill="#FFD700" stroke="#DAA520" stroke-width="0.5"/><line x1="6" y1="7.5" x2="8" y2="7.5" stroke="#333" stroke-width="1.2" stroke-linecap="round"/><line x1="12" y1="7.5" x2="14" y2="7.5" stroke="#333" stroke-width="1.2" stroke-linecap="round"/><path d="M5 13 Q10 17 15 13" stroke="#333" stroke-width="1.2" fill="none" stroke-linecap="round"/></svg>'
+};
+
+function renderEmoticons(text){
+  var html = text;
+  for(var name in emoticons){
+    var re = new RegExp('\\[' + name + '\\]', 'g');
+    html = html.replace(re, '<span class="qq-emoticon">' + emoticons[name] + '</span>');
+  }
+  return html;
+}
+
+// ===== 聊天数据 =====
+var chatData = {
+  lillian: {
+    friendName: '阿远',
+    msgs: [
+      {type:'date', text:'2005-12-07'},
+      {type:'msg', time:'19:23', side:'f', text:'经常在图书馆看到你，没想到这么巧你正好把最后一本这本书给借走了XDXD'},
+      {type:'msg', time:'19:25', side:'s', text:'其实我挺少看这种书的，只是舍友推荐过我突然想起来就想来借一下～～等我看完了我再给你哦！^_^'},
+      {type:'date', text:'2006-03-15'},
+      {type:'msg', time:'12:10', side:'f', text:'今天在食堂看到你一个人吃饭，怎么没叫你室友？'},
+      {type:'msg', time:'12:15', side:'s', text:'她们都有课，我一个人也习惯了～(◕‿◕✿)'},
+      {type:'msg', time:'12:16', side:'f', text:'下次叫我一起吧，反正我也经常一个人。'},
+      {type:'msg', time:'12:18', side:'s', text:'好啊，那说定了~(≧▽≦)~'},
+      {type:'date', text:'2006-09-20'},
+      {type:'msg', time:'22:05', side:'f', text:'你上次推荐的那首歌我听了，单曲循环了一整个下午。'},
+      {type:'msg', time:'22:08', side:'s', text:'是吧！我就说你一定会喜欢的~(≧▽≦)~'},
+      {type:'msg', time:'22:10', side:'f', text:'歌词写得真好，我抄了一份放在笔记本里了。'},
+      {type:'date', text:'2007-01-21'},
+      {type:'msg', time:'14:30', side:'f', text:'今天和你说的那些是我唐突了，青云我在这里跟你道歉。'},
+      {type:'msg', time:'17:45', side:'s', text:'你现在有空吗，我在你宿舍门口带了点吃的。'},
+      {type:'date', text:'2007-06-08'},
+      {type:'msg', time:'16:22', side:'f', text:'今天去图书馆发现管理员阿姨还认得我，问我那个总和你一起的姑娘呢。'},
+      {type:'msg', time:'16:25', side:'s', text:'你怎么说的？'},
+      {type:'msg', time:'16:26', side:'f', text:'我说她最近忙着别的事情，过阵子就来。'},
+      {type:'date', text:'2008-04-12'},
+      {type:'msg', time:'18:40', side:'f', text:'快出来看，操场那边晚霞很好看。'},
+      {type:'msg', time:'18:42', side:'s', text:'来了来了～等等我穿个外套(◕‿◕✿)'},
+      {type:'date', text:'2009-05-20'},
+      {type:'msg', time:'14:30', side:'f', text:'青云，河洲路那边通知我可以去上班了。'},
+      {type:'msg', time:'14:32', side:'s', text:'真的吗？！太棒了！~(≧▽≦)~'},
+      {type:'msg', time:'14:34', side:'f', text:'以后就是为人民服务的基层工作者了。'},
+      {type:'msg', time:'14:36', side:'s', text:'你一直都想做这个，恭喜你阿远～(◕‿◕✿)'},
+      {type:'date', text:'2009-06-15'},
+      {type:'msg', time:'11:30', side:'f', text:'答辩终于完了。'},
+      {type:'msg', time:'11:32', side:'s', text:'恭喜恭喜！晚上出去搓一顿庆祝一下？~(≧▽≦)~'},
+      {type:'msg', time:'11:33', side:'f', text:'可以，晚上一起吃饭吧。'},
+      {type:'date', text:'2009-11-09'},
+      {type:'msg', time:'20:05', side:'f', text:'今天我妈问了我，我跟她说了实话，吵了一架，被赶出来了。'},
+      {type:'msg', time:'20:08', side:'s', text:'你放心我肯定会罩着你的，你打车到我家来我来接你'},
+      {type:'date', text:'2010-06-08'},
+      {type:'msg', time:'18:50', side:'s', text:'我买了我们最最喜欢的鸭子回来啦～(◕‿◕✿)'},
+      {type:'msg', time:'18:52', side:'f', text:'好，等你。'},
+      {type:'date', text:'2010-12-15'},
+      {type:'msg', time:'19:30', side:'f', text:'我给你留了一个惊喜'},
+      {type:'msg', time:'19:31', side:'s', text:'什么嘛'},
+      {type:'msg', time:'19:32', side:'f', text:'你会知道的'},
+      {type:'msg', time:'19:33', side:'s', text:'不要卖关子啦！！！'},
+      {type:'date', text:'2011-06-03'},
+      {type:'msg', time:'20:01', side:'s', text:'那个女孩怎么样了'},
+      {type:'msg', time:'20:05', side:'f', text:'现在状态已经慢慢稳定了，下次我带你一起去看看她。'},
+      {type:'msg', time:'20:08', side:'s', text:'好，那就好。你也要注意休息。'},
+      {type:'msg', time:'20:10', side:'f', text:'我知道的，你放心^_^'},
+      {type:'date', text:'2011-08-15'},
+      {type:'msg', time:'18:00', side:'f', text:'周末一起吃饭吧，我发工资了。'},
+      {type:'msg', time:'18:02', side:'s', text:'好啊，那我就不客气了~(≧▽≦)~'}
+    ]
+  },
+  yanxin: {
+    friendName: '严信',
+    msgs: [
+      {type:'date', text:'2010-05-12'},
+      {type:'msg', time:'12:00', side:'s', text:'严信哥，你们啥时候下班呢，我来找你们一起吃个午饭'},
+      {type:'msg', time:'12:05', side:'f', text:'好啊 我们马上下来了'},
+      {type:'date', text:'2011-12-29'},
+      {type:'msg', time:'09:10', side:'s', text:'谢谢你这段时间的照顾和帮助，等事情尘埃落定之后我就打算带着意意去红江。'},
+      {type:'msg', time:'09:15', side:'f', text:'还回来么？'},
+      {type:'msg', time:'09:18', side:'s', text:'应该不回来了。'},
+      {type:'msg', time:'09:20', side:'f', text:'好，有什么需要尽管同我说。'},
+      {type:'date', text:'2019-11-05'},
+      {type:'msg', time:'21:30', side:'f', text:'青云我刚刚好像在街上碰到你了，是你吗，你回来了吗'}
+    ]
+  },
+  lanlan: {
+    friendName: '蓝小蓝',
+    msgs: [
+      {type:'date', text:'2006-09-12'},
+      {type:'msg', time:'14:30', side:'f', text:'青云！下午公共课帮我占个座呗，我睡过头了(＞﹏＜)'},
+      {type:'msg', time:'14:32', side:'s', text:'你呀，每次都这样。第三排靠窗，老位置。'},
+      {type:'msg', time:'14:33', side:'f', text:'好嘞！爱你！(づ￣3￣)づ'},
+      {type:'date', text:'2007-05-20'},
+      {type:'msg', time:'21:00', side:'s', text:'蓝蓝你睡了吗？出来陪我走走呗。'},
+      {type:'msg', time:'21:02', side:'f', text:'没呢！正好我刚刷完一部剧，你在哪？'},
+      {type:'msg', time:'21:05', side:'s', text:'操场看台这边，今晚星星好多。'},
+      {type:'msg', time:'21:08', side:'f', text:'来了来了！等我带两瓶酸奶~(≧▽≦)~'},
+      {type:'date', text:'2008-10-28'},
+      {type:'msg', time:'15:30', side:'f', text:'青云你听说了吗？学校门口那家奶茶店要转让了T_T'},
+      {type:'msg', time:'15:33', side:'s', text:'不是吧？我超爱他家的珍珠奶茶！'},
+      {type:'msg', time:'15:35', side:'f', text:'就是说啊！以后再也喝不到了，趁关门前去多买几杯'},
+      {type:'date', text:'2009-04-15'},
+      {type:'msg', time:'10:30', side:'f', text:'青云，今天天气真好，要不要出去走走？^_^'},
+      {type:'msg', time:'10:32', side:'s', text:'好啊，去哪里？'},
+      {type:'msg', time:'10:33', side:'f', text:'去图书馆吧，上次你推荐那本书我借到了。'},
+      {type:'msg', time:'10:35', side:'s', text:'真的吗？太好了！~(≧▽≦)~'},
+      {type:'date', text:'2009-06-15'},
+      {type:'msg', time:'12:00', side:'f', text:'青云！毕业快乐！！~(≧▽≦)~'},
+      {type:'msg', time:'12:02', side:'s', text:'毕业快乐！！以后也要常联系呀！'},
+      {type:'msg', time:'12:03', side:'f', text:'那必须的！'}
+    ]
+  },
+  xiaoxiao: {
+    friendName: '不觉晓',
+    msgs: [
+      {type:'date', text:'2005-10-08'},
+      {type:'msg', time:'19:45', side:'f', text:'青云，作业写完了吗？借我抄抄(＞﹏＜)'},
+      {type:'msg', time:'19:50', side:'s', text:'你呀，下次认真听课！'},
+      {type:'msg', time:'19:52', side:'f', text:'知道了知道了，明天请你喝奶茶。(⁄ ⁄•⁄ω⁄•⁄ ⁄)'},
+      {type:'msg', time:'19:55', side:'s', text:'这还差不多，明天带给你。^_^'},
+      {type:'date', text:'2007-03-22'},
+      {type:'msg', time:'20:10', side:'f', text:'青云你看学校论坛了吗？说下周有校园歌手大赛！'},
+      {type:'msg', time:'20:12', side:'s', text:'看到了，你要报名吗？'},
+      {type:'msg', time:'20:15', side:'f', text:'我哪敢啊！去当观众给你加油还差不多~(≧▽≦)~'},
+      {type:'date', text:'2009-01-10'},
+      {type:'msg', time:'21:00', side:'f', text:'新年快乐！新的一年也要一起玩呀！~(≧▽≦)~'},
+      {type:'msg', time:'21:02', side:'s', text:'新年快乐！一定！'},
+      {type:'date', text:'2009-06-20'},
+      {type:'msg', time:'16:00', side:'f', text:'要毕业了好舍不得你们T_T'},
+      {type:'msg', time:'16:03', side:'s', text:'我也舍不得。。以后要常联系呀！'},
+      {type:'msg', time:'16:05', side:'f', text:'一定！我们拉钩！'}
+    ]
+  }
+};
+
+// ===== 渲染聊天 =====
+function renderChat(friendKey){
+  var data = chatData[friendKey];
+  if(!data) return;
+  var container = document.getElementById('chatHistory');
+  container.innerHTML = '';
+  
+  var prevSide = '';
+  for(var i=0;i<data.msgs.length;i++){
+    var m = data.msgs[i];
+    
+    if(m.type === 'date'){
+      var sepDiv = document.createElement('div');
+      sepDiv.className = 'qq-date-sep';
+      sepDiv.innerHTML = '<div class="date-text">' + m.text + '</div><hr class="date-line">';
+      container.appendChild(sepDiv);
+      prevSide = '';
+      continue;
+    }
+    
+    // 判断消息间隔
+    var gapClass = 'qq-msg-gap';
+    if(prevSide && prevSide !== m.side){
+      gapClass = 'qq-msg-gap-diff';
+    }
+    prevSide = m.side;
+    
+    var msgDiv = document.createElement('div');
+    msgDiv.className = 'qq-msg ' + gapClass;
+    
+    var senderName = (m.side === 's') ? '你说爱像云' : data.friendName;
+    var nickClass = (m.side === 's') ? 'self' : 'friend';
+    var extraStyle = '';
+    if(m.draft) extraStyle = ' style="color:#999;"';
+    
+    msgDiv.innerHTML = 
+      '<div class="msg-header">' +
+        '<span class="nick ' + nickClass + '">' + senderName + '</span>' +
+        '<span class="msg-time" style="color:#888888;">' + m.time + '</span>' +
+      '</div>' +
+      '<div class="msg-body"' + extraStyle + '>' + m.text + '</div>';
+    
+    container.appendChild(msgDiv);
+  }
+  
+  container.scrollTop = container.scrollHeight;
+}
+
+// ===== 切换聊天 =====
+function switchChat(friendKey){
+  var titles = {lillian:'与 阿远 聊天中', yanxin:'与 严信 聊天中', lanlan:'与 蓝小蓝 聊天中', xiaoxiao:'与 不觉晓 聊天中'};
+  document.getElementById('chatTitle').textContent = titles[friendKey] || '与 好友 聊天中';
+  renderChat(friendKey);
+  document.getElementById('chatWindow').style.display = 'flex';
+  var items = document.querySelectorAll('.friend-item');
+  for(var i=0;i<items.length;i++) items[i].classList.remove('sel');
+  var selItem = document.querySelector('.friend-item[data-friend="' + friendKey + '"]');
+  if(selItem) selItem.classList.add('sel');
+}
+
+function doLogin(){
+  var account = document.getElementById('accountInput').value.trim();
+  var pwd = document.getElementById('pwdInput').value.trim();
+  if((account === '1973672118' && pwd === '1105') || (account === '111' && pwd === '111')){
+    document.getElementById('loginWin').style.display = 'none';
+    document.getElementById('qqPanel').style.display = 'flex';updBadge('9');
+    document.getElementById('chatWindow').style.display = 'flex';
+    document.getElementById('loginError').style.display = 'none';
+    switchChat('lillian');
+  } else {
+    document.getElementById('loginError').style.display = 'block';
+  }
+}
+
+function closeChat(){document.getElementById('chatWindow').style.display = 'none';}
+
+(function(){
+  var items = document.querySelectorAll('.friend-item.clickable');
+  for(var i=0;i<items.length;i++){
+    (function(item){
+      item.onclick = function(){
+        var key = this.getAttribute('data-friend');
+        if(key) switchChat(key);
+      };
+    })(items[i]);
+  }
+})();
+
+function makeDraggable(el, handle){
+  var ox, oy, mx, my, dragging = false;
+  handle.onmousedown = function(e){
+    dragging = true; ox = e.clientX; oy = e.clientY;
+    mx = parseInt(el.style.left) || 0;
+    my = parseInt(el.style.top) || 0;
+    document.onmousemove = function(ev){
+      if(!dragging) return;
+      el.style.left = (mx + ev.clientX - ox) + 'px';
+      el.style.top = (my + ev.clientY - oy) + 'px';
+    };
+    document.onmouseup = function(){ dragging = false; };
+    e.preventDefault();
+  };
+}
+makeDraggable(document.getElementById('qqPanel'), document.getElementById('panelTitlebar'));
+makeDraggable(document.getElementById('chatWindow'), document.getElementById('chatTitlebar'));
+;function updBadge(n){var e=document.getElementById("ecBadge");if(e)e.querySelector(".ec-n").textContent=n;}
+</script>
+
+<script>discoverEvidence("4");</script>
+<div class="ec-badge" id="ecBadge"><span class="ec-n">4</span><span class="ec-t">/29</span></div>
+</body>
+</html>

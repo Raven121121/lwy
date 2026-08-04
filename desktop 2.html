@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Windows XP</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:100%;height:100%;overflow:hidden;}
+body{
+  background:url('wallpaper.jpg') center/cover no-repeat;
+  font-family:"Tahoma","MS Sans Serif","Arial","宋体","SimSun",sans-serif;
+  font-size:16px;-webkit-font-smoothing:none;-moz-osx-font-smoothing:unset;font-smooth:never;
+  user-select:none;
+  cursor:url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%2714%27%20height%3D%2719%27%3E%3Cpolygon%20points%3D%271%2C1%201%2C16%204%2C13%207%2C18%209%2C16%206%2C11%2013%2C11%27%20fill%3D%27white%27%20stroke%3D%27black%27%20stroke-width%3D%271%27%2F%3E%3C%2Fsvg%3E") 1 1,auto;
+}
+img,svg{image-rendering:pixelated;image-rendering:crisp-edges;-ms-interpolation-mode:nearest-neighbor;}
+
+.desktop-icons{
+  position:absolute;top:10px;left:14px;
+  display:grid;
+  grid-template-rows:repeat(5,minmax(96px,auto));
+  grid-auto-flow:column;
+  gap:0;
+}
+.ico{
+  width:84px;padding:6px 2px 3px;
+  display:flex;flex-direction:column;align-items:center;
+  cursor:pointer;border:1px solid transparent;
+}
+.ico:hover{background:rgba(255,255,255,0.08);}
+.ico.sel{background:rgba(0,0,128,0.12);border:1px dotted rgba(0,0,128,0.3);}
+.ico .i-img{
+  width:48px;height:48px;display:flex;align-items:center;justify-content:center;
+  margin-bottom:3px;flex-shrink:0;
+  background-size:contain;background-position:center;background-repeat:no-repeat;
+}
+.ico .i-label{
+  font-size:16px;font-weight:bold;color:#fff;text-align:center;
+  line-height:1.25;max-width:80px;word-wrap:break-word;
+  text-shadow:0 1px 3px #000,0 0 2px #000;
+  -webkit-font-smoothing:none;font-smooth:never;
+}
+
+.taskbar{
+  position:fixed;bottom:0;left:0;width:100%;height:36px;
+  background:linear-gradient(to bottom,#3169d0,#2550a8 20%,#1a4490 50%,#1a3e88 55%,#2550a8 80%,#3169d0);
+  display:flex;align-items:center;z-index:9999;
+  border-top:1px solid #88b0e8;
+}
+.start-btn{
+  height:32px;min-width:74px;padding:0 8px 0 6px;
+  background:linear-gradient(to bottom,#72c864,#4ea842 30%,#3d9030 60%,#358028);
+  border:1px solid #2d6a22;border-radius:0 10px 10px 0;
+  display:flex;align-items:center;justify-content:center;gap:4px;
+  cursor:pointer;box-shadow:inset 1px 1px 0 rgba(255,255,255,0.3);
+}
+.start-btn:active{background:linear-gradient(to bottom,#358028,#4ea842);}
+.start-text{
+  font-size:17px;font-weight:bold;color:#fff;font-style:italic;
+  text-shadow:1px 1px 0 rgba(0,0,0,0.5);
+  -webkit-font-smoothing:none;font-smooth:never;
+}
+.tb-dv{width:1px;height:24px;background:rgba(255,255,255,0.15);margin:0 4px;}
+.tb-items{display:flex;align-items:center;gap:1px;flex:1;overflow:hidden;padding:0 2px;}
+.tb-item{
+  height:28px;padding:0 8px;
+  background:linear-gradient(to bottom,rgba(255,255,255,0.15),rgba(255,255,255,0.06));
+  border:1px solid rgba(255,255,255,0.10);border-radius:2px;
+  display:flex;align-items:center;gap:4px;
+  cursor:pointer;font-size:15px;font-weight:bold;color:#e8e8e8;white-space:nowrap;
+  font-family:"Tahoma","MS Sans Serif",sans-serif;
+}
+.tb-item:hover{background:linear-gradient(to bottom,rgba(255,255,255,0.2),rgba(255,255,255,0.1));}
+.tb-right{margin-left:auto;display:flex;align-items:center;padding-right:4px;}
+.tb-tray{height:24px;padding:0 4px;display:flex;align-items:center;gap:2px;}
+.tb-clock{
+  font-size:15px;font-weight:bold;color:#e0e0e0;padding:0 6px;white-space:nowrap;
+  font-family:"Tahoma","MS Sans Serif",sans-serif;
+}
+
+.xp-win{
+  position:fixed;display:none;flex-direction:column;
+  background:#ece9d8;border:1px solid #0055dd;
+  border-radius:8px 8px 0 0;box-shadow:2px 2px 12px rgba(0,0,0,0.4);
+  z-index:100;overflow:hidden;
+}
+.xp-win.open{display:flex;}
+.xp-win.max{top:0!important;left:0!important;width:100vw!important;height:calc(100vh-36px)!important;border-radius:0;}
+.xp-win .titlebar{
+  height:28px;background:linear-gradient(to bottom,#0066ff,#0055dd 15%,#0044bb 50%,#003399);
+  display:flex;align-items:center;padding:0 4px;cursor:default;flex-shrink:0;
+}
+.xp-win .title-text{
+  flex:1;font-size:16px;font-weight:bold;color:#fff;padding-left:6px;overflow:hidden;white-space:nowrap;
+  font-family:"Tahoma","MS Sans Serif",sans-serif;text-shadow:0 1px 0 rgba(0,0,0,0.4);
+}
+.xp-win .tbtns{display:flex;gap:2px;margin-right:2px;}
+.xp-win .tbtns button{
+  width:21px;height:21px;
+  border:1px solid;border-color:rgba(255,255,255,0.5) rgba(0,0,0,0.2) rgba(0,0,0,0.2) rgba(255,255,255,0.5);
+  border-radius:3px;font-size:15px;font-weight:bold;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;padding:0;line-height:1;
+  font-family:"Tahoma","MS Sans Serif",sans-serif;
+  background:linear-gradient(to bottom,rgba(255,255,255,0.2),rgba(0,0,0,0.1));color:#000;
+}
+.xp-win .btn-close{background:linear-gradient(to bottom,#f08080,#c04040);color:#fff;}
+.xp-win .btn-close:hover{background:linear-gradient(to bottom,#ff9090,#d05050);}
+.xp-win .menubar{
+  height:22px;background:#ece9d8;display:flex;align-items:center;padding:0 3px;
+  border-bottom:1px solid #c0c0c0;flex-shrink:0;
+}
+.xp-win .menubar span{
+  font-size:16px;font-weight:bold;padding:1px 7px;cursor:pointer;color:#111;
+  font-family:"Tahoma","MS Sans Serif","宋体",sans-serif;
+}
+.xp-win .menubar span:hover{background:#1a3a8a;color:#fff;}
+.xp-win .body{
+  flex:1;background:#fff;border:1px solid #b0b0b0;border-color:#b0b0b0 #ddd #ddd #b0b0b0;
+  margin:2px;padding:10px;overflow:auto;
+  font-family:"Tahoma","MS Sans Serif","宋体",sans-serif;
+  font-size:16px;color:#222;line-height:1.6;
+}
+.xp-win .status{
+  height:20px;background:#ece9d8;border-top:1px solid #c0c0c0;
+  display:flex;align-items:center;padding:0 6px;
+  font-size:15px;font-weight:bold;color:#444;flex-shrink:0;
+  font-family:"Tahoma","MS Sans Serif",sans-serif;
+}
+.xp-win .addr-bar{
+  background:#e8e4d8;padding:3px 5px;border-bottom:1px solid #c0c0c0;
+  display:flex;align-items:center;gap:4px;flex-shrink:0;
+}
+.xp-win .addr-bar label{font-size:15px;font-weight:bold;color:#444;white-space:nowrap;}
+.xp-win .addr-bar .addr-input{
+  flex:1;height:22px;background:#fff;
+  border:1px solid #888;border-color:#888 #ccc #ccc #888;
+  display:flex;align-items:center;padding:0 5px;font-size:16px;color:#555;
+  font-family:"Tahoma","MS Sans Serif",sans-serif;
+}
+.xp-win .addr-bar button{
+  height:22px;padding:0 8px;font-size:15px;font-weight:bold;
+  background:linear-gradient(to bottom,#f0f0f0,#d0d0d0);
+  border:1px solid #888;border-color:#fff #888 #888 #fff;cursor:pointer;
+  font-family:"Tahoma","MS Sans Serif",sans-serif;
+}
+.xp-win .search-box{display:flex;gap:4px;width:80%;margin:12px auto 0;}
+.xp-win .search-box input{
+  flex:1;height:24px;border:2px inset #ccc;padding:0 6px;
+  font-size:16px;font-weight:bold;font-family:"Tahoma","MS Sans Serif","宋体",sans-serif;outline:none;
+  -webkit-font-smoothing:none;font-smooth:never;
+}
+.xp-win .search-box button{
+  height:24px;padding:0 10px;font-size:15px;font-weight:bold;
+  background:linear-gradient(to bottom,#f0f0f0,#d0d0d0);
+  border:1px solid #888;border-color:#fff #888 #888 #fff;cursor:pointer;
+  font-family:"Tahoma","MS Sans Serif",sans-serif;
+}
+/* --- 被钉住的小提示 --- */
+.sticky-note{
+  position:fixed;right:26px;top:86px;z-index:9999;
+  width:210px;padding:22px 18px 20px;
+  background:linear-gradient(160deg,#fff3c4,#ffe08a 60%,#fdd474);
+  border:2px solid #f2c94c;
+  border-radius:16px 20px 14px 18px;
+  box-shadow:3px 4px 14px rgba(180,140,40,0.25),inset 0 2px 0 rgba(255,255,255,0.7),inset 0 -2px 0 rgba(210,160,40,0.15);
+  font-family:"Microsoft YaHei","微软雅黑",sans-serif;
+  font-size:13px;color:#6b4a1e;line-height:1.8;font-weight:800;
+  transform:rotate(-1.5deg);
+}
+.sticky-note::before{
+  content:'';position:absolute;top:-7px;left:8px;right:8px;height:14px;
+  background:linear-gradient(90deg,rgba(255,255,255,0.35),rgba(255,255,255,0.1),rgba(255,255,255,0.35));
+  border-radius:50%;
+  filter:blur(1px);
+}
+.sticky-note .pin{
+  position:absolute;top:-10px;left:50%;margin-left:-9px;
+  width:18px;height:18px;
+  background:radial-gradient(circle at 6px 6px,#ff8fa3,#ff6b8a 60%,#e04e6e);
+  border-radius:50%;
+  box-shadow:0 2px 5px rgba(190,60,90,0.4),inset 0 -2px 3px rgba(255,255,255,0.4);
+  z-index:2;
+}
+.sticky-note .pin::after{
+  content:'';position:absolute;top:12px;left:9px;
+  width:2px;height:14px;background:#d04a68;
+  border-radius:2px;
+  transform:rotate(-8deg);
+  box-shadow:0 1px 2px rgba(180,60,90,0.2);
+}
+.sticky-note .sn-title{
+  font-weight:bold;font-size:14px;color:#7a4a12;margin-bottom:10px;
+  text-align:center;letter-spacing:1px;
+  text-shadow:0 1px 0 rgba(255,255,255,0.5);
+}
+.sticky-note .sn-item{margin-bottom:6px;padding-left:4px;font-weight:900;}
+.sticky-note .sn-num{display:inline-block;color:#fff;background:#ffb84d;border-radius:50%;width:18px;height:18px;text-align:center;line-height:18px;font-size:11px;margin-right:5px;box-shadow:0 1px 2px rgba(180,130,40,0.3);}
+.sticky-note .sn-blank{height:6px;}
+
+/* --- 证据计数器 --- */
+.ec-badge{position:fixed;top:10px;right:12px;z-index:100000;background:rgba(45,45,55,0.55);border:1px solid rgba(90,90,100,0.4);border-radius:4px;padding:2px 8px;font-family:"Microsoft YaHei","微软雅黑",sans-serif;font-size:13px;color:#d0c8b8;box-shadow:1px 1px 4px rgba(0,0,0,0.2);letter-spacing:1px;backdrop-filter:blur(2px);pointer-events:none;}
+.ec-badge .ec-n{color:#f0d878;font-weight:bold;font-size:15px;}
+.ec-badge .ec-t{color:#b0a898;}
+
+</style>
+</head>
+<body>
+
+<div class="desktop-icons">
+  <div class="ico"><div class="i-img" style="background-image:url('icon_pc.png');"></div><div class="i-label">我的电脑</div></div>
+  <div class="ico"><div class="i-img" style="background-image:url('icon_docs.png');"></div><div class="i-label">我的文档</div></div>
+  <div class="ico"><div class="i-img" style="background-image:url('icon_trash.png');"></div><div class="i-label">回收站</div></div>
+  <div class="ico"><div class="i-img" style="background-image:url('icon_net.png');"></div><div class="i-label">网上邻居</div></div>
+  <div class="ico" data-app="ie"><div class="i-img" style="background-image:url('icon_ie.png');"></div><div class="i-label">Internet Explorer</div></div>
+  <div class="ico" data-app="mail"><div class="i-img"><svg viewBox="0 0 32 32" width="48" height="48"><rect x="3" y="8" width="26" height="17" rx="1" fill="#f0c870" stroke="#c09830" stroke-width="0.8"/><polygon points="3,8 16,19 29,8" fill="#f8d888" stroke="#d0a840" stroke-width="0.5"/><polygon points="3,25 13,17 16,19 19,17 29,25" fill="#e8b850" stroke="#c09830" stroke-width="0.5"/><rect x="10" y="12" width="12" height="2" rx="1" fill="#c09830" opacity="0.4"/></svg></div><div class="i-label">Outlook Express</div></div>
+  <div class="ico"><div class="i-img" style="background-image:url('icon_wmp.png');"></div><div class="i-label">Windows Media Player</div></div>
+  <div class="ico" data-app="qq"><div class="i-img" style="background-image:url('icon_qq.png');"></div><div class="i-label">QQ</div></div>
+  <div class="ico" onclick="window.open('qq_music.html','_blank')" style="cursor:pointer;">
+    <div class="i-img" style="background-image:url('icon_qqmusic.png');"></div>
+    <div class="i-label">QQ音乐</div>
+  </div>
+  
+</div>
+
+<div class="taskbar">
+  <div class="start-btn" onclick="alert('Windows XP Professional')" style="background:none;border:none;box-shadow:none;min-width:auto;padding:0;">
+    <img src="start_btn.jpg" style="display:block;height:32px;width:auto;image-rendering:pixelated;">
+  </div>
+  <div class="tb-dv"></div>
+  <div class="tb-items">
+    <div class="tb-item" onclick="location.href=''mail.html')"><svg width="12" height="12" viewBox="0 0 10 10"><rect x="0" y="2" width="10" height="7" rx="1" fill="#f0c870"/><polygon points="0,2 5,6 10,2" fill="#f8d888"/></svg><span>Outlook Express</span></div>
+    <div class="tb-item" onclick="location.href=''qq.html')"><svg width="12" height="12" viewBox="0 0 10 10"><ellipse cx="5" cy="4" rx="3" ry="2.5" fill="#1a1a1a"/></svg><span>QQ</span></div>
+    <div class="tb-item" onclick="location.href=''browser.html')"><svg width="12" height="12" viewBox="0 0 10 10"><circle cx="5" cy="5" r="4" fill="#d8d8d8"/><text x="5" y="7" font-family="serif" font-size="7" font-weight="bold" font-style="italic" fill="#0066cc" text-anchor="middle">e</text></svg><span>Internet Explorer</span></div>
+  </div>
+  <div class="tb-right">
+    <div class="tb-tray"><svg width="12" height="12" viewBox="0 0 12 12"><path d="M2 6 L6 2 L10 6" fill="none" stroke="#ccc" stroke-width="1"/><rect x="5" y="7" width="2" height="3" fill="#ccc"/></svg></div>
+    <div class="tb-clock">2030年12月15日</div>
+  </div>
+</div>
+
+<script>
+document.querySelectorAll('.ico[data-app]').forEach(function(el){el.addEventListener('dblclick',function(){var m={mail:'mail.html',qq:'qq.html',ie:'browser.html'};window.open(m[this.dataset.app], '_blank');});});
+document.querySelectorAll('.ico').forEach(function(el){el.addEventListener('click',function(){document.querySelectorAll('.ico').forEach(function(e){e.classList.remove('sel');});this.classList.add('sel');});});
+function doSearch(){var q=document.getElementById('searchInput').value.trim();var r=document.getElementById('searchResult');if(!q){r.textContent='请输入搜索关键词。';return;}r.innerHTML='搜索中……<br><span style="color:#aaa;">（后续关卡将在此展开）</span>';}
+</script>
+<!-- 被钉住的小提示 -->
+<div class="sticky-note">
+  <div class="pin"></div>
+  <div class="sn-title">&#128204; 小tips：</div>
+  <div class="sn-item"><span class="sn-num">1.</span>在浏览器多搜索可能的关键词或许会能加速推进哦</div>
+  <div class="sn-blank"></div>
+  <div class="sn-item"><span class="sn-num">2.</span>凡是在里面出现的小猪都是不重要的线索哦</div>
+  <div class="sn-blank"></div>
+  <div class="sn-item"><span class="sn-num">3.</span>记好每一个可能的线索以及排序或许在后边能用上哦</div>
+  <div class="sn-blank"></div>
+  <div class="sn-item"><span class="sn-num">4.</span>每一个密码都有明确的线索结合指向，请勿穷举。</div>
+</div>
+
+<!-- 证据计数器 -->
+<div class="ec-badge" id="ecBadge"><span class="ec-n">1</span><span class="ec-t">/29</span></div>
+
+
+
+</body>
+</html>

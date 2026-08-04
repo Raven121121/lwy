@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta charset="UTF-8"><title>槐花论坛 - 求助互助</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#e8e4dc;font-family:"宋体","SimSun",sans-serif;font-size:15px;font-weight:900;color:#222;}
+.topbar{background:linear-gradient(90deg,#0a246a,#3a6ea5,#0a246a);height:34px;display:flex;align-items:center;padding:0 16px;color:#fff;font-size:15px;text-shadow:1px 1px 0 #000;min-width:960px;}
+.topbar .tb-links{display:flex;gap:16px;margin-left:auto;font-size:13px;color:#ccc;}
+.wrap{max-width:1000px;margin:0 auto;padding:12px 0;}
+.header{background:#fff;border:2px solid #c0bfb8;padding:14px 18px;margin-bottom:8px;display:flex;align-items:center;gap:12px;}
+.header .logo{font-size:26px;color:#0a246a;font-weight:900;}
+.header .logo-sub{font-size:13px;color:#888;font-weight:900;}
+.header .user-info{margin-left:auto;font-size:13px;color:#555;font-weight:900;}
+.header .user-info .un{color:#06c;font-weight:900;}
+.nav{background:#fff;border:2px solid #c0bfb8;margin-bottom:8px;display:flex;border-bottom:none;}
+.nav a{padding:10px 20px;font-size:15px;font-weight:900;color:#444;text-decoration:none;border-bottom:3px solid transparent;display:inline-block;cursor:default;}
+.nav a.active{color:#0a246a;border-bottom-color:#0a246a;font-weight:900;}
+.nav a.clickable{cursor:pointer;}
+.nav a.clickable:hover{background:#eef4fa;}
+.main{display:flex;gap:10px;}
+.left{flex:1;}
+.section{background:#fff;border:2px solid #c0bfb8;margin-bottom:10px;}
+.section .s-hd{background:linear-gradient(to bottom,#e8e5dd,#ddd9d0);padding:8px 14px;font-size:15px;font-weight:900;color:#222;border-bottom:2px solid #c0bfb8;}
+
+/* 用户留言过的帖子 */
+.my-comments{background:#f8f6ef;border:2px solid #c0bfb8;margin-bottom:10px;}
+.my-comments .mc-hd{background:linear-gradient(to bottom,#e0ddd0,#d5d2c5);padding:8px 14px;font-size:15px;font-weight:900;color:#333;border-bottom:2px solid #c0bfb8;}
+.comment-item{padding:10px 14px;border-bottom:1px solid #ede8dd;display:flex;gap:8px;align-items:flex-start;}
+.comment-item:last-child{border-bottom:none;}
+.comment-item .ci-icon{font-size:18px;color:#999;width:24px;}
+.comment-item .ci-content{flex:1;}
+.comment-item .ci-content .ci-title{font-size:15px;color:#06c;font-weight:900;margin-bottom:2px;cursor:default;}
+.comment-item .ci-content .ci-preview{font-size:13px;color:#555;line-height:1.6;font-weight:900;}
+.comment-item .ci-content .ci-author{font-size:12px;color:#888;margin-top:2px;font-weight:900;}
+
+.post{padding:12px 14px;border-bottom:1px solid #f0efe8;display:flex;align-items:center;gap:8px;}
+.post:last-child{border-bottom:none;}
+.post .p-tag{font-size:11px;color:#c00;border:1px solid #c00;padding:1px 6px;border-radius:2px;margin-right:4px;font-weight:900;white-space:nowrap;}
+.post .p-tag.blue{color:#06c;border-color:#06c;}
+.post .p-title{flex:1;font-size:15px;font-weight:900;color:#06c;cursor:default;}
+.post .p-author{font-size:13px;color:#666;width:90px;font-weight:900;}
+.post .p-time{font-size:12px;color:#999;width:65px;text-align:right;font-weight:900;}
+.post .p-count{font-size:12px;color:#aaa;width:55px;text-align:right;font-weight:900;}
+.post .p-hashtag{font-size:12px;color:#888;margin-right:6px;font-weight:900;}
+
+.right{width:260px;flex-shrink:0;}
+.rbox{background:#fff;border:2px solid #c0bfb8;margin-bottom:10px;}
+.rbox .r-hd{background:linear-gradient(to bottom,#e8e5dd,#ddd9d0);padding:8px 12px;font-size:14px;font-weight:900;color:#222;border-bottom:2px solid #c0bfb8;}
+.rbox .r-bd{padding:10px 12px;font-size:14px;color:#444;line-height:2;}
+.rbox .r-bd .btn{display:block;width:100%;padding:6px;text-align:center;font-size:14px;font-weight:900;background:linear-gradient(to bottom,#f0f0e8,#d0d0c8);border:2px solid #888;border-color:#fff #666 #666 #fff;cursor:pointer;font-family:"宋体",sans-serif;margin-top:6px;color:#222;}
+.back-btn{position:fixed;top:4px;right:12px;z-index:9999;padding:3px 12px;font-size:12px;font-weight:900;background:rgba(240,240,232,0.9);border:2px solid #888;border-color:#fff #666 #666 #fff;cursor:pointer;font-family:"宋体","SimSun",sans-serif;color:#222;}
+
+.ec-badge{position:fixed;top:10px;right:12px;z-index:100000;background:rgba(45,45,55,0.55);border:1px solid rgba(90,90,100,0.4);border-radius:4px;padding:2px 8px;font-family:"Microsoft YaHei","微软雅黑",sans-serif;font-size:13px;color:#d0c8b8;box-shadow:1px 1px 4px rgba(0,0,0,0.2);letter-spacing:1px;backdrop-filter:blur(2px);pointer-events:none;}
+.ec-badge .ec-n{color:#f0d878;font-weight:bold;font-size:15px;}
+.ec-badge .ec-t{color:#b0a898;}
+</style></head>
+<body>
+<div class="topbar"><span>槐花论坛</span><div class="tb-links"><span>我的帖子</span><span>消息</span><span>设置</span><span onclick="window.location.href='desktop.html'">退出</span></div></div>
+<div class="wrap">
+
+<div class="header" style="background:linear-gradient(135deg,#eef4fa,#fff);border:2px solid #3a6ea5;padding:18px;">
+  <div style="flex:1;">
+    <div class="logo" style="font-size:26px;">槐花论坛</div>
+    <div class="logo-sub" style="margin-top:4px;font-size:14px;font-weight:900;">求助互助 · 帮帮邻里</div>
+    
+  </div>
+  <div class="user-info"><span class="un" style="font-size:15px;">Lillian</span></div>
+</div>
+
+<div class="nav">
+  <a href="#" class="clickable" onclick="window.location.href='forum_main.html'">首页</a>
+  <a href="#" onclick="return false">槐花茶馆</a>
+  <a href="#" class="active">求助互助</a>
+  <a href="#" onclick="return false">生活分享</a>
+  <a href="#" onclick="return false">跳蚤市场</a>
+  <a href="#" onclick="return false">情感天地</a>
+</div>
+
+<div class="main">
+  <div class="left">
+
+    <!-- 用户留言过的帖子 -->
+    <div class="my-comments">
+      <div class="mc-hd">💬 我回复过的帖子</div>
+      <div class="comment-item">
+        <div class="ci-icon">💬</div>
+        <div class="ci-content">
+          <div class="ci-title" >被家暴了不知道该找谁……</div>
+          <div class="ci-preview">Lillian 回复：别怕，你先冷静一下。河洲路那边有一个庇护所，是专门帮助遇到这种情况的女性的，可以给你提供临时住所和安全保障。庇护所的电话是 0745-228166，你随时可以打。具体的情况你可以私信我，我详细跟你说。</div>
+          <div class="ci-author">禾禾milk🥛 · 2011-04-15</div>
+        </div>
+      </div>
+      <div class="comment-item">
+        <div class="ci-icon">💬</div>
+        <div class="ci-content">
+          <div class="ci-title" >法律援助中心电话有知道的吗</div>
+          <div class="ci-preview">Lillian 回复：槐花市法律援助中心的电话是 0745-12348。如果你需要进一步的帮助可以私信我，我帮你对接一下相关的资源。</div>
+          <div class="ci-author">迷路的羊 · 2011-06-12</div>
+        </div>
+      </div>
+      <div class="comment-item">
+        <div class="ci-icon">💬</div>
+        <div class="ci-content">
+          <div class="ci-title" >请问河洲路庇护所怎么联系？</div>
+          <div class="ci-preview">Lillian 回复：庇护所的官方电话是 0745-228166，24小时都有人接。如果你需要人陪你一起去或者了解具体情况，可以私信我，我详细跟你说。</div>
+          <div class="ci-author">匿名用户 · 2011-08-20</div>
+        </div>
+      </div>
+      <div class="comment-item">
+        <div class="ci-icon">💬</div>
+        <div class="ci-content">
+          <div class="ci-title">请问离婚诉讼需要准备什么材料</div>
+          <div class="ci-preview">Lillian 回复：离婚诉讼需要准备结婚证、身份证、相关证据材料等。建议你先去法律援助中心咨询一下，电话是 0745-12348，他们会告诉你具体需要哪些材料。有什么不懂的可以私信问我。</div>
+          <div class="ci-author">重新开始 · 2011-03-15</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 求助互助帖子列表 -->
+    <div class="section">
+      <div class="s-hd">📋 求助互助 · 全部帖子</div>
+      <div class="post"><span class="p-tag blue">求助</span><span class="p-title">请问河洲路庇护所怎么联系？</span><span class="p-author">匿名用户</span><span class="p-time">2011-08</span><span class="p-count">89</span></div>
+      <div class="post"><span class="p-tag blue">求助</span><span class="p-title">单亲妈妈可以申请什么补助</span><span class="p-author">阳光妈妈</span><span class="p-time">2011-07</span><span class="p-count">112</span></div>
+      <div class="post"><span class="p-tag blue">求助</span><span class="p-title">法律援助中心电话有知道的吗</span><span class="p-author">迷路的羊</span><span class="p-time">2011-06</span><span class="p-count">156</span></div>
+      <div class="post"><span class="p-tag blue">求助</span><span class="p-title">被家暴了不知道该找谁……</span><span class="p-author">禾禾milk🥛</span><span class="p-time">2011-04</span><span class="p-count">421</span></div>
+      <div class="post"><span class="p-tag blue">求助</span><span class="p-title">请问离婚诉讼需要准备什么材料</span><span class="p-author">重新开始</span><span class="p-time">2011-03</span><span class="p-count">78</span></div>
+    </div>
+
+  </div>
+
+  <div class="right">
+    <div class="rbox">
+      <div class="r-hd">👤 Lillian</div>
+      <div class="r-bd">
+        <div>帖子：47</div>
+        <div>热心助人：36次</div>
+        <div class="btn" onclick="window.open('forum_profile.html','_blank')">📋 查看主页</div>
+      </div>
+    </div>
+    <div class="rbox">
+      <div class="r-hd">📊 求助统计</div>
+      <div class="r-bd">
+        <div>求助帖总数：6,847</div>
+        <div>已解决：5,912</div>
+        <div>待帮助：1,616</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+<button class="back-btn" onclick="window.close()">&#9664; 关闭</button>
+<div class="ec-badge" id="ecBadge"><span class="ec-n">25</span><span class="ec-t">/29</span></div>
+</body></html>

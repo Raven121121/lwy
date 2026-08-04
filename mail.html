@@ -7,7 +7,7 @@
 *{margin:0;padding:0;box-sizing:border-box;}
 html,body{width:100%;height:100%;overflow:hidden;}
 body{
-  background:url('wallpaper.jpg') center/cover no-repeat;
+  background:url('assets/images/wallpaper.jpg') center/cover no-repeat;
   font-family:"宋体","SimSun","Tahoma","MS Sans Serif",sans-serif;
   font-size:18px;-webkit-font-smoothing:none;font-smooth:never;
   user-select:none;
@@ -192,7 +192,7 @@ body{
       <div id="contentArea" style="flex:1;display:flex;flex-direction:column;"></div>
     </div>
   </div>
-  <div class="status" id="statusBar"><span>收件箱: 8 封邮件</span></div>
+  <div class="status" id="statusBar"><span>收件箱: 7 封邮件</span></div>
 </div>
 
 <script>
@@ -291,7 +291,7 @@ function showFolder(folder) {
   var titleMap = {inbox:'收件箱', sent:'已发送', drafts:'草稿箱'};
   document.getElementById('winTitle').innerHTML = 'Outlook Express &#8212; ' + titleMap[folder];
   
-  var countMap = {inbox:'收件箱: 8 封邮件', sent:'已发送: 1 封邮件', drafts:'草稿箱: 1 封邮件'};
+  var countMap = {inbox:'收件箱: 7 封邮件', sent:'已发送: 1 封邮件', drafts:'草稿箱: 1 封邮件'};
   document.getElementById('statusBar').innerHTML = '<span>' + (countMap[folder] || '') + '</span>';
   
   renderEmailList(folder);

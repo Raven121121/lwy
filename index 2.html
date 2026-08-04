@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>未发送邮件：不存在的收件人</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body, html {
+            width: 100%; height: 100%;
+            background: #0d0d0d;
+            font-family: "宋体", "SimSun", "Microsoft Sans Serif", sans-serif;
+            display: flex; justify-content: center; align-items: center;
+            overflow: hidden;
+            color: #d4d4d4;
+        }
+        .screen {
+            width: 100%; max-width: 680px;
+            padding: 50px 45px;
+            text-align: center;
+            animation: fadeIn 2s ease;
+        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes textAppear {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes pulse { 0%,100%{opacity:0.3} 50%{opacity:0.9} }
+
+        .story {
+            text-align: center;
+            line-height: 2;
+            margin: 30px 0;
+        }
+        .story {
+            animation: fadeIn 2.5s ease forwards;
+        }
+        .story p {
+            font-size: 16px;
+            color: #c8c0b8;
+            margin-bottom: 12px;
+            line-height: 1.7;
+        }
+        .story .hl { color: #d4c8b0; font-weight: bold; }
+        .story .place { color: #b8a888; font-style: italic; }
+
+        .final-line {
+            margin-top: 20px;
+            font-size: 17px;
+            color: #c8b898;
+            opacity: 0;
+            transform: translateY(12px);
+            animation: textAppear 1s ease forwards 15s;
+            letter-spacing: 1px;
+        }
+
+        .footer-hint {
+            margin-top: 40px;
+            font-size: 13px;
+            color: #555;
+            opacity: 0;
+            animation: fadeIn 1s forwards 16s, pulse 2s 17s infinite;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<div class="screen" id="mainScreen">
+    <div class="story">
+    <p style="font-size:28px;color:#c8b898;margin-bottom:30px;letter-spacing:4px;font-style:italic;font-family:'Georgia','Times New Roman','宋体',serif;">未发送邮件：不存在的收件人</p>
+        <p >你发现了一台旧电脑。</p>
+        <p >准确来说，是妈妈留给你的。</p>
+        <p >她没有告诉你密码。</p>
+        <p >没有告诉你里面有什么。</p>
+        <p >只是你某一天偶然在书架上一本书中发现的</p>
+        <p >被夹好的地址与钥匙。</p>
+        <p style="animation-delay:8s;color:#b0a890;">上面写着 <span class="place">槐花市</span>。</p>
+        <p >十八年来，你第一次听见这个名字。</p>
+        <p >于是你来到了槐花。</p>
+        <p >一个妈妈从未提起的地方。</p>
+        <p >无人的家中，一台多年没有启动的电脑。</p>
+        <p >一个被锁住的过去。</p>
+        <p style="margin-top:20px;font-size:20px;color:#d4c0a0;animation:textAppear 1s ease forwards 15s;">现在，密码就在你眼前</p>
+    </div>
+
+    <div class="footer-hint" id="clickHint">点击任意处，打开那台旧电脑</div>
+</div>
+
+<script>
+    document.getElementById('mainScreen').addEventListener('click', function() {
+        window.location.href = 'desktop.html';
+    });
+    document.getElementById('mainScreen').style.cursor = 'pointer';
+</script>
+</body>
+</html>

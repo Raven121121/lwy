@@ -8,7 +8,7 @@
 *{margin:0;padding:0;box-sizing:border-box;}
 html,body{width:100%;height:100%;overflow:hidden;}
 body{
-  background:url('wallpaper.jpg') center/cover no-repeat;
+  background:url('assets/images/wallpaper.jpg') center/cover no-repeat;
   font-family:"Tahoma","MS Sans Serif","Arial","宋体","SimSun",sans-serif;
   font-size:16px;-webkit-font-smoothing:none;-moz-osx-font-smoothing:unset;font-smooth:never;
   user-select:none;
@@ -209,16 +209,16 @@ img,svg{image-rendering:pixelated;image-rendering:crisp-edges;-ms-interpolation-
 <body>
 
 <div class="desktop-icons">
-  <div class="ico"><div class="i-img" style="background-image:url('icon_pc.png');"></div><div class="i-label">我的电脑</div></div>
-  <div class="ico"><div class="i-img" style="background-image:url('icon_docs.png');"></div><div class="i-label">我的文档</div></div>
-  <div class="ico"><div class="i-img" style="background-image:url('icon_trash.png');"></div><div class="i-label">回收站</div></div>
-  <div class="ico"><div class="i-img" style="background-image:url('icon_net.png');"></div><div class="i-label">网上邻居</div></div>
-  <div class="ico" data-app="ie"><div class="i-img" style="background-image:url('icon_ie.png');"></div><div class="i-label">Internet Explorer</div></div>
+  <div class="ico"><div class="i-img" style="background-image:url('assets/images/icon_pc.png');"></div><div class="i-label">我的电脑</div></div>
+  <div class="ico"><div class="i-img" style="background-image:url('assets/images/icon_docs.png');"></div><div class="i-label">我的文档</div></div>
+  <div class="ico"><div class="i-img" style="background-image:url('assets/images/icon_trash.png');"></div><div class="i-label">回收站</div></div>
+  <div class="ico"><div class="i-img" style="background-image:url('assets/images/icon_net.png');"></div><div class="i-label">网上邻居</div></div>
+  <div class="ico" data-app="ie"><div class="i-img" style="background-image:url('assets/images/icon_ie.png');"></div><div class="i-label">Internet Explorer</div></div>
   <div class="ico" data-app="mail"><div class="i-img"><svg viewBox="0 0 32 32" width="48" height="48"><rect x="3" y="8" width="26" height="17" rx="1" fill="#f0c870" stroke="#c09830" stroke-width="0.8"/><polygon points="3,8 16,19 29,8" fill="#f8d888" stroke="#d0a840" stroke-width="0.5"/><polygon points="3,25 13,17 16,19 19,17 29,25" fill="#e8b850" stroke="#c09830" stroke-width="0.5"/><rect x="10" y="12" width="12" height="2" rx="1" fill="#c09830" opacity="0.4"/></svg></div><div class="i-label">Outlook Express</div></div>
-  <div class="ico"><div class="i-img" style="background-image:url('icon_wmp.png');"></div><div class="i-label">Windows Media Player</div></div>
-  <div class="ico" data-app="qq"><div class="i-img" style="background-image:url('icon_qq.png');"></div><div class="i-label">QQ</div></div>
+  <div class="ico"><div class="i-img" style="background-image:url('assets/images/icon_wmp.png');"></div><div class="i-label">Windows Media Player</div></div>
+  <div class="ico" data-app="qq"><div class="i-img" style="background-image:url('assets/images/icon_qq.png');"></div><div class="i-label">QQ</div></div>
   <div class="ico" onclick="window.open('qq_music.html','_blank')" style="cursor:pointer;">
-    <div class="i-img" style="background-image:url('icon_qqmusic.png');"></div>
+    <div class="i-img" style="background-image:url('assets/images/icon_qqmusic.png');"></div>
     <div class="i-label">QQ音乐</div>
   </div>
   
@@ -226,7 +226,7 @@ img,svg{image-rendering:pixelated;image-rendering:crisp-edges;-ms-interpolation-
 
 <div class="taskbar">
   <div class="start-btn" onclick="alert('Windows XP Professional')" style="background:none;border:none;box-shadow:none;min-width:auto;padding:0;">
-    <img src="start_btn.jpg" style="display:block;height:32px;width:auto;image-rendering:pixelated;">
+    <img loading="lazy" decoding="async" src="assets/images/start_btn.jpg" style="display:block;height:32px;width:auto;image-rendering:pixelated;">
   </div>
   <div class="tb-dv"></div>
   <div class="tb-items">
